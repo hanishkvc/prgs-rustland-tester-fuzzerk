@@ -6,25 +6,28 @@
 
 pub struct FixedStringsFuzzer {
     list: Vec<String>,
-    curi: isize,
+    curi: usize,
 }
 
 impl FixedStringsFuzzer {
     pub fn new(fixed_list: Vec<String>) -> FixedStringsFuzzer {
         FixedStringsFuzzer {
             list: fixed_list,
-            curi: -1,
+            curi: 0,
         }
     }
 }
 
 impl super::Fuzz for FixedStringsFuzzer {
     fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
-        self.curi = (step % self.list.len()) as isize;
-        let tosend = self.list[step].clone();
+        if self.list.len() == 0 {
+            eprintln!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step);
+            return;
+        }
+        self.curi = step % self.list.len();
+        let tosend = self.list[self.curi].clone();
         for b in tosend.bytes() {
             buf.push(b)
         }
     }
 }
-
