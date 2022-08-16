@@ -22,16 +22,21 @@ impl LoopFixedStringsFuzzer {
 }
 
 impl super::Fuzz for LoopFixedStringsFuzzer {
-    fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
+    fn append_fuzzed_immut(&self, step: usize, buf: &mut Vec<u8>) {
         if self.list.len() == 0 {
             eprintln!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step);
             return;
         }
-        self.curi = step % self.list.len();
-        let tosend = self.list[self.curi].clone();
+        let curi = step % self.list.len();
+        let tosend = self.list[curi].clone();
         for b in tosend.bytes() {
             buf.push(b)
         }
+    }
+
+    fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
+        self.curi = step % self.list.len();
+        self.append_fuzzed_immut(step, buf);
     }
 }
 
@@ -51,7 +56,7 @@ impl RandomFixedStringsFuzzer {
 }
 
 impl super::Fuzz for RandomFixedStringsFuzzer {
-    fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
+    fn append_fuzzed_immut(&self, step: usize, buf: &mut Vec<u8>) {
         if self.list.len() == 0 {
             eprintln!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step);
             return;
@@ -61,5 +66,9 @@ impl super::Fuzz for RandomFixedStringsFuzzer {
         for b in tosend.bytes() {
             buf.push(b)
         }
+    }
+
+    fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
+        return self.append_fuzzed_immut(step, buf);
     }
 }

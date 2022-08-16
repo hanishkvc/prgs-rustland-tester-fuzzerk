@@ -21,12 +21,16 @@ impl RandomRandomFuzzer {
 }
 
 impl super::Fuzz for RandomRandomFuzzer {
-    fn append_fuzzed(&mut self, _step: usize, buf: &mut Vec<u8>) {
+    fn append_fuzzed_immut(&self, _step: usize, buf: &mut Vec<u8>) {
         let curlen: usize = rand::random();
         let curlen = self.minlen + curlen % (self.maxlen-self.minlen+1);
         for _i in 0..curlen {
             buf.push(rand::random());
         }
+    }
+
+    fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
+        return self.append_fuzzed_immut(step, buf);
     }
 }
 
@@ -56,12 +60,16 @@ impl RandomFixedFuzzer {
 }
 
 impl super::Fuzz for RandomFixedFuzzer {
-    fn append_fuzzed(&mut self, _step: usize, buf: &mut Vec<u8>) {
+    fn append_fuzzed_immut(&self, _step: usize, buf: &mut Vec<u8>) {
         let curlen: usize = rand::random();
         let curlen = self.minlen + curlen % (self.maxlen-self.minlen+1);
         for _i in 0..curlen {
             let char = self.charset[rand::random::<usize>()%self.charset.len()];
             buf.push(char);
         }
+    }
+
+    fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
+        return self.append_fuzzed_immut(step, buf);
     }
 }
