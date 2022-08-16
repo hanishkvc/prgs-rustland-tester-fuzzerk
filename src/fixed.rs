@@ -4,21 +4,24 @@
 //! HanishKVC, 2022
 //!
 
-pub struct FixedStringsFuzzer {
+///
+/// Loop through a predefined list of strings
+///
+pub struct LoopFixedStringsFuzzer {
     list: Vec<String>,
     curi: usize,
 }
 
-impl FixedStringsFuzzer {
-    pub fn new(fixed_list: Vec<String>) -> FixedStringsFuzzer {
-        FixedStringsFuzzer {
+impl LoopFixedStringsFuzzer {
+    pub fn new(fixed_list: Vec<String>) -> LoopFixedStringsFuzzer {
+        LoopFixedStringsFuzzer {
             list: fixed_list,
             curi: 0,
         }
     }
 }
 
-impl super::Fuzz for FixedStringsFuzzer {
+impl super::Fuzz for LoopFixedStringsFuzzer {
     fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
         if self.list.len() == 0 {
             eprintln!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step);
@@ -26,6 +29,35 @@ impl super::Fuzz for FixedStringsFuzzer {
         }
         self.curi = step % self.list.len();
         let tosend = self.list[self.curi].clone();
+        for b in tosend.bytes() {
+            buf.push(b)
+        }
+    }
+}
+
+///
+/// Randomly select from predefined list of strings
+///
+pub struct RandomFixedStringsFuzzer {
+    list: Vec<String>,
+}
+
+impl RandomFixedStringsFuzzer {
+    pub fn new(fixed_list: Vec<String>) -> RandomFixedStringsFuzzer {
+        RandomFixedStringsFuzzer {
+            list: fixed_list,
+        }
+    }
+}
+
+impl super::Fuzz for RandomFixedStringsFuzzer {
+    fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
+        if self.list.len() == 0 {
+            eprintln!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step);
+            return;
+        }
+        let curi = rand::random::<usize>() % self.list.len();
+        let tosend = self.list[curi].clone();
         for b in tosend.bytes() {
             buf.push(b)
         }
