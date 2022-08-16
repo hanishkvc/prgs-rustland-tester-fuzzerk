@@ -6,3 +6,6 @@ cbuild:
 ctests:
 	cargo test -- --show-output
 
+genprintable:
+	gcc -o misc/gen_printable_ascii misc/gen_printable_ascii.c
+
