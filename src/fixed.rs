@@ -5,7 +5,7 @@
 //!
 
 ///
-/// Loop through a predefined list of strings
+/// Loop through a predefined list of strings, in given sequence
 ///
 pub struct LoopFixedStringsFuzzer {
     list: Vec<String>,

@@ -6,6 +6,10 @@
 
 use rand;
 
+
+///
+/// Generate a buffer of random bytes, of size within the specified limits of min and max len.
+///
 pub struct RandomRandomFuzzer {
     minlen: usize,
     maxlen: usize,
@@ -34,6 +38,11 @@ impl super::Fuzz for RandomRandomFuzzer {
     }
 }
 
+
+///
+/// Generate a random buffer of bytes, which containts byte values from the specified set,
+/// of size within the specified limits of min and max len.
+///
 pub struct RandomFixedFuzzer {
     minlen: usize,
     maxlen: usize,
@@ -49,6 +58,9 @@ impl RandomFixedFuzzer {
         }
     }
 
+    ///
+    /// Created a instance, setup to generate printable ascii chars
+    ///
     pub fn new_printables(minlen: usize, maxlen: usize) -> RandomFixedFuzzer {
         //let charset = vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',];
         let mut charset = Vec::new();
