@@ -13,7 +13,7 @@ use crate::fixed;
 const TYPEMARKER_FUZZER: &str = "FuzzerType";
 const TYPEMARKER_FUZZCHAIN: &str = "FuzzChain";
 
-struct RunTimeManager {
+pub struct RunTimeManager {
     fuzzers: HashMap<String, Box<dyn Fuzz>>,
 }
 

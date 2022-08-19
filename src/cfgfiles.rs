@@ -8,6 +8,8 @@ use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
 
+use crate::rtm;
+
 
 pub trait FromVecStrings {
     fn get_spacesprefix(vs: &VecDeque<String>) -> usize {
@@ -111,7 +113,7 @@ fn get_cfggroup(fbr: &mut BufReader<File>) -> VecDeque<String> {
     vdata
 }
 
-pub fn parse_file(sfile: &str) {
+pub fn parse_file(sfile: &str, rtm: &mut rtm::RunTimeManager) {
     let f = File::open(sfile);
     if f.is_err() {
         panic!("ERRR:CfgFiles:ParseFile:{}:{}", sfile, f.unwrap_err());
@@ -119,10 +121,11 @@ pub fn parse_file(sfile: &str) {
     let f = f.unwrap();
     let mut fbr = BufReader::new(f);
     loop {
-        let cgdata = get_cfggroup(&mut fbr);
+        let mut cgdata = get_cfggroup(&mut fbr);
         if cgdata.len() == 0 {
             break;
         }
         println!("CfgFiles:CfgGroup:{:#?}", cgdata);
+        rtm.handle_cfggroup(&mut cgdata);
     }
 }

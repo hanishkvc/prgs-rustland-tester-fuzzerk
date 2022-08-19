@@ -4,11 +4,13 @@
 //! HanishKVC, 2022
 //!
 
-use fuzzerk::cfgfiles;
 use std::env;
+use fuzzerk::cfgfiles;
+use fuzzerk::rtm;
 
 fn main() {
     println!("MinimalFuzzerKUtil");
     let cla: Vec<String> = env::args().collect();
-    cfgfiles::parse_file(cla[1].as_str());
+    let mut rtm = rtm::RunTimeManager::new();
+    cfgfiles::parse_file(cla[1].as_str(), &mut rtm);
 }
