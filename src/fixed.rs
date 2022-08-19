@@ -40,6 +40,12 @@ impl super::Fuzz for LoopFixedStringsFuzzer {
     }
 }
 
+impl super::FromStringVec<LoopFixedStringsFuzzer> for LoopFixedStringsFuzzer {
+    fn from_sv(sv: &mut Vec<String>) -> LoopFixedStringsFuzzer {
+        todo!()
+    }
+}
+
 ///
 /// Randomly select from predefined list of strings
 ///
