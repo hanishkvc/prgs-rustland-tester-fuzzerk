@@ -85,14 +85,26 @@ fn get_cfggroup(fbr: &mut BufReader<File>) -> VecDeque<String> {
         let mut sbuf = String::new();
         let gotr = fbr.read_line(&mut sbuf);
         if gotr.is_err() {
-            panic!("ERRR:GetCfgGroup:read failed {}", gotr.unwrap_err());
+            panic!("ERRR:CfgFiles:GetCfgGroup:read failed {}", gotr.unwrap_err());
         }
         let gotr = gotr.unwrap();
         if gotr == 0 {
             break;
         }
-        if (sbuf.trim().len() == 0) && (vdata.len() > 0) {
-            break;
+        if sbuf.trim().len() == 0 {
+            if vdata.len() > 0 {
+                break;
+            }
+            continue;
+        }
+        let c = sbuf.chars().nth(0).expect("ERRR:CfgFiles:GetCfgGroup:While checking for CfgGroup start or Comment");
+        if c == '#' { // Skip comments
+            continue;
+        }
+        if vdata.len() == 0 {
+            if !c.is_alphanumeric() {
+                panic!("ERRR:CfgFiles:GetCfgGroup:Didnt get the expected start of a new CfgGroup:{}", sbuf);
+            }
         }
         vdata.push_back(sbuf)
     }
