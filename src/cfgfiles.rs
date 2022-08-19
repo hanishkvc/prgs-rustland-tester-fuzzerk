@@ -9,9 +9,9 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 
 
-pub trait FromStringVec {
-    fn get_spacesprefix(sv: &VecDeque<String>) -> usize {
-        let l = sv.front();
+pub trait FromVecStrings {
+    fn get_spacesprefix(vs: &VecDeque<String>) -> usize {
+        let l = vs.front();
         let mut spacesprefix = 0;
         if l.is_some() {
             let l = l.unwrap();
@@ -27,12 +27,12 @@ pub trait FromStringVec {
         return spacesprefix;
     }
 
-    fn get_value(sv: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
-        let cursp = Self::get_spacesprefix(sv);
+    fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
+        let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
             panic!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp);
         }
-        let l = sv.pop_front();
+        let l = vs.pop_front();
         if l.is_none() {
             panic!("ERRR:FromStringVec:{}-{}:No data to process", Self::get_name(), key)
         }
@@ -52,22 +52,22 @@ pub trait FromStringVec {
         return lt.1.to_string();
     }
 
-    fn get_values(sv: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Vec<String> {
-        let sheadval = Self::get_value(sv, key, spacesprefix);
+    fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Vec<String> {
+        let sheadval = Self::get_value(vs, key, spacesprefix);
         if sheadval.len() != 0 {
             panic!("ERRR:FromStringVec:{}-{}:has non array value {} ???", Self::get_name(), key, sheadval);
         }
-        let childsp = Self::get_spacesprefix(sv);
+        let childsp = Self::get_spacesprefix(vs);
         let mut vdata = Vec::new();
         loop {
-            let cursp = Self::get_spacesprefix(sv);
+            let cursp = Self::get_spacesprefix(vs);
             if (cursp == spacesprefix) || (cursp == 0) {
                 break;
             }
             if childsp != cursp {
                 panic!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp);
             }
-            let l = sv.pop_front();
+            let l = vs.pop_front();
             let curline = l.unwrap();
             vdata.push(curline);
         }
@@ -75,7 +75,7 @@ pub trait FromStringVec {
     }
 
     fn get_name() -> String;
-    fn from_sv(sv: &mut VecDeque<String>) -> Self;
+    fn from_vs(vs: &mut VecDeque<String>) -> Self;
 }
 
 

@@ -7,7 +7,7 @@
 use std::collections::{HashMap, VecDeque};
 
 use crate::Fuzz;
-use crate::cfgfiles::FromStringVec;
+use crate::cfgfiles::FromVecStrings;
 use crate::fixed;
 
 const TYPEMARKER_FUZZER: &str = "FuzzerType";
@@ -28,7 +28,7 @@ impl<'a> RunTimeManager<'a> {
         if la[0] == TYPEMARKER_FUZZER {
             match la[1] {
                 "LoopFixedStringsFuzzer" => {
-                    fixed::LoopFixedStringsFuzzer::from_sv(cg);
+                    fixed::LoopFixedStringsFuzzer::from_vs(cg);
                 },
                 _ => todo!(),
             }

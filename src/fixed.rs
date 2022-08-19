@@ -42,20 +42,20 @@ impl super::Fuzz for LoopFixedStringsFuzzer {
     }
 }
 
-impl crate::cfgfiles::FromStringVec for LoopFixedStringsFuzzer {
+impl crate::cfgfiles::FromVecStrings for LoopFixedStringsFuzzer {
 
     fn get_name() -> String {
         return "LoopFixedStringsFuzzer".to_string();
     }
 
-    fn from_sv(sv: &mut VecDeque<String>) -> LoopFixedStringsFuzzer {
-        let l = sv.pop_front();
+    fn from_vs(vs: &mut VecDeque<String>) -> LoopFixedStringsFuzzer {
+        let l = vs.pop_front();
         if l.is_none() {
             panic!("ERRR:LoopFixedStringsFuzzer:FromStringVec:Got empty vector");
         }
         let l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
-        let spacesprefix = Self::get_spacesprefix(sv);
-        let fixedlist = Self::get_values(sv, "list", spacesprefix);
+        let spacesprefix = Self::get_spacesprefix(vs);
+        let fixedlist = Self::get_values(vs, "list", spacesprefix);
         LoopFixedStringsFuzzer::new(fixedlist)
     }
 }
