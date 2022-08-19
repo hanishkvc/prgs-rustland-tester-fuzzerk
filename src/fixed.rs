@@ -60,6 +60,7 @@ impl crate::cfgfiles::FromVecStrings for LoopFixedStringsFuzzer {
     }
 }
 
+
 ///
 /// Randomly select from predefined list of strings
 ///
@@ -90,5 +91,23 @@ impl super::Fuzz for RandomFixedStringsFuzzer {
 
     fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
         return self.append_fuzzed_immut(step, buf);
+    }
+}
+
+impl crate::cfgfiles::FromVecStrings for RandomFixedStringsFuzzer {
+
+    fn get_name() -> String {
+        return "RandomFixedStringsFuzzer".to_string();
+    }
+
+    fn from_vs(vs: &mut VecDeque<String>) -> RandomFixedStringsFuzzer {
+        let l = vs.pop_front();
+        if l.is_none() {
+            panic!("ERRR:RandomFixedStringsFuzzer:FromStringVec:Got empty vector");
+        }
+        let l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
+        let spacesprefix = Self::get_spacesprefix(vs);
+        let fixedlist = Self::get_values(vs, "list", spacesprefix);
+        RandomFixedStringsFuzzer::new(fixedlist)
     }
 }

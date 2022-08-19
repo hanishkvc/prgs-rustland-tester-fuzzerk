@@ -30,6 +30,9 @@ impl<'a> RunTimeManager<'a> {
                 "LoopFixedStringsFuzzer" => {
                     fixed::LoopFixedStringsFuzzer::from_vs(cg);
                 },
+                "RandomFixedStringsFuzzer" => {
+                    fixed::RandomFixedStringsFuzzer::from_vs(cg);
+                },
                 _ => todo!(),
             }
         }
