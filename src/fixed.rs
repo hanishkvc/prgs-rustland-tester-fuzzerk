@@ -4,6 +4,8 @@
 //! HanishKVC, 2022
 //!
 
+use std::collections::VecDeque;
+
 ///
 /// Loop through a predefined list of strings, in given sequence
 ///
@@ -40,9 +42,14 @@ impl super::Fuzz for LoopFixedStringsFuzzer {
     }
 }
 
-impl super::FromStringVec<LoopFixedStringsFuzzer> for LoopFixedStringsFuzzer {
-    fn from_sv(sv: &mut Vec<String>) -> LoopFixedStringsFuzzer {
-        todo!()
+impl super::FromStringVec for LoopFixedStringsFuzzer {
+    fn from_sv(sv: &mut VecDeque<String>) -> LoopFixedStringsFuzzer {
+        let l = sv.pop_front();
+        if l.is_none() {
+            panic!("ERRR:LoopFixedStringsFuzzer:FromStringVec:Got empty vector");
+        }
+        let fixedlist = Vec::new();
+        LoopFixedStringsFuzzer::new(fixedlist)
     }
 }
 
