@@ -13,11 +13,13 @@ pub trait FromStringVec {
         let mut spacesprefix = 0;
         if l.is_some() {
             let l = l.unwrap();
-            for c in l.chars() {
-                if !c.is_whitespace() {
-                    break;
+            if l.trim().len() != 0 {
+                for c in l.chars() {
+                    if !c.is_whitespace() {
+                        break;
+                    }
+                    spacesprefix += 1;
                 }
-                spacesprefix += 1;
             }
         }
         return spacesprefix;
@@ -53,16 +55,21 @@ pub trait FromStringVec {
         if sheadval.len() != 0 {
             panic!("ERRR:FromStringVec:{}-{}:has non array value {} ???", Self::get_name(), key, sheadval);
         }
-        let spacesprefix = Self::get_spacesprefix(sv);
-        while true {
+        let childsp = Self::get_spacesprefix(sv);
+        let mut vdata = Vec::new();
+        loop {
             let cursp = Self::get_spacesprefix(sv);
-            if spacesprefix != cursp {
+            if (cursp == spacesprefix) || (cursp == 0) {
+                break;
+            }
+            if childsp != cursp {
                 panic!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp);
             }
             let l = sv.pop_front();
             let curline = l.unwrap();
+            vdata.push(curline);
         }
-        Vec::new()
+        vdata
     }
 
     fn get_name() -> String;
