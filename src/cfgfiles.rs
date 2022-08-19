@@ -111,7 +111,7 @@ fn get_cfggroup(fbr: &mut BufReader<File>) -> VecDeque<String> {
     vdata
 }
 
-fn parse_file(sfile: &str) {
+pub fn parse_file(sfile: &str) {
     let f = File::open(sfile);
     if f.is_err() {
         panic!("ERRR:CfgFiles:ParseFile:{}:{}", sfile, f.unwrap_err());
@@ -123,5 +123,6 @@ fn parse_file(sfile: &str) {
         if cgdata.len() == 0 {
             break;
         }
+        println!("CfgFiles:CfgGroup:{:#?}", cgdata);
     }
 }
