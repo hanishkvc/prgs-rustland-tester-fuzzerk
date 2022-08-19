@@ -5,6 +5,8 @@
 //!
 
 use std::collections::VecDeque;
+use std::fs::File;
+use std::io::{BufReader, BufRead};
 
 
 pub trait FromStringVec {
@@ -74,4 +76,40 @@ pub trait FromStringVec {
 
     fn get_name() -> String;
     fn from_sv(sv: &mut VecDeque<String>) -> Self;
+}
+
+
+fn get_cfggroup(fbr: &mut BufReader<File>) -> VecDeque<String> {
+    let mut vdata = VecDeque::new();
+    loop {
+        let mut sbuf = String::new();
+        let gotr = fbr.read_line(&mut sbuf);
+        if gotr.is_err() {
+            panic!("ERRR:GetCfgGroup:read failed {}", gotr.unwrap_err());
+        }
+        let gotr = gotr.unwrap();
+        if gotr == 0 {
+            break;
+        }
+        if (sbuf.trim().len() == 0) && (vdata.len() > 0) {
+            break;
+        }
+        vdata.push_back(sbuf)
+    }
+    vdata
+}
+
+fn parse_file(sfile: &str) {
+    let f = File::open(sfile);
+    if f.is_err() {
+        panic!("ERRR:CfgFiles:ParseFile:{}:{}", sfile, f.unwrap_err());
+    }
+    let f = f.unwrap();
+    let mut fbr = BufReader::new(f);
+    loop {
+        let cgdata = get_cfggroup(&mut fbr);
+        if cgdata.len() == 0 {
+            break;
+        }
+    }
 }
