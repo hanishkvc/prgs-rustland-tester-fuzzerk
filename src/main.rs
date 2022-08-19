@@ -14,5 +14,6 @@ fn main() {
     let mut rtm = rtm::RunTimeManager::new();
     cfgfiles::parse_file(cla[1].as_str(), &mut rtm);
     let fci = rtm.fcimmuts(cla[2].as_str()).unwrap();
-    println!("{:?}", fci.get());
+    println!("{:?}", fci.get(1));
+    println!("{:?}", fci.get(2));
 }
