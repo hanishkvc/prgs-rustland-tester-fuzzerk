@@ -13,25 +13,29 @@ use crate::fixed;
 const TYPEMARKER_FUZZER: &str = "FuzzerType";
 const TYPEMARKER_FUZZCHAIN: &str = "FuzzChain";
 
-struct RunTimeManager<'a> {
-    fuzzers: HashMap<String, &'a mut dyn Fuzz>,
+struct RunTimeManager {
+    fuzzers: HashMap<String, Box<dyn Fuzz>>,
 }
 
-impl<'a> RunTimeManager<'a> {
-    pub fn new() -> RunTimeManager<'a> {
+impl RunTimeManager {
+    pub fn new() -> RunTimeManager {
         RunTimeManager { fuzzers: HashMap::new() }
     }
 
-    pub fn handle_cfggroup(cg: &mut VecDeque<String>) {
-        let l = cg.front().unwrap();
+    pub fn handle_cfggroup(&mut self, cg: &mut VecDeque<String>) {
+        let l = cg.front().unwrap().clone();
         let la: Vec<&str> = l.split(':').collect();
         if la[0] == TYPEMARKER_FUZZER {
             match la[1] {
                 "LoopFixedStringsFuzzer" => {
-                    fixed::LoopFixedStringsFuzzer::from_vs(cg);
+                    let fuzzer = fixed::LoopFixedStringsFuzzer::from_vs(cg);
+                    let fuzzer = Box::new(fuzzer);
+                    self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedStringsFuzzer" => {
-                    fixed::RandomFixedStringsFuzzer::from_vs(cg);
+                    let fuzzer = fixed::RandomFixedStringsFuzzer::from_vs(cg);
+                    let fuzzer = Box::new(fuzzer);
+                    self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 _ => todo!(),
             }
