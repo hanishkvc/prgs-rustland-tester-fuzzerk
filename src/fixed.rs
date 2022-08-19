@@ -42,7 +42,12 @@ impl super::Fuzz for LoopFixedStringsFuzzer {
     }
 }
 
-impl super::FromStringVec for LoopFixedStringsFuzzer {
+impl crate::cfgfiles::FromStringVec for LoopFixedStringsFuzzer {
+
+    fn get_name() -> String {
+        return "LoopFixedStringsFuzzer".to_string();
+    }
+
     fn from_sv(sv: &mut VecDeque<String>) -> LoopFixedStringsFuzzer {
         let l = sv.pop_front();
         if l.is_none() {
