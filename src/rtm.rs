@@ -16,7 +16,7 @@ const TYPEMARKER_FUZZCHAIN: &str = "FuzzChain";
 
 pub struct RunTimeManager {
     fuzzers: HashMap<String, Rc<dyn Fuzz>>,
-    fcimmuts: HashMap<String, Box<FuzzChainImmuts>>,
+    fcimmuts: HashMap<String, Rc<FuzzChainImmuts>>,
 }
 
 impl RunTimeManager {
@@ -26,6 +26,15 @@ impl RunTimeManager {
             fuzzers: HashMap::new(),
             fcimmuts: HashMap::new(),
         }
+    }
+
+    pub fn fcimmuts(&self, name: &str) -> Option<Rc<FuzzChainImmuts>> {
+        let fcimmuts = self.fcimmuts.get(name);
+        if fcimmuts.is_none() {
+            return None;
+        }
+        let fcimmuts = fcimmuts.unwrap();
+        return Some(fcimmuts.clone());
     }
 
 }
@@ -50,8 +59,7 @@ impl HandleCfgGroup for RunTimeManager {
                 _ => todo!(),
             }
         } else if la[0] == TYPEMARKER_FUZZCHAIN {
-            let fc = FuzzChainImmuts::new();
-            let mut fc = Box::new(fc);
+            let mut fc = FuzzChainImmuts::new();
             let l = cg.pop_front(); // Skip the Type identifier
             for l in cg {
                 let l = l.trim();
@@ -62,9 +70,9 @@ impl HandleCfgGroup for RunTimeManager {
                 let fuzzer = fuzzer.unwrap();
                 fc.append(fuzzer.clone());
             }
+            let fc = Rc::new(fc);
             self.fcimmuts.insert(la[2].to_string(), fc);
         }
-
     }
 
 }
