@@ -113,7 +113,13 @@ fn get_cfggroup(fbr: &mut BufReader<File>) -> VecDeque<String> {
     vdata
 }
 
-pub fn parse_file(sfile: &str, rtm: &mut rtm::RunTimeManager) {
+
+pub trait HandleCfgGroup {
+    fn handle_cfggroup(&mut self, vs: &mut VecDeque<String>);
+}
+
+
+pub fn parse_file(sfile: &str, handler: &mut dyn HandleCfgGroup) {
     let f = File::open(sfile);
     if f.is_err() {
         panic!("ERRR:CfgFiles:ParseFile:{}:{}", sfile, f.unwrap_err());
@@ -126,6 +132,6 @@ pub fn parse_file(sfile: &str, rtm: &mut rtm::RunTimeManager) {
             break;
         }
         println!("CfgFiles:CfgGroup:{:#?}", cgdata);
-        rtm.handle_cfggroup(&mut cgdata);
+        handler.handle_cfggroup(&mut cgdata);
     }
 }

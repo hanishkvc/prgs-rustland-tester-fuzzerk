@@ -7,7 +7,7 @@
 use std::collections::{HashMap, VecDeque};
 
 use crate::Fuzz;
-use crate::cfgfiles::FromVecStrings;
+use crate::cfgfiles::{FromVecStrings, HandleCfgGroup};
 use crate::fixed;
 
 const TYPEMARKER_FUZZER: &str = "FuzzerType";
@@ -18,11 +18,16 @@ pub struct RunTimeManager {
 }
 
 impl RunTimeManager {
+
     pub fn new() -> RunTimeManager {
         RunTimeManager { fuzzers: HashMap::new() }
     }
 
-    pub fn handle_cfggroup(&mut self, cg: &mut VecDeque<String>) {
+}
+
+impl HandleCfgGroup for RunTimeManager {
+
+    fn handle_cfggroup(&mut self, cg: &mut VecDeque<String>) {
         let l = cg.front().unwrap().clone();
         let la: Vec<&str> = l.split(':').collect();
         if la[0] == TYPEMARKER_FUZZER {
