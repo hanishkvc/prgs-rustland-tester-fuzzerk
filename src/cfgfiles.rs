@@ -35,7 +35,7 @@ pub trait FromVecStrings {
     /// Support a subset of escape chars like
     /// \t, \r, \n
     ///
-    fn str_deescape(ins: &str) -> String {
+    fn str_deescape(ins: &str) -> Result<String, String> {
         let mut bescape = false;
         let mut outs = String::new();
         for c in ins.chars() {
@@ -52,7 +52,7 @@ pub trait FromVecStrings {
                         't' => outs.push('\x09'),
                         'n' => outs.push('\x0A'),
                         'r' => outs.push('\x0D'),
-                        _ => panic!("ERRR:CfgFiles:StrDeEscape:Unsupported escape char {}", c),
+                        _ => return Err(format!("ERRR:CfgFiles:StrDeEscape:Unsupported escape char {}", c)),
                     }
                     bescape = false;
                 } else {
@@ -60,45 +60,48 @@ pub trait FromVecStrings {
                 }
             }
         }
-        outs
+        Ok(outs)
     }
 
     ///
     /// Get the value (single) associated with the specified key. Empty value is Ok
     ///
-    fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
+    fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<String, String> {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
-            panic!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp);
+            return Err(format!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp));
         }
         let l = vs.pop_front();
         if l.is_none() {
-            panic!("ERRR:FromStringVec:{}-{}:No data to process", Self::get_name(), key)
+            return Err(format!("ERRR:FromStringVec:{}-{}:No data to process", Self::get_name(), key))
         }
         let l = l.unwrap();
         let l = l.trim();
         let lt = l.split_once(':');
         if lt.is_none() {
-            panic!("ERRR:FromStringVec:{}-{}:key-value delimiter ':' missing", Self::get_name(), key)
+            return Err(format!("ERRR:FromStringVec:{}-{}:key-value delimiter ':' missing", Self::get_name(), key));
         }
         let lt = lt.unwrap();
         if lt.0 != key {
-            panic!("ERRR:FromStringVec:{}-{}:Expected key {}, got key {}", Self::get_name(), key, key, lt.0)
+            return Err(format!("ERRR:FromStringVec:{}-{}:Expected key {}, got key {}", Self::get_name(), key, key, lt.0));
         }
         println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, lt);
-        let val = Self::str_deescape(lt.1);
-        return val;
+        return Self::str_deescape(lt.1);
     }
 
     ///
     /// Get the value (single) associated with the specified key. Empty value is not Ok with this.
     ///
-    fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
+    fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<String, String> {
         let val = Self::get_value_emptyok(vs, key, spacesprefix);
-        if val.len() == 0 {
-            panic!("ERRR:FromStringVec:{}-{}:No value given for {}", Self::get_name(), key, val);
+        if val.is_err() {
+            return val;
         }
-        return val;
+        let val = val.unwrap();
+        if val.len() == 0 {
+            return Err(format!("ERRR:FromStringVec:{}-{}:No value given for {}", Self::get_name(), key, val));
+        }
+        return Ok(val);
     }
 
     ///
@@ -108,10 +111,14 @@ pub trait FromVecStrings {
     /// * each value needs to be on its own line, with a optional ',' termination
     ///   * \[WHITESPACE*\]WHITESPACE*The Value
     ///
-    fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Vec<String> {
+    fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<String>, String> {
         let sheadval = Self::get_value_emptyok(vs, key, spacesprefix);
+        if sheadval.is_err() {
+            return Err(sheadval.unwrap_err());
+        }
+        let sheadval = sheadval.unwrap();
         if sheadval.len() != 0 {
-            panic!("ERRR:FromStringVec:{}-{}:has non array value {} ???", Self::get_name(), key, sheadval);
+            return Err(format!("ERRR:FromStringVec:{}-{}:has non array value {} ???", Self::get_name(), key, sheadval));
         }
         let childsp = Self::get_spacesprefix(vs);
         let mut vdata = Vec::new();
@@ -121,7 +128,7 @@ pub trait FromVecStrings {
                 break;
             }
             if childsp != cursp {
-                panic!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp);
+                return Err(format!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp));
             }
             let l = vs.pop_front();
             let curline = l.unwrap();
@@ -130,10 +137,14 @@ pub trait FromVecStrings {
                 curline = curline.strip_suffix(",").unwrap();
             }
             let curline = Self::str_deescape(curline);
+            if curline.is_err() {
+                return Err(curline.unwrap_err());
+            }
+            let curline = curline.unwrap();
             println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, curline);
             vdata.push(curline.to_string());
         }
-        vdata
+        Ok(vdata)
     }
 
     ///
