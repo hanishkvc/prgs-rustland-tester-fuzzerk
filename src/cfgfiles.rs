@@ -69,23 +69,23 @@ pub trait FromVecStrings {
     fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<String, String> {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
-            return Err(format!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp));
+            return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:Prefix whitespaces mismatch:{} != {}", key, spacesprefix, cursp));
         }
         let l = vs.pop_front();
         if l.is_none() {
-            return Err(format!("ERRR:FromStringVec:{}-{}:No data to process", Self::get_name(), key))
+            return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:No data to process", key))
         }
         let l = l.unwrap();
         let l = l.trim();
         let lt = l.split_once(':');
         if lt.is_none() {
-            return Err(format!("ERRR:FromStringVec:{}-{}:key-value delimiter ':' missing", Self::get_name(), key));
+            return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:key-value delimiter ':' missing", key));
         }
         let lt = lt.unwrap();
         if lt.0 != key {
-            return Err(format!("ERRR:FromStringVec:{}-{}:Expected key {}, got key {}", Self::get_name(), key, key, lt.0));
+            return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:Expected key {}, got key {}", key, key, lt.0));
         }
-        println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, lt);
+        println!("DBUG:FromVS:GetValueEmptyOk:{}-{}:[{:?}]", Self::get_name(), key, lt);
         return Self::str_deescape(lt.1);
     }
 
@@ -99,7 +99,7 @@ pub trait FromVecStrings {
         }
         let val = val.unwrap();
         if val.len() == 0 {
-            return Err(format!("ERRR:FromStringVec:{}-{}:No value given for {}", Self::get_name(), key, val));
+            return Err(format!("ERRR:FromVS:GetValue:{}:No value given for {}", key, val));
         }
         return Ok(val);
     }
@@ -118,7 +118,7 @@ pub trait FromVecStrings {
         }
         let sheadval = sheadval.unwrap();
         if sheadval.len() != 0 {
-            return Err(format!("ERRR:FromStringVec:{}-{}:has non array value {} ???", Self::get_name(), key, sheadval));
+            return Err(format!("ERRR:FromVS:GetValues:{}:Non array value {} found???", key, sheadval));
         }
         let childsp = Self::get_spacesprefix(vs);
         let mut vdata = Vec::new();
@@ -128,7 +128,7 @@ pub trait FromVecStrings {
                 break;
             }
             if childsp != cursp {
-                return Err(format!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp));
+                return Err(format!("ERRR:FromVS:GetValues:{}:Prefix whitespaces mismatch:{} != {}", key, spacesprefix, cursp));
             }
             let l = vs.pop_front();
             let curline = l.unwrap();
@@ -141,7 +141,7 @@ pub trait FromVecStrings {
                 return Err(curline.unwrap_err());
             }
             let curline = curline.unwrap();
-            println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, curline);
+            println!("DBUG:FromVS:GetValues:{}-{}:[{:?}]", Self::get_name(), key, curline);
             vdata.push(curline.to_string());
         }
         Ok(vdata)
