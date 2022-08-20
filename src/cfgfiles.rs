@@ -10,6 +10,10 @@ use std::io::{BufReader, BufRead};
 
 
 pub trait FromVecStrings {
+
+    ///
+    /// Get number of spaces in front of any text data, in the top most string in the vector.
+    ///
     fn get_spacesprefix(vs: &VecDeque<String>) -> usize {
         let l = vs.front();
         let mut spacesprefix = 0;
@@ -27,6 +31,10 @@ pub trait FromVecStrings {
         return spacesprefix;
     }
 
+    ///
+    /// Support a subset of escape chars like
+    /// \t, \r, \n
+    ///
     fn str_deescape(ins: &str) -> String {
         let mut bescape = false;
         let mut outs = String::new();
@@ -55,6 +63,9 @@ pub trait FromVecStrings {
         outs
     }
 
+    ///
+    /// Get the value (single) associated with the specified key. Empty value is Ok
+    ///
     fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
@@ -79,6 +90,9 @@ pub trait FromVecStrings {
         return val;
     }
 
+    ///
+    /// Get the value (single) associated with the specified key. Empty value is not Ok with this.
+    ///
     fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
         let val = Self::get_value_emptyok(vs, key, spacesprefix);
         if val.len() == 0 {
@@ -122,8 +136,16 @@ pub trait FromVecStrings {
         vdata
     }
 
+    ///
+    /// The name of the struct / enum implementing this trait.
+    ///
     fn get_name() -> String;
+
+    ///
+    /// Implementer should parse the passed Vector of Strings and Generator a instance of itself.
+    ///
     fn from_vs(vs: &mut VecDeque<String>) -> Self;
+
 }
 
 
