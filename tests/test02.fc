@@ -1,0 +1,35 @@
+# A test fuzzchain config file
+
+# The 1st fc chain
+FuzzerType:LoopFixedStringsFuzzer:LFSF01
+  list:
+    Value1,
+    Value2,
+    ValueXYZ
+
+
+FuzzerType:LoopFixedStringsFuzzer:LFSF02
+  list:
+    ValueA,
+    ValueB,
+    Value123
+
+
+FuzzChain:FuzzChain:FC100
+    LFSF01
+    LFSF02
+    LFSF01
+
+# Another FC chain
+FuzzerType:RandomFixedStringsFuzzer:RFSF01
+  list:
+    Value1,
+    Value2,
+    ValueXYZ
+
+
+FuzzChain:FuzzChain:FC200
+    RFSF01
+    LFSF02
+    LFSF01
+

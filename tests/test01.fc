@@ -1,0 +1,27 @@
+# A test fuzzchain config file
+
+FuzzerType:TypeNameABC:InstanceNameABC1
+  Arg1: ValueX,
+  Arg2: ValueM,
+  ArgA:
+    Value1,
+    Value2,
+    ValueXYZ
+
+
+FuzzerType:TypeNameXYZ:InstanceNameXYZ99
+    Arg1:
+        ValueA,
+        ValueB,
+        ValueZ,
+    Arg2:
+        ValueX,
+        ValueM,
+        ValueN,
+
+
+FuzzChain:FuzzChain:FC100
+    InstanceNameABC1
+    InstanceNameXYZ99
+    InstanceNameXYZ99
+
