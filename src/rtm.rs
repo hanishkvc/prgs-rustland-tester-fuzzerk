@@ -59,7 +59,7 @@ impl HandleCfgGroup for RunTimeManager {
                     println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}]", la[2]);
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
-                _ => todo!(),
+                _ => panic!("ERRR:RunTimeManager:HandleCfgGroup:UnknownFuzzer:{:?}",la),
             }
         } else if la[0] == TYPEMARKER_FUZZCHAIN {
             let mut fc = FuzzChainImmuts::new();

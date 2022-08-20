@@ -10,8 +10,8 @@ FuzzerType:LoopFixedStringsFuzzer:LFSF01
 
 FuzzerType:LoopFixedStringsFuzzer:LFSF02
   list:
-    ValueA,
-    ValueB,
+    ValueA
+    ValueB
     Value123
 
 
@@ -32,4 +32,14 @@ FuzzChain:FuzzChain:FC200
     RFSF01
     LFSF02
     LFSF01
+
+# Another FC Chain with true random data in it
+FuzzerType:RandomRandomFuzzer:RRF01
+	minlen: 3
+	maxlen: 8
+
+FuzzChain:FuzzChain:FC300
+	RRF01
+	LFSF01
+	RRF01
 
