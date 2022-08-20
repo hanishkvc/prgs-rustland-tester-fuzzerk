@@ -58,6 +58,13 @@ pub trait FromVecStrings {
         return val;
     }
 
+    ///
+    /// Retrieve the list of values associated with the specified key
+    /// * key needs to be in its own line with empty/no value following it
+    ///   * \[WHITESPACE*\]SomeKey:
+    /// * each value needs to be on its own line, with a optional ',' termination
+    ///   * \[WHITESPACE*\]WHITESPACE*The Value
+    ///
     fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Vec<String> {
         let sheadval = Self::get_value_emptyok(vs, key, spacesprefix);
         if sheadval.len() != 0 {
@@ -75,8 +82,12 @@ pub trait FromVecStrings {
             }
             let l = vs.pop_front();
             let curline = l.unwrap();
+            let mut curline = curline.trim();
+            if curline.chars().last().unwrap() == ',' {
+                curline = curline.strip_suffix(",").unwrap();
+            }
             println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, curline);
-            vdata.push(curline);
+            vdata.push(curline.to_string());
         }
         vdata
     }
