@@ -27,7 +27,7 @@ pub trait FromVecStrings {
         return spacesprefix;
     }
 
-    fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
+    fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
             panic!("ERRR:FromStringVec:{}-{}:Prefix whitespaces mismatch:{} != {}", Self::get_name(), key, spacesprefix, cursp);
@@ -46,14 +46,19 @@ pub trait FromVecStrings {
         if lt.0 != key {
             panic!("ERRR:FromStringVec:{}-{}:Expected key {}, got key {}", Self::get_name(), key, key, lt.0)
         }
-        if lt.1.len() == 0 {
-            panic!("ERRR:FromStringVec:{}-{}:No value given for {}", Self::get_name(), key, lt.0)
-        }
         return lt.1.to_string();
     }
 
+    fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
+        let val = Self::get_value_emptyok(vs, key, spacesprefix);
+        if val.len() == 0 {
+            panic!("ERRR:FromStringVec:{}-{}:No value given for {}", Self::get_name(), key, val);
+        }
+        return val;
+    }
+
     fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Vec<String> {
-        let sheadval = Self::get_value(vs, key, spacesprefix);
+        let sheadval = Self::get_value_emptyok(vs, key, spacesprefix);
         if sheadval.len() != 0 {
             panic!("ERRR:FromStringVec:{}-{}:has non array value {} ???", Self::get_name(), key, sheadval);
         }
