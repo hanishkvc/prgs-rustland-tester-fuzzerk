@@ -66,7 +66,7 @@ impl HandleCfgGroup for RunTimeManager {
                     println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomRandomFuzzer [{}]", la[2]);
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
-                "RandomFixedFuzzer" => {
+                "RandomFixedFuzzer" | "RandomFixedFuzzerPrintables" => {
                     let fuzzer = random::RandomFixedFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
                     println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedFuzzer [{}]", la[2]);
