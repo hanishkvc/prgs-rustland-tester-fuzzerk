@@ -9,7 +9,8 @@ use std::rc::Rc;
 
 use crate::{Fuzz, FuzzChainImmuts};
 use crate::cfgfiles::{FromVecStrings, HandleCfgGroup};
-use crate::fixed;
+use crate::{fixed, random};
+
 
 const TYPEMARKER_FUZZER: &str = "FuzzerType";
 const TYPEMARKER_FUZZCHAIN: &str = "FuzzChain";
@@ -57,6 +58,12 @@ impl HandleCfgGroup for RunTimeManager {
                     let fuzzer = fixed::RandomFixedStringsFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
                     println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}]", la[2]);
+                    self.fuzzers.insert(la[2].to_string(), fuzzer);
+                },
+                "RandomRandomFuzzer" => {
+                    let fuzzer = random::RandomRandomFuzzer::from_vs(cg);
+                    let fuzzer = Rc::new(fuzzer);
+                    println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomRandomFuzzer [{}]", la[2]);
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 _ => panic!("ERRR:RunTimeManager:HandleCfgGroup:UnknownFuzzer:{:?}",la),
