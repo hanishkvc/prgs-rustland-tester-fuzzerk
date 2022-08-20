@@ -4,6 +4,7 @@
 //! HanishKVC, 2022
 //!
 
+use std::collections::VecDeque;
 use rand;
 
 
@@ -35,6 +36,27 @@ impl super::Fuzz for RandomRandomFuzzer {
 
     fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
         return self.append_fuzzed_immut(step, buf);
+    }
+}
+
+impl crate::cfgfiles::FromVecStrings for RandomRandomFuzzer {
+
+    fn get_name() -> String {
+        return "RandomRandomFuzzer".to_string();
+    }
+
+    fn from_vs(vs: &mut VecDeque<String>) -> RandomRandomFuzzer {
+        let l = vs.pop_front();
+        if l.is_none() {
+            panic!("ERRR:RandomRandomFuzzer:FromStringVec:Got empty vector");
+        }
+        let _l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
+        let spacesprefix = Self::get_spacesprefix(vs);
+        let minlen = Self::get_value(vs, "minlen", spacesprefix);
+        let maxlen = Self::get_value(vs, "maxlen", spacesprefix);
+        let minlen = usize::from_str_radix(&minlen, 10).expect(&format!("ERRR:RandomRandomFuzzer:MinLen issue:{}", minlen));
+        let maxlen = usize::from_str_radix(&maxlen, 10).expect(&format!("ERRR:RandomRandomFuzzer:MinLen issue:{}", maxlen));
+        RandomRandomFuzzer::new(minlen, maxlen)
     }
 }
 
@@ -83,5 +105,29 @@ impl super::Fuzz for RandomFixedFuzzer {
 
     fn append_fuzzed(&mut self, step: usize, buf: &mut Vec<u8>) {
         return self.append_fuzzed_immut(step, buf);
+    }
+}
+
+impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
+
+    fn get_name() -> String {
+        return "RandomFixedFuzzer".to_string();
+    }
+
+    fn from_vs(vs: &mut VecDeque<String>) -> RandomFixedFuzzer {
+        let l = vs.pop_front();
+        if l.is_none() {
+            panic!("ERRR:RandomFixedFuzzer:FromStringVec:Got empty vector");
+        }
+        let _l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
+        // For now assuming it is the predefined printable variant
+        // TODO: need to parse the header line and have additional info there to distinguish between a normal-flexible
+        // and the predefined-printable and what ever else in future.
+        let spacesprefix = Self::get_spacesprefix(vs);
+        let minlen = Self::get_value(vs, "minlen", spacesprefix);
+        let maxlen = Self::get_value(vs, "maxlen", spacesprefix);
+        let minlen = usize::from_str_radix(&minlen, 10).expect(&format!("ERRR:RandomFixedFuzzer:MinLen issue:{}", minlen));
+        let maxlen = usize::from_str_radix(&maxlen, 10).expect(&format!("ERRR:RandomFixedFuzzer:MinLen issue:{}", maxlen));
+        RandomFixedFuzzer::new_printables(minlen, maxlen)
     }
 }
