@@ -43,7 +43,8 @@ impl HandleCfgGroup for RunTimeManager {
 
     fn handle_cfggroup(&mut self, cg: &mut VecDeque<String>) {
         let l = cg.front().unwrap().clone();
-        let la: Vec<&str> = l.split(':').collect();
+        let mut la: Vec<&str> = l.split(':').collect();
+        la[2] = la[2].trim();
         if la[0] == TYPEMARKER_FUZZER {
             match la[1] {
                 "LoopFixedStringsFuzzer" => {

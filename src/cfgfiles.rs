@@ -97,6 +97,17 @@ pub trait FromVecStrings {
 }
 
 
+///
+/// Retreive the next CfgGroup from the given file
+/// * Empty lines at the begining are skipped.
+/// * Lines starting with # are treated as comments and ignored
+///   where ever thye may be.
+/// * A CfgGroup needs to begin with a line, which has AlphaNumeric char
+///   at the 0th position itself.
+///   * Ideally subsequent lines in the CfgGroup should be indented, but
+///     this logic doesnt bother about same. It is for any handler of the
+///     CfgGroup to enforce such requirement.
+/// * A empty line, after a bunch of non empty lines, terminates a CfgGroup.
 fn get_cfggroup(fbr: &mut BufReader<File>) -> VecDeque<String> {
     let mut vdata = VecDeque::new();
     loop {
