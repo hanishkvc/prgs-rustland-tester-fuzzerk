@@ -55,7 +55,7 @@ impl crate::cfgfiles::FromVecStrings for LoopFixedStringsFuzzer {
         }
         let _l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
         let spacesprefix = Self::get_spacesprefix(vs);
-        let fixedlist = Self::get_values(vs, "list", spacesprefix);
+        let fixedlist = Self::get_values(vs, "list", spacesprefix).expect("ERRR:LoopFixedStringsFuzzer:GetList:");
         LoopFixedStringsFuzzer::new(fixedlist)
     }
 }
@@ -107,7 +107,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedStringsFuzzer {
         }
         let _l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
         let spacesprefix = Self::get_spacesprefix(vs);
-        let fixedlist = Self::get_values(vs, "list", spacesprefix);
+        let fixedlist = Self::get_values(vs, "list", spacesprefix).expect("ERRR:RandomFixedStringsFuzzer:GetList:");
         RandomFixedStringsFuzzer::new(fixedlist)
     }
 }
