@@ -60,7 +60,7 @@ impl HandleCfgGroup for RunTimeManager {
             }
         } else if la[0] == TYPEMARKER_FUZZCHAIN {
             let mut fc = FuzzChainImmuts::new();
-            let l = cg.pop_front(); // Skip the Type identifier
+            let _l = cg.pop_front(); // Skip the Type identifier
             for l in cg {
                 let l = l.trim();
                 let fuzzer = self.fuzzers.get(l);

@@ -53,7 +53,7 @@ impl crate::cfgfiles::FromVecStrings for LoopFixedStringsFuzzer {
         if l.is_none() {
             panic!("ERRR:LoopFixedStringsFuzzer:FromStringVec:Got empty vector");
         }
-        let l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
+        let _l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
         let spacesprefix = Self::get_spacesprefix(vs);
         let fixedlist = Self::get_values(vs, "list", spacesprefix);
         LoopFixedStringsFuzzer::new(fixedlist)
@@ -105,7 +105,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedStringsFuzzer {
         if l.is_none() {
             panic!("ERRR:RandomFixedStringsFuzzer:FromStringVec:Got empty vector");
         }
-        let l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
+        let _l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
         let spacesprefix = Self::get_spacesprefix(vs);
         let fixedlist = Self::get_values(vs, "list", spacesprefix);
         RandomFixedStringsFuzzer::new(fixedlist)

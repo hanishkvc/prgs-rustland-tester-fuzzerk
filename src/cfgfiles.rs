@@ -8,8 +8,6 @@ use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
 
-use crate::rtm;
-
 
 pub trait FromVecStrings {
     fn get_spacesprefix(vs: &VecDeque<String>) -> usize {
