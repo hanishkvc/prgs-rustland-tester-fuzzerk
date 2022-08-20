@@ -47,6 +47,13 @@ impl crate::cfgfiles::FromVecStrings for RandomRandomFuzzer {
         return "RandomRandomFuzzer".to_string();
     }
 
+    ///
+    /// The config file should contain below, for this
+    /// ### FuzzerType:RandomRandomFuzzer:InstanceName
+    /// * this requires the below keys
+    ///   * minlen
+    ///   * maxlen
+    ///
     fn from_vs(vs: &mut VecDeque<String>) -> RandomRandomFuzzer {
         let l = vs.pop_front();
         if l.is_none() {
@@ -116,6 +123,19 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
         return "RandomFixedFuzzer".to_string();
     }
 
+    ///
+    /// In the cfgfile use either
+    /// ### FuzzerType:RandomFixedFuzzer:InstanceName
+    /// * this requieres the following keys
+    ///   * minlen
+    ///   * maxlen
+    ///   * charset
+    /// * as the charset can contain any binary value, one needs to define this has a hexstring (without 0x prefix)
+    /// ### FuzzerType:RandomFixedFuzzerPrintables:InstanceName
+    /// * this requires only the below keys
+    ///   * minlen
+    ///   * maxlen
+    ///
     fn from_vs(vs: &mut VecDeque<String>) -> RandomFixedFuzzer {
         let l = vs.pop_front();
         if l.is_none() {

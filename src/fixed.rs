@@ -48,6 +48,13 @@ impl crate::cfgfiles::FromVecStrings for LoopFixedStringsFuzzer {
         return "LoopFixedStringsFuzzer".to_string();
     }
 
+    ///
+    /// The config file should contain below, for this
+    /// ### FuzzerType:LoopFixedStringsFuzzer:InstanceName
+    /// * this requires the below keys
+    ///   * list
+    ///     * specify list of strings to use for fuzz generation
+    ///
     fn from_vs(vs: &mut VecDeque<String>) -> LoopFixedStringsFuzzer {
         let l = vs.pop_front();
         if l.is_none() {
@@ -100,6 +107,13 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedStringsFuzzer {
         return "RandomFixedStringsFuzzer".to_string();
     }
 
+    ///
+    /// The config file should contain below, for this
+    /// ### FuzzerType:RandomFixedStringsFuzzer:InstanceName
+    /// * this requires the below keys
+    ///   * list
+    ///     * specify list of strings to use for fuzz generation
+    ///
     fn from_vs(vs: &mut VecDeque<String>) -> RandomFixedStringsFuzzer {
         let l = vs.pop_front();
         if l.is_none() {
