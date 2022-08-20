@@ -55,7 +55,7 @@ impl crate::cfgfiles::FromVecStrings for RandomRandomFuzzer {
         let minlen = Self::get_value(vs, "minlen", spacesprefix).expect("ERRR:RandomRandomFuzzer:GetMinLen:");
         let maxlen = Self::get_value(vs, "maxlen", spacesprefix).expect("ERRR:RandomRandomFuzzer:GetMaxLen:");
         let minlen = usize::from_str_radix(minlen.trim(), 10).expect(&format!("ERRR:RandomRandomFuzzer:MinLen issue:{}", minlen));
-        let maxlen = usize::from_str_radix(maxlen.trim(), 10).expect(&format!("ERRR:RandomRandomFuzzer:MinLen issue:{}", maxlen));
+        let maxlen = usize::from_str_radix(maxlen.trim(), 10).expect(&format!("ERRR:RandomRandomFuzzer:MaxLen issue:{}", maxlen));
         RandomRandomFuzzer::new(minlen, maxlen)
     }
 }
@@ -127,7 +127,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
         let minlen = Self::get_value(vs, "minlen", spacesprefix).expect("ERRR:RandomFixedFuzzer:GetMinLen:");
         let maxlen = Self::get_value(vs, "maxlen", spacesprefix).expect("ERRR:RandomFixedFuzzer:GetMaxLen:");
         let minlen = usize::from_str_radix(minlen.trim(), 10).expect(&format!("ERRR:RandomFixedFuzzer:MinLen issue:{}", minlen));
-        let maxlen = usize::from_str_radix(maxlen.trim(), 10).expect(&format!("ERRR:RandomFixedFuzzer:MinLen issue:{}", maxlen));
+        let maxlen = usize::from_str_radix(maxlen.trim(), 10).expect(&format!("ERRR:RandomFixedFuzzer:MaxLen issue:{}", maxlen));
         RandomFixedFuzzer::new_printables(minlen, maxlen)
     }
 
