@@ -27,6 +27,34 @@ pub trait FromVecStrings {
         return spacesprefix;
     }
 
+    fn str_deescape(ins: &str) -> String {
+        let mut bescape = false;
+        let mut outs = String::new();
+        for c in ins.chars() {
+            if c == '\\' {
+                if bescape {
+                    outs.push(c);
+                    bescape = false;
+                } else {
+                    bescape = true;
+                }
+            } else {
+                if bescape {
+                    match c {
+                        't' => outs.push('\x09'),
+                        'n' => outs.push('\x0A'),
+                        'r' => outs.push('\x0D'),
+                        _ => panic!("ERRR:CfgFiles:StrDeEscape:Unsupported escape char {}", c),
+                    }
+                    bescape = false;
+                } else {
+                    outs.push(c)
+                }
+            }
+        }
+        outs
+    }
+
     fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
@@ -47,7 +75,8 @@ pub trait FromVecStrings {
             panic!("ERRR:FromStringVec:{}-{}:Expected key {}, got key {}", Self::get_name(), key, key, lt.0)
         }
         println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, lt);
-        return lt.1.to_string();
+        let val = Self::str_deescape(lt.1);
+        return val;
     }
 
     fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> String {
@@ -86,6 +115,7 @@ pub trait FromVecStrings {
             if curline.chars().last().unwrap() == ',' {
                 curline = curline.strip_suffix(",").unwrap();
             }
+            let curline = Self::str_deescape(curline);
             println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, curline);
             vdata.push(curline.to_string());
         }

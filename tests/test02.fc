@@ -11,8 +11,8 @@ FuzzerType:LoopFixedStringsFuzzer:LFSF01
 FuzzerType:LoopFixedStringsFuzzer:LFSF02
   list:
     ValueA
-    ValueB
-    Value123
+    Val\tueB
+    Value\n123
 
 
 FuzzChain:FuzzChain:FC100
