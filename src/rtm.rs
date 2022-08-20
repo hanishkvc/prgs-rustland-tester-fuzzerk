@@ -49,11 +49,13 @@ impl HandleCfgGroup for RunTimeManager {
                 "LoopFixedStringsFuzzer" => {
                     let fuzzer = fixed::LoopFixedStringsFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
+                    println!("DBUG:RunTimeManager:HandleCfgGroup:Created LoopFixedStringsFuzzer [{}]", la[2]);
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedStringsFuzzer" => {
                     let fuzzer = fixed::RandomFixedStringsFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
+                    println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}]", la[2]);
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 _ => todo!(),

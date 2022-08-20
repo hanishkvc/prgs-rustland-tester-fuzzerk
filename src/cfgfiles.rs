@@ -46,6 +46,7 @@ pub trait FromVecStrings {
         if lt.0 != key {
             panic!("ERRR:FromStringVec:{}-{}:Expected key {}, got key {}", Self::get_name(), key, key, lt.0)
         }
+        println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, lt);
         return lt.1.to_string();
     }
 
@@ -74,6 +75,7 @@ pub trait FromVecStrings {
             }
             let l = vs.pop_front();
             let curline = l.unwrap();
+            println!("DBUG:FromStringVec:{}-{}:[{:?}]", Self::get_name(), key, curline);
             vdata.push(curline);
         }
         vdata
