@@ -132,7 +132,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
             return RandomFixedFuzzer::new_printables(minlen, maxlen);
         }
         let charset = Self::get_value(vs, "charset", spacesprefix).expect("ERRR:RandomFixedFuzzer:GetCharSet:");
-        let charset = datautils::vu8_from_hex(&charset).expect("ERRR:RandomFixedFuzzer:GetCharSet:");
+        let charset = datautils::vu8_from_hex(charset.trim()).expect("ERRR:RandomFixedFuzzer:GetCharSet:");
         RandomFixedFuzzer::new(minlen, maxlen, charset)
     }
 
