@@ -11,5 +11,6 @@ dump_ascii:
 	gcc -o misc/dump_ascii misc/dump_ascii.c
 
 clean_misc:
-	rm misc/gen_printable_ascii
+	rm misc/dump_ascii_printable
+	rm misc/dump_ascii
 
