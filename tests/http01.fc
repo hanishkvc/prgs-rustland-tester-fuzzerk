@@ -1,0 +1,25 @@
+# A http test fuzzchain config file
+
+FuzzerType:RandomFixedStringsFuzzer:HTTP_TYPE
+  list:
+    GET
+    PUT
+
+FuzzerType:RandomRandomFuzzer:RANDOM_DATA
+	minlen: 3
+	maxlen: 8
+
+FuzzerType:RandomFixedFuzzerPrintables:RANDOM_PATH
+	minlen: 3
+	maxlen: 8
+
+FuzzerType:RandomFixedFuzzer:RFF02
+	minlen: 3
+	maxlen: 8
+	charset: 02030405060708090A3031323334
+
+FuzzChain:FuzzChain:FC100
+	HTTP_TYPE
+	RANDOM_PATH
+	RANDOM_DATA
+
