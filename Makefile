@@ -6,8 +6,11 @@ cbuild:
 ctests:
 	cargo test -- --show-output
 
-run_test:
-	RUST_BACKTRACE=1 target/debug/fuzzerk tests/test02.fc FC300
+test_general:
+	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300
+
+test_http:
+	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100
 
 dump_ascii:
 	gcc -o misc/dump_ascii_printable misc/dump_ascii.c

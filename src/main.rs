@@ -4,29 +4,52 @@
 //! HanishKVC, 2022
 //!
 
-use std::env;
 use std::io::{self, Write};
 use fuzzerk::cfgfiles;
 use fuzzerk::rtm;
 use loggerk::*;
+use argsclsk;
+
+
+fn handle_cmdline() -> (String, String) {
+    let mut clargs = argsclsk::ArgsCmdLineSimpleManager::new();
+
+    let mut cfgfc = String::new();
+    let mut cfgfc_handler = |iarg: usize, args: &Vec<String>|-> usize {
+        cfgfc = args[iarg+1].clone();
+        1
+    };
+    clargs.add_handler("--cfgfc", &mut cfgfc_handler);
+
+    let mut fc = String::new();
+    let mut fc_handler = |iarg: usize, args: &Vec<String>|-> usize {
+        fc = args[iarg+1].clone();
+        1
+    };
+    clargs.add_handler("--fc", &mut fc_handler);
+
+    clargs.process_args();
+
+    return (cfgfc, fc);
+}
+
 
 fn main() {
     log_init();
     log_o("MinimalFuzzerKUtil");
 
-    let cla: Vec<String> = env::args().collect();
+    let (cfgfc, fc) = handle_cmdline();
+
     let mut rtm = rtm::RunTimeManager::new();
-    cfgfiles::parse_file(cla[1].as_str(), &mut rtm);
-    let fci = rtm.fcimmuts(cla[2].as_str()).unwrap();
+    cfgfiles::parse_file(&cfgfc, &mut rtm);
+    let fci = rtm.fcimmuts(&fc).unwrap();
 
-    let got1 = fci.get(1);
-    log_d(&format!("Got1:\n\t{:?}\n\t{}", got1, String::from_utf8_lossy(&got1)));
 
-    let got2 = fci.get(2);
-    log_d(&format!("Got2:\n\t{:?}\n\t{}", got2, String::from_utf8_lossy(&got2)));
+    let gotfuzz = fci.get(1);
+    log_d(&format!("Got1:\n\t{:?}\n\t{}", gotfuzz, String::from_utf8_lossy(&gotfuzz)));
 
     let mut so = io::stdout().lock();
-    let gotr = so.write_all(&got1);
+    let gotr = so.write_all(&gotfuzz);
     if gotr.is_err() {
         log_e(&format!("ERRR:MFKU:StdOutWrite:{}", gotr.unwrap_err()));
     }
