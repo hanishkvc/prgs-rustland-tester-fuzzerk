@@ -7,6 +7,7 @@
 use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
+use loggerk::log_d;
 
 
 pub trait FromVecStrings {
@@ -85,7 +86,7 @@ pub trait FromVecStrings {
         if lt.0 != key {
             return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:Expected key {}, got key {}", key, key, lt.0));
         }
-        println!("DBUG:FromVS:GetValueEmptyOk:{}-{}:[{:?}]", Self::get_name(), key, lt);
+        log_d(&format!("DBUG:FromVS:GetValueEmptyOk:{}-{}:[{:?}]", Self::get_name(), key, lt));
         return Self::str_deescape(lt.1);
     }
 
@@ -141,7 +142,7 @@ pub trait FromVecStrings {
                 return Err(curline.unwrap_err());
             }
             let curline = curline.unwrap();
-            println!("DBUG:FromVS:GetValues:{}-{}:[{:?}]", Self::get_name(), key, curline);
+            log_d(&format!("DBUG:FromVS:GetValues:{}-{}:[{:?}]", Self::get_name(), key, curline));
             vdata.push(curline.to_string());
         }
         Ok(vdata)
@@ -221,7 +222,7 @@ pub fn parse_file(sfile: &str, handler: &mut dyn HandleCfgGroup) {
         if cgdata.len() == 0 {
             break;
         }
-        println!("CfgFiles:CfgGroup:{:#?}", cgdata);
+        log_d(&format!("CfgFiles:CfgGroup:{:#?}", cgdata));
         handler.handle_cfggroup(&mut cgdata);
     }
 }
