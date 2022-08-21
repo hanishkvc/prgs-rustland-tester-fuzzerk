@@ -6,6 +6,8 @@
 
 use std::collections::VecDeque;
 
+use loggerk::log_e;
+
 ///
 /// Loop through a predefined list of strings, in given sequence
 ///
@@ -26,7 +28,7 @@ impl LoopFixedStringsFuzzer {
 impl super::Fuzz for LoopFixedStringsFuzzer {
     fn append_fuzzed_immut(&self, step: usize, buf: &mut Vec<u8>) {
         if self.list.len() == 0 {
-            eprintln!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step);
+            log_e(&format!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step));
             return;
         }
         let curi = step % self.list.len();
@@ -86,7 +88,7 @@ impl RandomFixedStringsFuzzer {
 impl super::Fuzz for RandomFixedStringsFuzzer {
     fn append_fuzzed_immut(&self, step: usize, buf: &mut Vec<u8>) {
         if self.list.len() == 0 {
-            eprintln!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step);
+            log_e(&format!("ERRR:FixedStringsFuzzer:AppendFuzzed:Step {}: Empty list to work with", step));
             return;
         }
         let curi = rand::random::<usize>() % self.list.len();
