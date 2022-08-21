@@ -2,8 +2,10 @@
 
 FuzzerType:RandomFixedStringsFuzzer:HTTP_TYPE
   list:
-    GET
-    PUT
+    GET ,
+    PUT ,
+    GET,
+
 
 FuzzerType:RandomRandomFuzzer:RANDOM_DATA
 	minlen: 3
@@ -11,15 +13,16 @@ FuzzerType:RandomRandomFuzzer:RANDOM_DATA
 
 FuzzerType:RandomFixedFuzzerPrintables:RANDOM_PATH
 	minlen: 3
-	maxlen: 8
+	maxlen: 64
 
-FuzzerType:RandomFixedFuzzer:RFF02
-	minlen: 3
-	maxlen: 8
-	charset: 02030405060708090A3031323334
+FuzzerType:RandomFixedFuzzer:MAYBE_Space
+	minlen: 1
+	maxlen: 3
+	charset: 02090A30313233342F
 
 FuzzChain:FuzzChain:FC100
 	HTTP_TYPE
 	RANDOM_PATH
+	MAYBE_Space
 	RANDOM_DATA
 
