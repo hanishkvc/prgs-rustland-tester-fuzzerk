@@ -59,5 +59,9 @@ fn main() {
         if gotr.is_err() {
             log_e(&format!("ERRR:MFuzzerKU:StdOutWrite:{}:{}", i, gotr.unwrap_err()));
         }
+        let gotr = so.flush();
+        if gotr.is_err() {
+            log_e(&format!("ERRR:MFuzzerKU:StdOutFlush:{}:{}", i, gotr.unwrap_err()));
+        }
     }
 }
