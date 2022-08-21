@@ -7,6 +7,8 @@
 use std::collections::{HashMap, VecDeque};
 use std::rc::Rc;
 
+use loggerk::log_d;
+
 use crate::{Fuzz, FuzzChainImmuts};
 use crate::cfgfiles::{FromVecStrings, HandleCfgGroup};
 use crate::{fixed, random};
@@ -51,25 +53,25 @@ impl HandleCfgGroup for RunTimeManager {
                 "LoopFixedStringsFuzzer" => {
                     let fuzzer = fixed::LoopFixedStringsFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    println!("DBUG:RunTimeManager:HandleCfgGroup:Created LoopFixedStringsFuzzer [{}]", la[2]);
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created LoopFixedStringsFuzzer [{}]", la[2]));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedStringsFuzzer" => {
                     let fuzzer = fixed::RandomFixedStringsFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}]", la[2]);
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}]", la[2]));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomRandomFuzzer" => {
                     let fuzzer = random::RandomRandomFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomRandomFuzzer [{}]", la[2]);
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomRandomFuzzer [{}]", la[2]));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedFuzzer" | "RandomFixedFuzzerPrintables" => {
                     let fuzzer = random::RandomFixedFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    println!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedFuzzer [{}]", la[2]);
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedFuzzer [{}]", la[2]));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 _ => panic!("ERRR:RunTimeManager:HandleCfgGroup:UnknownFuzzer:{:?}",la),
@@ -87,7 +89,7 @@ impl HandleCfgGroup for RunTimeManager {
                 fc.append(fuzzer.clone());
             }
             let fc = Rc::new(fc);
-            println!("DBUG:RunTimeManager:HandleCfgGroup:Created FuzzChain [{}]", la[2]);
+            log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created FuzzChain [{}]", la[2]));
             self.fcimmuts.insert(la[2].to_string(), fc);
         }
     }
