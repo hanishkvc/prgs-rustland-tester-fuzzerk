@@ -31,7 +31,10 @@ impl IOBridge {
     pub fn new_tlsclient(addr: &str) -> IOBridge {
         let msgtag = "FuzzerK:IOBridge:TlsClient";
         let (taddr, tdomain) = addr.split_once(",").expect(&format!("ERRR:{}:Extract Addr and Domain", msgtag));
-        let tlsconn = ssl::SslConnector::builder(ssl::SslMethod::tls()).expect(&format!("ERRR:{}:SslConnectorBuilder", msgtag)).build();
+        let mut tlsconnbldr = ssl::SslConnector::builder(ssl::SslMethod::tls()).expect(&format!("ERRR:{}:SslConnectorBuilder", msgtag));
+        tlsconnbldr.set_verify(ssl::SslVerifyMode::NONE);
+        let tlsconn = tlsconnbldr.build();
+        //tlsconn.context().verify_mode()
         let tcpstream = net::TcpStream::connect(taddr).expect(&format!("ERRR:{}:TcpStreamConnect", msgtag));
         let tlsstream = tlsconn.connect(tdomain, tcpstream).expect(&format!("ERRR:{}:SslConnectorConnect", msgtag));
         Self::TlsClient(tlsstream)
