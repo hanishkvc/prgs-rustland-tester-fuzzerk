@@ -4,6 +4,7 @@
 //! HanishKVC, 2022
 //!
 
+use std::collections::HashMap;
 use std::io;
 use std::io::Write;
 use std::net;
@@ -28,7 +29,7 @@ impl IOBridge {
         Self::TcpClient(ts)
     }
 
-    pub fn new_tlsclient(addr: &str) -> IOBridge {
+    pub fn new_tlsclient(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
         let msgtag = "FuzzerK:IOBridge:TlsClient";
         let (taddr, tdomain) = addr.split_once(",").expect(&format!("ERRR:{}:Extract Addr and Domain", msgtag));
         let mut tlsconnbldr = ssl::SslConnector::builder(ssl::SslMethod::tls()).expect(&format!("ERRR:{}:SslConnectorBuilder", msgtag));
@@ -47,7 +48,7 @@ impl IOBridge {
     /// * tcpclient:addr:port
     /// * tlsclient:addr:port,domain
     /// NOTE: Address could be ip address or domain name
-    pub fn new(ioaddr: &str) -> IOBridge {
+    pub fn new(ioaddr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
         let ioaddr = ioaddr.to_lowercase();
         if ioaddr == "none" {
             return Self::None;
@@ -60,7 +61,7 @@ impl IOBridge {
             return Self::new_tcpclient(ioa.1);
         }
         if ioa.0 == "tlsclient" {
-            return Self::new_tlsclient(ioa.1);
+            return Self::new_tlsclient(ioa.1, ioargs);
         }
         Self::None
     }

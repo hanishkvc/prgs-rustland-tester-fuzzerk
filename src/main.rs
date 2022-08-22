@@ -32,7 +32,7 @@ use fuzzerk::iob;
 /// Specify additional arguments if any for the io modules
 /// * --ioarg <key>=<value>
 ///
-fn handle_cmdline() -> (String, String, usize, String) {
+fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>) {
     let mut clargs = argsclsk::ArgsCmdLineSimpleManager::new();
 
     let mut cfgfc = String::new();
@@ -74,7 +74,7 @@ fn handle_cmdline() -> (String, String, usize, String) {
 
     clargs.process_args();
 
-    return (cfgfc, fc, loopcnt, ioaddr);
+    return (cfgfc, fc, loopcnt, ioaddr, ioargs);
 }
 
 
@@ -82,13 +82,13 @@ fn main() {
     log_init();
     log_o("MinimalFuzzerKUtil");
 
-    let (cfgfc, fc, loopcnt, ioaddr) = handle_cmdline();
+    let (cfgfc, fc, loopcnt, ioaddr, ioargs) = handle_cmdline();
 
     let mut rtm = rtm::RunTimeManager::new();
     cfgfiles::parse_file(&cfgfc, &mut rtm);
     let fci = rtm.fcimmuts(&fc).unwrap();
 
-    let mut zenio = iob::IOBridge::new(&ioaddr);
+    let mut zenio = iob::IOBridge::new(&ioaddr, &ioargs);
     for i in 0..loopcnt {
         let gotfuzz = fci.get(i);
         log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", i, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
