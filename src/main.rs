@@ -4,11 +4,11 @@
 //! HanishKVC, 2022
 //!
 
-use std::io::{self, Write};
 use fuzzerk::cfgfiles;
 use fuzzerk::rtm;
 use loggerk::*;
 use argsclsk;
+use fuzzerk::iob;
 
 
 fn handle_cmdline() -> (String, String, usize, String) {
@@ -58,17 +58,17 @@ fn main() {
     cfgfiles::parse_file(&cfgfc, &mut rtm);
     let fci = rtm.fcimmuts(&fc).unwrap();
 
-    let mut so = io::stdout().lock();
+    let mut zenio = iob::IOBridge::new(&ioaddr);
     for i in 0..loopcnt {
         let gotfuzz = fci.get(i);
         log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", i, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
-        let gotr = so.write_all(&gotfuzz);
+        let gotr = zenio.write(gotfuzz);
         if gotr.is_err() {
-            log_e(&format!("ERRR:MFuzzerKU:StdOutWrite:{}:{}", i, gotr.unwrap_err()));
+            log_e(&format!("ERRR:MFuzzerKU:ZenIOWrite:{}:{}", i, gotr.unwrap_err()));
         }
-        let gotr = so.flush();
+        let gotr = zenio.flush();
         if gotr.is_err() {
-            log_e(&format!("ERRR:MFuzzerKU:StdOutFlush:{}:{}", i, gotr.unwrap_err()));
+            log_e(&format!("ERRR:MFuzzerKU:ZenIOFlush:{}:{}", i, gotr.unwrap_err()));
         }
     }
 }
