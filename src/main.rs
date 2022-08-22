@@ -94,10 +94,10 @@ fn main() {
     let mut zenio = iob::IOBridge::None;
     let mut istep = 0;
     let mut gotfuzz = Vec::<u8>::new();
-    let mut icur = 0;
+    let mut loopcnt = 0;
+    let mut icmd = 0;
     loop {
-        icur += 1;
-        let cmd =  runcmds[icur];
+        let cmd =  &runcmds[icmd];
         if cmd == "iob new" {
             if let iob::IOBridge::None = zenio {
             } else {
@@ -105,9 +105,9 @@ fn main() {
             }
             zenio = iob::IOBridge::new(&ioaddr, &ioargs);
         }
-        if cmd.starts_with("fc") {
-            let (fctag, fcid) = cmd.split_once(" ").unwrap();
-            let fci = rtm.fcimmuts(&fc).unwrap();
+        if cmd.starts_with("fc ") {
+            let (_fctag, fcid) = cmd.split_once(" ").unwrap();
+            let fci = rtm.fcimmuts(&fcid).unwrap();
             gotfuzz = fci.get(istep);
             log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", istep, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
             istep += 1;
@@ -115,17 +115,44 @@ fn main() {
         if cmd == "iob write" {
             let gotr = zenio.write(&gotfuzz);
             if gotr.is_err() {
-                log_e(&format!("ERRR:MFuzzerKU:ZenIOWrite:{}:{}", i, gotr.unwrap_err()));
+                log_e(&format!("ERRR:MFuzzerKU:ZenIOWrite:{}:{}", istep, gotr.unwrap_err()));
             }
         }
         if cmd == "iob flush" {
             let gotr = zenio.flush();
             if gotr.is_err() {
-                log_e(&format!("ERRR:MFuzzerKU:ZenIOFlush:{}:{}", i, gotr.unwrap_err()));
+                log_e(&format!("ERRR:MFuzzerKU:ZenIOFlush:{}:{}", istep, gotr.unwrap_err()));
             }
         }
         if cmd.starts_with("sys sleep") {
             thread::sleep(time::Duration::from_secs(1));
         }
+        if cmd.starts_with("loop") {
+            let cmdparts: Vec<&str> = cmd.split(" ").collect();
+            let loopcmd = cmdparts[1];
+            if loopcmd == "inc" {
+                loopcnt += 1;
+            } else {
+                let loopcheck = usize::from_str_radix(cmdparts[2], 10).unwrap();
+                let foricmd = usize::from_str_radix(cmdparts[4], 10).unwrap();
+                let adjtype = cmdparts[3];
+                match loopcmd {
+                    "iflt" => {
+                        if loopcnt >= loopcheck {
+                            break;
+                        }
+                    },
+                    _ => todo!("ERRR:MFuzzerKU:Unknow loop cmd")
+                }
+                if adjtype == "relpos" {
+                    icmd += foricmd;
+                    continue;
+                } else {
+                    icmd = foricmd;
+                    continue;
+                }
+            }
+        }
+        icmd += 1;
     }
 }

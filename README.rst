@@ -114,13 +114,16 @@ A sample file
 ---------------
 
 |
-| iob console open
+| iob open
 | fc <fcid>
-| iob console write
+| iob write
 | sys sleep <seconds>
-| iob console read
+| iob read
 | ctl jump <index_offset>
-| iob console close
+| iob close
+| loop inc
+| loop iflt <number> relpos <+-number>
+| loop iflt <number> abspos <cmdindex>
 |
 
 
