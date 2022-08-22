@@ -4,6 +4,8 @@
 //! HanishKVC, 2022
 //!
 
+use std::collections::HashMap;
+
 use fuzzerk::cfgfiles;
 use fuzzerk::rtm;
 use loggerk::*;
@@ -11,6 +13,25 @@ use argsclsk;
 use fuzzerk::iob;
 
 
+///
+/// Specify the config file which sets up the fuzzers and the fuzzchains
+/// * --cfgfc <path/file>
+///
+/// Specify the fuzzchain to run
+/// * --fc <fcname>
+///
+/// Specify how many times the fuzzchain should be run
+/// * --loopcnt <number>
+///
+/// Specify the io type to use and its type specific address
+/// * --ioaddr <iotype:addr>
+///   * console
+///   * tcpclient:ipaddress:port
+///   * tlsclient:ipaddress:port
+///
+/// Specify additional arguments if any for the io modules
+/// * --ioarg <key>=<value>
+///
 fn handle_cmdline() -> (String, String, usize, String) {
     let mut clargs = argsclsk::ArgsCmdLineSimpleManager::new();
 
@@ -30,7 +51,7 @@ fn handle_cmdline() -> (String, String, usize, String) {
 
     let mut loopcnt = 1usize;
     let mut loopcnt_handler = |iarg: usize, args: &Vec<String>|-> usize {
-        loopcnt = usize::from_str_radix(&args[iarg+1], 10).expect(&format!("ERRR:MFuzzerKU: Invalid loopcnt:{}", loopcnt));
+        loopcnt = usize::from_str_radix(&args[iarg+1], 10).expect(&format!("ERRR:MFuzzerKU:HandleCmdline:Invalid loopcnt:{}", loopcnt));
         1
     };
     clargs.add_handler("--loopcnt", &mut loopcnt_handler);
@@ -41,6 +62,15 @@ fn handle_cmdline() -> (String, String, usize, String) {
         1
     };
     clargs.add_handler("--ioaddr", &mut ioaddr_handler);
+
+    let mut ioargs: HashMap<String, String> = HashMap::new();
+    let mut ioarg_handler = |iarg: usize, args: &Vec<String>|-> usize {
+        let ioarg = args[iarg+1].clone();
+        let (k,v) = ioarg.split_once("=").expect(&format!("ERRR:MFuzzerKU:HandleCmdline:IOArg:{}", ioarg));
+        ioargs.insert(k.to_string(), v.to_string());
+        1
+    };
+    clargs.add_handler("--ioarg", &mut ioarg_handler);
 
     clargs.process_args();
 
