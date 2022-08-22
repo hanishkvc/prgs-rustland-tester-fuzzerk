@@ -4,7 +4,9 @@
 //! HanishKVC, 2022
 //!
 
+use core::time;
 use std::collections::HashMap;
+use std::thread;
 
 use fuzzerk::cfgfiles;
 use fuzzerk::rtm;
@@ -86,19 +88,44 @@ fn main() {
 
     let mut rtm = rtm::RunTimeManager::new();
     cfgfiles::parse_file(&cfgfc, &mut rtm);
-    let fci = rtm.fcimmuts(&fc).unwrap();
 
-    let mut zenio = iob::IOBridge::new(&ioaddr, &ioargs);
-    for i in 0..loopcnt {
-        let gotfuzz = fci.get(i);
-        log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", i, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
-        let gotr = zenio.write(&gotfuzz);
-        if gotr.is_err() {
-            log_e(&format!("ERRR:MFuzzerKU:ZenIOWrite:{}:{}", i, gotr.unwrap_err()));
+    let runcmds: Vec<String> = Vec::new();
+
+    let mut zenio = iob::IOBridge::None;
+    let mut istep = 0;
+    let mut gotfuzz = Vec::<u8>::new();
+    let mut icur = 0;
+    loop {
+        icur += 1;
+        let cmd =  runcmds[icur];
+        if cmd == "iob new" {
+            if let iob::IOBridge::None = zenio {
+            } else {
+                // close existing zenio
+            }
+            zenio = iob::IOBridge::new(&ioaddr, &ioargs);
         }
-        let gotr = zenio.flush();
-        if gotr.is_err() {
-            log_e(&format!("ERRR:MFuzzerKU:ZenIOFlush:{}:{}", i, gotr.unwrap_err()));
+        if cmd.starts_with("fc") {
+            let (fctag, fcid) = cmd.split_once(" ").unwrap();
+            let fci = rtm.fcimmuts(&fc).unwrap();
+            gotfuzz = fci.get(istep);
+            log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", istep, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
+            istep += 1;
+        }
+        if cmd == "iob write" {
+            let gotr = zenio.write(&gotfuzz);
+            if gotr.is_err() {
+                log_e(&format!("ERRR:MFuzzerKU:ZenIOWrite:{}:{}", i, gotr.unwrap_err()));
+            }
+        }
+        if cmd == "iob flush" {
+            let gotr = zenio.flush();
+            if gotr.is_err() {
+                log_e(&format!("ERRR:MFuzzerKU:ZenIOFlush:{}:{}", i, gotr.unwrap_err()));
+            }
+        }
+        if cmd.starts_with("sys sleep") {
+            thread::sleep(time::Duration::from_secs(1));
         }
     }
 }
