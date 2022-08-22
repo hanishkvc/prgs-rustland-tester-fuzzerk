@@ -6,6 +6,7 @@
 
 use core::time;
 use std::collections::HashMap;
+use std::fs;
 use std::thread;
 
 use fuzzerk::cfgfiles;
@@ -34,7 +35,7 @@ use fuzzerk::iob;
 /// Specify additional arguments if any for the io modules
 /// * --ioarg <key>=<value>
 ///
-fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>) {
+fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>, String) {
     let mut clargs = argsclsk::ArgsCmdLineSimpleManager::new();
 
     let mut cfgfc = String::new();
@@ -43,6 +44,13 @@ fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>) 
         1
     };
     clargs.add_handler("--cfgfc", &mut cfgfc_handler);
+
+    let mut prgfile = String::new();
+    let mut prgfile_handler = |iarg: usize, args: &Vec<String>|-> usize {
+        prgfile = args[iarg+1].clone();
+        1
+    };
+    clargs.add_handler("--prgfile", &mut prgfile_handler);
 
     let mut fc = String::new();
     let mut fc_handler = |iarg: usize, args: &Vec<String>|-> usize {
@@ -76,10 +84,10 @@ fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>) 
 
     clargs.process_args();
 
-    return (cfgfc, fc, loopcnt, ioaddr, ioargs);
+    return (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile);
 }
 
-fn default_runcmds(fc: &str, loopcnt: usize) -> Vec<String> {
+fn default_prg(fc: &str, loopcnt: usize) -> Vec<String> {
     let mut runcmds = Vec::<String>::new();
     runcmds.push("iob new".to_string());
     runcmds.push(format!("fc {}", fc));
@@ -90,17 +98,29 @@ fn default_runcmds(fc: &str, loopcnt: usize) -> Vec<String> {
     runcmds
 }
 
+fn load_prg(prgfile: &str, fc: &str, loopcnt: usize) -> Vec<String> {
+    if prgfile.len() == 0 {
+        return default_prg(fc, loopcnt);
+    }
+    let mut runcmds = Vec::<String>::new();
+    let prgdata = fs::read_to_string(prgfile).expect("ERRR:MFuzzerKU:Loading prg");
+    let prgdata: Vec<&str> =  prgdata.split("\n").collect();
+    for l in prgdata {
+        runcmds.push(l.to_string());
+    }
+    runcmds
+}
+
 fn main() {
     log_init();
     log_o("MinimalFuzzerKUtil");
 
-    let (cfgfc, fc, loopcnt, ioaddr, ioargs) = handle_cmdline();
+    let (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile) = handle_cmdline();
 
     let mut rtm = rtm::RunTimeManager::new();
     cfgfiles::parse_file(&cfgfc, &mut rtm);
 
-    let mut runcmds: Vec<String> = Vec::new();
-    runcmds = default_runcmds(&fc, loopcnt);
+    let runcmds = load_prg(&prgfile, &fc, loopcnt);
 
     let mut zenio = iob::IOBridge::None;
     let mut istep = 0;
