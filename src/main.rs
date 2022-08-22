@@ -79,6 +79,16 @@ fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>) 
     return (cfgfc, fc, loopcnt, ioaddr, ioargs);
 }
 
+fn default_runcmds(fc: &str, loopcnt: usize) -> Vec<String> {
+    let mut runcmds = Vec::<String>::new();
+    runcmds.push("iob new".to_string());
+    runcmds.push(format!("fc {}", fc));
+    runcmds.push("iob write".to_string());
+    runcmds.push("iob flush".to_string());
+    runcmds.push("loop inc".to_string());
+    runcmds.push(format!("loop iflt {} abspos 1", loopcnt));
+    runcmds
+}
 
 fn main() {
     log_init();
@@ -89,7 +99,8 @@ fn main() {
     let mut rtm = rtm::RunTimeManager::new();
     cfgfiles::parse_file(&cfgfc, &mut rtm);
 
-    let runcmds: Vec<String> = Vec::new();
+    let mut runcmds: Vec<String> = Vec::new();
+    runcmds = default_runcmds(&fc, loopcnt);
 
     let mut zenio = iob::IOBridge::None;
     let mut istep = 0;
