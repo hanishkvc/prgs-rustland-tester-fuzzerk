@@ -64,7 +64,25 @@ impl IOBridge {
     }
 
     pub fn flush(&mut self) -> Result<(), String> {
-        Ok(())
+        match self {
+            Self::None => todo!("ERRR:FuzzerK:IOBridge:Write:Flush:Why me???"),
+            Self::Console(so, si ) => {
+                let mut so = so.lock();
+                let gotr = so.flush();
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Write:Console:{}", gotr.unwrap_err()))
+                }
+                return Ok(());
+            }
+            Self::TcpClient(ts) => {
+                let gotr = ts.flush();
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Write:TcpClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(());
+            }
+        }
+        //Ok(())
     }
 
 }
