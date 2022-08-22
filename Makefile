@@ -15,8 +15,11 @@ test_http_console:
 test_http_tcp:
 	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tcpclient:127.0.0.1:8088 --loopcnt 4
 
-test_http_tls:
+test_http_tls_old:
 	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no --loopcnt 100
+
+test_http_tls:
+	target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.seperate.prg --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no
 
 dump_ascii:
 	gcc -o misc/dump_ascii_printable misc/dump_ascii.c
