@@ -11,7 +11,7 @@ use loggerk::*;
 use argsclsk;
 
 
-fn handle_cmdline() -> (String, String, usize) {
+fn handle_cmdline() -> (String, String, usize, String) {
     let mut clargs = argsclsk::ArgsCmdLineSimpleManager::new();
 
     let mut cfgfc = String::new();
@@ -35,9 +35,16 @@ fn handle_cmdline() -> (String, String, usize) {
     };
     clargs.add_handler("--loopcnt", &mut loopcnt_handler);
 
+    let mut ioaddr = String::from("console");
+    let mut ioaddr_handler = |iarg: usize, args: &Vec<String>|-> usize {
+        ioaddr = args[iarg+1].clone();
+        1
+    };
+    clargs.add_handler("--ioaddr", &mut ioaddr_handler);
+
     clargs.process_args();
 
-    return (cfgfc, fc, loopcnt);
+    return (cfgfc, fc, loopcnt, ioaddr);
 }
 
 
@@ -45,7 +52,7 @@ fn main() {
     log_init();
     log_o("MinimalFuzzerKUtil");
 
-    let (cfgfc, fc, loopcnt) = handle_cmdline();
+    let (cfgfc, fc, loopcnt, ioaddr) = handle_cmdline();
 
     let mut rtm = rtm::RunTimeManager::new();
     cfgfiles::parse_file(&cfgfc, &mut rtm);
