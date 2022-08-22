@@ -9,8 +9,14 @@ ctests:
 test_general:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300
 
-test_http:
+test_http_console:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --loopcnt 4
+
+test_http_tcp:
+	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tcpclient:127.0.0.1:8088 --loopcnt 4
+
+test_http_tls:
+	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no --loopcnt 100
 
 dump_ascii:
 	gcc -o misc/dump_ascii_printable misc/dump_ascii.c
