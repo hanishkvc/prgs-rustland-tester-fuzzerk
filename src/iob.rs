@@ -129,4 +129,29 @@ impl IOBridge {
         //Ok(())
     }
 
+    pub fn close(&mut self) -> Result<(), String> {
+        match self {
+            Self::TcpClient(ts) => {
+                let gotr = ts.shutdown(net::Shutdown::Both);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Close:TcpClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(());
+            },
+            Self::TlsClient(ss) => {
+                let gotr = ss.shutdown();
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S1:{}", gotr.unwrap_err()))
+                }
+                let gotr = ss.shutdown();
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:{}", gotr.unwrap_err()))
+                }
+                return Ok(());
+            },
+            _ => {},
+        }
+        Ok(())
+    }
+
 }

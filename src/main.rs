@@ -101,7 +101,10 @@ fn main() {
         if cmd == "iob new" {
             if let iob::IOBridge::None = zenio {
             } else {
-                // close existing zenio
+                let gotr = zenio.close();
+                if gotr.is_err() {
+                    log_e(&format!("ERRR:MFuzzerKU:ZenIOClose4New:{}:{}", istep, gotr.unwrap_err()));
+                }
             }
             zenio = iob::IOBridge::new(&ioaddr, &ioargs);
         }
@@ -122,6 +125,12 @@ fn main() {
             let gotr = zenio.flush();
             if gotr.is_err() {
                 log_e(&format!("ERRR:MFuzzerKU:ZenIOFlush:{}:{}", istep, gotr.unwrap_err()));
+            }
+        }
+        if cmd == "iob close" {
+            let gotr = zenio.close();
+            if gotr.is_err() {
+                log_e(&format!("ERRR:MFuzzerKU:ZenIOClose:{}:{}", istep, gotr.unwrap_err()));
             }
         }
         if cmd.starts_with("sys sleep") {
