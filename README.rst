@@ -42,11 +42,14 @@ This can be used to test input parsing logic of programs to see, that
 they handle all possible input cases sufficiently robustly.
 
 
-Config files
-################
+Runtime
+#########
 
-FuzzerChain File
-==================
+Config files
+||||||||||||||
+
+FuzzerChains File
+===================
 
 Overview
 -----------
@@ -57,32 +60,49 @@ at runtime the needed fuzz chain can be created without having to recompile
 things, ie provided they can make do with the fuzzers that is already
 provided.
 
+Alert: Dont intermix tab and spaces, even thou visually both may appear
+to be equivalent, the logic will not accept such intermixing, bcas it
+cant be sure how many spaces a tab represents in a given context/instance.
 
 The Template
 ---------------
 
-FuzzerType:TypeNameABC:InstanceNameABC1
-  Arg1: ValueX,
-  Arg2: ValueM,
-  ArgA:
-    Value1,
-    Value2,
-    ValueXYZ
+NOTE: The | (and one space after that for non empty lines) is for rst to
+identify the below lines has a block of data to be retained as such by
+rst.
+
+|
+| FuzzerType:TypeNameABC:InstanceNameABC1
+|   Arg1: ValueX,
+|   Arg2: ValueM,
+|   ArgA:
+|     Value1,
+|     Value2,
+|     ValueXYZ
+|
+|
+| FuzzerType:TypeNameXYZ:InstanceNameXYZ99
+|     Arg1:
+|         ValueA,
+|         ValueB,
+|         ValueZ,
+|     Arg2:
+|         ValueX,
+|         ValueM,
+|         ValueN,
+|
+|
+| FuzzChain:FuzzChain:FC100
+|     InstanceNameABC1
+|     InstanceNameXYZ99
+|     InstanceNameXYZ99
+|
 
 
-FuzzerType:TypeNameXYZ:InstanceNameXYZ99
-    Arg1:
-        ValueA,
-        ValueB,
-        ValueZ,
-    Arg2:
-        ValueX,
-        ValueM,
-        ValueN,
 
+Cmdline
+|||||||||
 
-FuzzChain:FuzzChain:FC100
-    InstanceNameABC1
-    InstanceNameXYZ99
-    InstanceNameXYZ99
+The cmdline options are
+
 
