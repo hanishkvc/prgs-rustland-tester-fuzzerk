@@ -28,6 +28,9 @@ impl IOBridge {
 
     pub fn new(ioaddr: &str) -> IOBridge {
         let ioaddr = ioaddr.to_lowercase();
+        if ioaddr == "none" {
+            return Self::None;
+        }
         if ioaddr == "console" {
             return Self::new_console()
         }
