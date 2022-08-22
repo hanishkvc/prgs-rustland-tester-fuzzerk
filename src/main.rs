@@ -10,6 +10,7 @@ use std::fs;
 use std::thread;
 
 use fuzzerk::cfgfiles;
+use fuzzerk::iob::IOBridge;
 use fuzzerk::rtm;
 use loggerk::*;
 use argsclsk;
@@ -129,6 +130,7 @@ fn main() {
     let mut icmd = 0;
     loop {
         let cmd =  &runcmds[icmd];
+        log_d(&format!("INFO:MFuzzerKU:Cmd:{}:{}", icmd, cmd));
         if cmd == "iob new" {
             if let iob::IOBridge::None = zenio {
             } else {
@@ -163,6 +165,7 @@ fn main() {
             if gotr.is_err() {
                 log_e(&format!("ERRR:MFuzzerKU:ZenIOClose:{}:{}", istep, gotr.unwrap_err()));
             }
+            zenio = IOBridge::None;
         }
         if cmd.starts_with("sys sleep") {
             thread::sleep(time::Duration::from_secs(1));
