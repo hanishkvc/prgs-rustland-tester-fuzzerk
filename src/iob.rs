@@ -58,7 +58,7 @@ impl IOBridge {
     pub fn write(&mut self, buf: &Vec<u8>) -> Result<usize, String> {
         match self {
             Self::None => todo!("ERRR:FuzzerK:IOBridge:Write:None:Why me???"),
-            Self::Console(so, si ) => {
+            Self::Console(so, _si ) => {
                 let mut so = so.lock();
                 let gotr = so.write_all(buf);
                 if gotr.is_err() {
@@ -87,7 +87,7 @@ impl IOBridge {
     pub fn flush(&mut self) -> Result<(), String> {
         match self {
             Self::None => todo!("ERRR:FuzzerK:IOBridge:Flush:None:Why me???"),
-            Self::Console(so, si ) => {
+            Self::Console(so, _si ) => {
                 let mut so = so.lock();
                 let gotr = so.flush();
                 if gotr.is_err() {
