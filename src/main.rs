@@ -62,7 +62,7 @@ fn main() {
     for i in 0..loopcnt {
         let gotfuzz = fci.get(i);
         log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", i, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
-        let gotr = zenio.write(gotfuzz);
+        let gotr = zenio.write(&gotfuzz);
         if gotr.is_err() {
             log_e(&format!("ERRR:MFuzzerKU:ZenIOWrite:{}:{}", i, gotr.unwrap_err()));
         }
