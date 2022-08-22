@@ -37,6 +37,13 @@ impl IOBridge {
         Self::TlsClient(tlsstream)
     }
 
+    ///
+    /// The ioaddr passed could be one of the following
+    /// * none
+    /// * console
+    /// * tcpclient:addr:port
+    /// * tlsclient:addr:port,domain
+    /// NOTE: Address could be ip address or domain name
     pub fn new(ioaddr: &str) -> IOBridge {
         let ioaddr = ioaddr.to_lowercase();
         if ioaddr == "none" {
