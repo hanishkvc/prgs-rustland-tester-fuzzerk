@@ -31,13 +31,18 @@ impl IOBridge {
 
     pub fn new_tlsclient(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
         let msgtag = "FuzzerK:IOBridge:TlsClient";
-        let (taddr, tdomain) = addr.split_once(",").expect(&format!("ERRR:{}:Extract Addr and Domain", msgtag));
+        let yes = String::from("yes");
+
+        let servercertcheck = ioargs.get("server_cert_check").or(Some(&yes)).unwrap();
+        let domain = ioargs.get("domain").expect(&format!("ERRR:{}:domain missing", msgtag));
+
         let mut tlsconnbldr = ssl::SslConnector::builder(ssl::SslMethod::tls()).expect(&format!("ERRR:{}:SslConnectorBuilder", msgtag));
-        tlsconnbldr.set_verify(ssl::SslVerifyMode::NONE);
+        if servercertcheck == "no" {
+            tlsconnbldr.set_verify(ssl::SslVerifyMode::NONE);
+        }
         let tlsconn = tlsconnbldr.build();
-        //tlsconn.context().verify_mode()
-        let tcpstream = net::TcpStream::connect(taddr).expect(&format!("ERRR:{}:TcpStreamConnect", msgtag));
-        let tlsstream = tlsconn.connect(tdomain, tcpstream).expect(&format!("ERRR:{}:SslConnectorConnect", msgtag));
+        let tcpstream = net::TcpStream::connect(addr).expect(&format!("ERRR:{}:TcpStreamConnect", msgtag));
+        let tlsstream = tlsconn.connect(domain, tcpstream).expect(&format!("ERRR:{}:SslConnectorConnect", msgtag));
         Self::TlsClient(tlsstream)
     }
 
