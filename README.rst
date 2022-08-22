@@ -45,8 +45,8 @@ they handle all possible input cases sufficiently robustly.
 Runtime
 #########
 
-Config files
-||||||||||||||
+Control files
+||||||||||||||||
 
 FuzzerChains File
 ===================
@@ -96,6 +96,31 @@ rst.
 |     InstanceNameABC1
 |     InstanceNameXYZ99
 |     InstanceNameXYZ99
+|
+
+
+Run file
+==========
+
+Overview
+----------
+
+This gives the actions to be performed by fuzzerk
+
+The commands possible in run file include
+
+
+A sample file
+---------------
+
+|
+| iob console open
+| fc <fcid>
+| iob console write
+| sys sleep <seconds>
+| iob console read
+| ctl jump <index_offset>
+| iob console close
 |
 
 
