@@ -8,6 +8,12 @@ Version: 20220819IST0750
 Overview
 ##########
 
+Library
+|||||||||
+
+Fuzzers and Chains
+===================
+
 At the core, the library defines a Fuzz trait, which allows fuzzers to
 be created. And FuzzChain containers to allow fuzzers to be chained
 together to create the needed end pattern of data.
@@ -41,12 +47,46 @@ Two kinds of FuzzChainers are provided currently
 This can be used to test input parsing logic of programs to see, that
 they handle all possible input cases sufficiently robustly.
 
+IOBridge
+==========
+
+This is a helper module for the util program to help work with either
+Console or Tcp server or Tls server, in a generic way.
+
+VM
+====
+
+This is a helper module for the util program's operations to be controlled
+by the end user using custom prg files, which use operations defined by
+a application specific VM. This provides the VM.
+
+
+MinimalFuzzerKUtil
+||||||||||||||||||||
+
+A program which uses the modules mentioned previously to help test
+other programs by generating fuzz input for them and pushing to them
+using either console or tcp or tls session.
+
+This allows a end user to quickly test their program using this fuzzer
+logic, without needing to modify their program to handshake with the
+fuzzer library provided by this package. They just need to write some
+simple text based control files and inturn test their program, provided
+their program takes inputs over the stdin or a tcp session or a tls
+session.
+
+It also allows one to test the libraries/modules in a simple yet
+flexible and potentially useful way.
+
 
 Runtime
 #########
 
 Control files
 ||||||||||||||||
+
+The below are the control files used by the minimal fuzzerk program
+available in this package/crate.
 
 FuzzerChains File
 ===================
@@ -114,16 +154,18 @@ A sample file
 ---------------
 
 |
-| iob open
-| fc <fcid>
-| iob write
-| sys sleep <seconds>
-| iob read
-| ctl jump <index_offset>
-| iob close
-| loop inc
-| loop iflt <number> relpos <+-number>
-| loop iflt <number> abspos <cmdindex>
+|       letstr <strvarid> <string value>
+|       letint <intvarid> <intvalue>
+|       iobnew <iobid> <iobtype:addr> <ioargkeyX=valY> <ioargkeyA=valC>
+| !label labelid
+|       fcget <fcid> <bufid>
+|       iobwrite <iobid> <bufid>
+|       sleepmsec <milliseconds>
+|       iobread <iobid> <bufid>
+|       iobclose <iobid>
+|       inc <intvarid>
+|       iflt <chkvalue> <intvarid> goto labelid
+|       dec <intvarid>
 |
 
 
@@ -131,6 +173,21 @@ A sample file
 Cmdline
 |||||||||
 
-The cmdline options are
+The key cmdline options are
 
+* --cfgfc <path/to/fuzzers_fuzzchains.cfgfile>
+* --prgfile <path/to/prgfile>
+
+There are few additional options, in case one is not using a prgfile
+
+* --ioaddr <iobtype:addr>
+* --ioarg <ioargkeyX=valY>
+* --loopcnt <number>
+* --fc <fcid>
+
+TODO Plus
+############
+
+* end of prgfile
+* iobclose and ssl session shutdown (do I need two calls, most probably not, the doc seems bit confusing)
 
