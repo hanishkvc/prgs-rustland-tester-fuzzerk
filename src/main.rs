@@ -6,10 +6,8 @@
 
 use std::collections::HashMap;
 
-use fuzzerk::rtm;
 use loggerk::*;
 use argsclsk;
-use fuzzerk::iob;
 use fuzzerk::vm;
 
 
@@ -100,11 +98,12 @@ fn main() {
         vm.load_prg(&prgfile);
     }
 
-    let mut loopcnt = 0;
-    let mut icmd = 0;
+    vm.run();
+}
+
+/*
     loop {
         let cmd =  "";
-        log_d(&format!("INFO:MFuzzerKU:Cmd:{}:{}", icmd, cmd));
         if cmd.starts_with("loop") {
             let cmdparts: Vec<&str> = cmd.split(" ").collect();
             let loopcmd = cmdparts[1];
@@ -134,3 +133,4 @@ fn main() {
         icmd += 1;
     }
 }
+*/
