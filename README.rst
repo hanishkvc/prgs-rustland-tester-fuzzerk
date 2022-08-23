@@ -188,6 +188,14 @@ There are few additional options, in case one is not using a prgfile
 TODO Plus
 ############
 
+DONE
+|||||||
+
 * end of prgfile
+
+TODO
+||||||
+
 * iobclose and ssl session shutdown (do I need two calls, most probably not, the doc seems bit confusing)
+* the fallback predefined program in case prgfile is not specified, instead fc, loopcnt, ioaddr, ioarg etal is passed.
 
