@@ -16,17 +16,15 @@ test_http_console:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --loopcnt 4
 
 test_http_tcp:
-	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tcpclient:127.0.0.1:8088 --loopcnt 4
+	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --loopcnt 4 --ioaddr tcpclient:127.0.0.1:8088
 
-test_http_tls_old:
-	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no --loopcnt 100
+test_http_tls_seperate_cmdline:
+	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no --loopcnt 10
 
-test_http_tls_seperate:
-	#target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.seperate.prg --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no
+test_http_tls_seperate_prgfile:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.seperate.prg
 
-test_http_tls_single:
-	#target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.singlesession.prg --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no
+test_http_tls_single_prgfile:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.singlesession.prg
 
 dump_ascii:
