@@ -131,13 +131,6 @@ fn main() {
             log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", istep, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
             istep += 1;
         }
-        if cmd == "iob close" {
-            let gotr = zenio.close();
-            if gotr.is_err() {
-                log_e(&format!("ERRR:MFuzzerKU:ZenIOClose:{}:{}", istep, gotr.unwrap_err()));
-            }
-            zenio = IOBridge::None;
-        }
         if cmd.starts_with("sys sleep") {
             thread::sleep(time::Duration::from_secs(1));
         }
