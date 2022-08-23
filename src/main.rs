@@ -100,21 +100,11 @@ fn main() {
         vm.load_prg(&prgfile);
     }
 
-    let mut zenio = iob::IOBridge::None;
-    let mut istep = 0;
-    let mut gotfuzz = Vec::<u8>::new();
     let mut loopcnt = 0;
     let mut icmd = 0;
     loop {
-        let cmd =  &runcmds[icmd];
+        let cmd =  "";
         log_d(&format!("INFO:MFuzzerKU:Cmd:{}:{}", icmd, cmd));
-        if cmd.starts_with("fc ") {
-            let (_fctag, fcid) = cmd.split_once(" ").unwrap();
-            let fci = rtm.fcimmuts(&fcid).unwrap();
-            gotfuzz = fci.get(istep);
-            log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", istep, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
-            istep += 1;
-        }
         if cmd.starts_with("loop") {
             let cmdparts: Vec<&str> = cmd.split(" ").collect();
             let loopcmd = cmdparts[1];
