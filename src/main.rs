@@ -125,14 +125,6 @@ fn main() {
         let cmd =  &runcmds[icmd];
         log_d(&format!("INFO:MFuzzerKU:Cmd:{}:{}", icmd, cmd));
         if cmd == "iob new" {
-            if let iob::IOBridge::None = zenio {
-            } else {
-                let gotr = zenio.close();
-                if gotr.is_err() {
-                    log_e(&format!("ERRR:MFuzzerKU:ZenIOClose4New:{}:{}", istep, gotr.unwrap_err()));
-                }
-            }
-            zenio = iob::IOBridge::new(&ioaddr, &ioargs);
         }
         if cmd.starts_with("fc ") {
             let (_fctag, fcid) = cmd.split_once(" ").unwrap();
