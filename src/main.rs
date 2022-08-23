@@ -4,9 +4,7 @@
 //! HanishKVC, 2022
 //!
 
-use core::time;
 use std::collections::HashMap;
-use std::thread;
 
 use fuzzerk::rtm;
 use loggerk::*;
@@ -116,9 +114,6 @@ fn main() {
             gotfuzz = fci.get(istep);
             log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", istep, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
             istep += 1;
-        }
-        if cmd.starts_with("sys sleep") {
-            thread::sleep(time::Duration::from_secs(1));
         }
         if cmd.starts_with("loop") {
             let cmdparts: Vec<&str> = cmd.split(" ").collect();
