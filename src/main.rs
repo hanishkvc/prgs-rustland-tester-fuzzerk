@@ -100,37 +100,3 @@ fn main() {
 
     vm.run();
 }
-
-/*
-    loop {
-        let cmd =  "";
-        if cmd.starts_with("loop") {
-            let cmdparts: Vec<&str> = cmd.split(" ").collect();
-            let loopcmd = cmdparts[1];
-            if loopcmd == "inc" {
-                loopcnt += 1;
-            } else {
-                let loopcheck = usize::from_str_radix(cmdparts[2], 10).unwrap();
-                let foricmd = usize::from_str_radix(cmdparts[4], 10).unwrap();
-                let adjtype = cmdparts[3];
-                match loopcmd {
-                    "iflt" => {
-                        if loopcnt >= loopcheck {
-                            break;
-                        }
-                    },
-                    _ => todo!("ERRR:MFuzzerKU:Unknow loop cmd")
-                }
-                if adjtype == "relpos" {
-                    icmd += foricmd;
-                    continue;
-                } else {
-                    icmd = foricmd;
-                    continue;
-                }
-            }
-        }
-        icmd += 1;
-    }
-}
-*/
