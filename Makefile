@@ -3,6 +3,9 @@
 cbuild:
 	cargo build
 
+cclean:
+	cargo clean
+
 ctests:
 	cargo test -- --show-output
 
@@ -30,7 +33,13 @@ dump_ascii:
 	gcc -o misc/dump_ascii_printable misc/dump_ascii.c
 	gcc -o misc/dump_ascii misc/dump_ascii.c
 
+pdf:
+	rst2pdf README.rst README.pdf
+
 clean_misc:
-	rm misc/dump_ascii_printable
-	rm misc/dump_ascii
+	rm misc/dump_ascii_printable || /bin/true
+	rm misc/dump_ascii || /bin/true
+
+clean_all: clean_misc cclean
+	rm README.pdf || /bin/true
 
