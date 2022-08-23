@@ -124,26 +124,12 @@ fn main() {
     loop {
         let cmd =  &runcmds[icmd];
         log_d(&format!("INFO:MFuzzerKU:Cmd:{}:{}", icmd, cmd));
-        if cmd == "iob new" {
-        }
         if cmd.starts_with("fc ") {
             let (_fctag, fcid) = cmd.split_once(" ").unwrap();
             let fci = rtm.fcimmuts(&fcid).unwrap();
             gotfuzz = fci.get(istep);
             log_d(&format!("\n\nGot:{}:\n\t{:?}\n\t{}", istep, gotfuzz, String::from_utf8_lossy(&gotfuzz)));
             istep += 1;
-        }
-        if cmd == "iob write" {
-            let gotr = zenio.write(&gotfuzz);
-            if gotr.is_err() {
-                log_e(&format!("ERRR:MFuzzerKU:ZenIOWrite:{}:{}", istep, gotr.unwrap_err()));
-            }
-        }
-        if cmd == "iob flush" {
-            let gotr = zenio.flush();
-            if gotr.is_err() {
-                log_e(&format!("ERRR:MFuzzerKU:ZenIOFlush:{}:{}", istep, gotr.unwrap_err()));
-            }
         }
         if cmd == "iob close" {
             let gotr = zenio.close();
