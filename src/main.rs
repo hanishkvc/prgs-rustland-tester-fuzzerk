@@ -103,13 +103,6 @@ fn load_prg(prgfile: &str, fc: &str, loopcnt: usize) -> Vec<String> {
     if prgfile.len() == 0 {
         return default_prg(fc, loopcnt);
     }
-    let mut runcmds = Vec::<String>::new();
-    let prgdata = fs::read_to_string(prgfile).expect("ERRR:MFuzzerKU:Loading prg");
-    let prgdata: Vec<&str> =  prgdata.split("\n").collect();
-    for l in prgdata {
-        runcmds.push(l.to_string());
-    }
-    runcmds
 }
 
 fn main() {
