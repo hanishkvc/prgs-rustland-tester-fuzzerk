@@ -207,3 +207,10 @@ TODO
 
 * iobclose and ssl session shutdown (do I need two calls, most probably not, the doc seems bit confusing)
 
+* In http tls single session multi request testing (with invalid data)
+
+  * if 10msec btw requests, then server seems to get all requests.
+
+  * if 1000msec btw requests, then server seems to only get the 1st request most of the time
+
+  * ALERT: Need to check what happens with valid http requests instead of invalid http requests.
