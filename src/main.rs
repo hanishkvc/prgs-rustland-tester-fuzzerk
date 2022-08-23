@@ -93,7 +93,7 @@ fn main() {
     let mut vm = vm::VM::new();
     vm.load_fcrtm(&cfgfc);
     if prgfile.len() == 0 {
-        vm.predefined_prg(&fc, loopcnt);
+        vm.predefined_prg(&fc, loopcnt, &ioaddr, &ioargs);
     } else {
         vm.load_prg(&prgfile);
     }
