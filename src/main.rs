@@ -6,15 +6,13 @@
 
 use core::time;
 use std::collections::HashMap;
-use std::fs;
 use std::thread;
 
-use fuzzerk::cfgfiles;
-use fuzzerk::iob::IOBridge;
 use fuzzerk::rtm;
 use loggerk::*;
 use argsclsk;
 use fuzzerk::iob;
+use fuzzerk::vm;
 
 
 ///
@@ -88,22 +86,7 @@ fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>, 
     return (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile);
 }
 
-fn default_prg(fc: &str, loopcnt: usize) -> Vec<String> {
-    let mut runcmds = Vec::<String>::new();
-    runcmds.push("iob new".to_string());
-    runcmds.push(format!("fc {}", fc));
-    runcmds.push("iob write".to_string());
-    runcmds.push("iob flush".to_string());
-    runcmds.push("loop inc".to_string());
-    runcmds.push(format!("loop iflt {} abspos 1", loopcnt));
-    runcmds
-}
 
-fn load_prg(prgfile: &str, fc: &str, loopcnt: usize) -> Vec<String> {
-    if prgfile.len() == 0 {
-        return default_prg(fc, loopcnt);
-    }
-}
 
 fn main() {
     log_init();
@@ -111,10 +94,13 @@ fn main() {
 
     let (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile) = handle_cmdline();
 
-    let mut rtm = rtm::RunTimeManager::new();
-    cfgfiles::parse_file(&cfgfc, &mut rtm);
-
-    let runcmds = load_prg(&prgfile, &fc, loopcnt);
+    let mut vm = vm::VM::new();
+    vm.load_fcrtm(&cfgfc);
+    if prgfile.len() == 0 {
+        vm.predefined_prg(&fc, loopcnt);
+    } else {
+        vm.load_prg(&prgfile);
+    }
 
     let mut zenio = iob::IOBridge::None;
     let mut istep = 0;
