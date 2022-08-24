@@ -237,3 +237,6 @@ TODO
   * if 1000msec btw requests, then server seems to only get the 1st request most of the time
 
   * ALERT: Need to check what happens with valid http requests instead of invalid http requests.
+
+* A Fuzzer which allows a predefined string from a list of predefined strings to be randomly changed wrt some random positions in the string
+
