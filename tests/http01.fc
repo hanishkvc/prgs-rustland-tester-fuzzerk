@@ -1,6 +1,7 @@
 # A http test fuzzchain config file
 
-FuzzerType:RandomFixedStringsFuzzer:HTTP_TYPE
+# Mostly Ok req type, except for when there is no space wrt that last GET
+FuzzerType:RandomFixedStringsFuzzer:OKOK_REQ_TYPE
   list:
     GET ,
     PUT ,
@@ -20,9 +21,30 @@ FuzzerType:RandomFixedFuzzer:MAYBE_Space
 	maxlen: 3
 	charset: 02090A30313233342F
 
+FuzzerType:RandomFixedFuzzer:OK_SPACE
+	minlen: 1
+	maxlen: 1
+	charset: 20
+
 FuzzChain:FuzzChain:FC100
-	HTTP_TYPE
+	OKOK_REQ_TYPE
 	RANDOM_PATH
 	MAYBE_Space
 	RANDOM_DATA
+
+# Valid http req inbetween
+
+FuzzerType:RandomFixedStringsFuzzer:OKOK_HTTP_PATH
+	list:
+		/index.html
+
+FuzzerType:RandomFixedStringsFuzzer:OKOK_HTTP_VER
+	list:
+		http/v1
+
+FuzzChain:FuzzChain:FC200
+	OKOK_REQ_TYPE
+	OKOK_HTTP_PATH
+	OK_SPACE
+	OKOK_HTTP_VER
 
