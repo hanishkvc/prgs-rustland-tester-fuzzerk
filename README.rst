@@ -267,6 +267,15 @@ Control/System related
 
 * iflt <check_value> <int_var_id> goto <label_id>
 
+* checkjump arg1 arg2 Label4LessThan Label4Equal Label4GreaterThan
+
+  * __NEXT__ a implicit label identifying the next instuction/op in the program
+
+    * useful if one doesnt want to jump to any specific location for a given condition,
+      then the control will implicitly flow to next instruction in the program, in that case.
+
+  * prefix $ to arg1 or arg2 to treat it has a literal number, else it will be treated has a int var
+
 
 A sample file
 ---------------
@@ -341,17 +350,13 @@ TODO
 
   * ret (return from func)
 
-  * chkjmp arg1 arg2 Label4LessThan Label4Equal Label4GreaterThan
-
-    * __NEXT__ a implicit label identifying the next instuction/op in the program
-
-    * prefix $ to arg1 or arg2 to treat it has a literal number, else treat it has a int var
-
-    * MAYBE a explicit jmp label (unconditional jump)
+  * MAYBE a explicit jmp label (unconditional jump)
 
   * bufcopy destbuf srcbuf
 
   * bufcat destbuf otherbuf
 
     * destbuf = destbuf + otherbuf
+
+  * use $ prefix everywhere to indicate integer values.
 
