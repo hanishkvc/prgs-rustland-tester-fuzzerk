@@ -6,6 +6,7 @@
 
 use std::collections::HashMap;
 use std::io;
+use std::io::Read;
 use std::io::Write;
 use std::net;
 use std::fs;
@@ -173,6 +174,39 @@ impl IOBridge {
             },
         }
         //Ok(())
+    }
+
+    pub fn read(&mut self, buf: &mut Vec<u8>) -> Result<usize, String> {
+        match self {
+            Self::None => todo!("ERRR:FuzzerK:IOBridge:Read:None:Why me???"),
+            Self::Console(_so, si ) => {
+                let mut si = si.lock();
+                //let gotr = si.read_to_end(buf);
+                let gotr = si.read(buf);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Read:Console:{}", gotr.unwrap_err()))
+                }
+                return Ok(gotr.unwrap());
+            },
+            Self::TcpClient(ts) => {
+                let gotr = ts.read(buf);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Read:TcpClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(gotr.unwrap());
+            },
+            Self::TlsClient(ss) => {
+                let gotr = ss.read(buf);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Read:TlsClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(gotr.unwrap());
+            },
+            Self::FileWriter(_file) => {
+                panic!("ERRR:FuzzerK:IOBridge:Read:FileWriter:Not supported");
+            }
+        }
+        //Ok(0)
     }
 
     pub fn close(&mut self) -> Result<(), String> {
