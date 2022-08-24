@@ -163,8 +163,8 @@ This allows the end user to control the actions to be performed by fuzzerk, in a
 The commands/operations that can be specified using prg file include
 
 
-Variables Related
-~~~~~~~~~~~~~~~~~~~
+Data/Variables Related
+~~~~~~~~~~~~~~~~~~~~~~~
 
 * letstr <string_var_id> <string value>
 
@@ -177,6 +177,26 @@ Variables Related
 * bufnew <buf_id> <buf_size>
 
   Create a named buffer of a given size
+
+* letbuf <buf_id> data_for_buffer
+
+  Create a buffer and fill it with specified data. The data specified could be
+
+  * a textual string till end of line. This can even include space in between.
+
+    * if you want white space at begin or end of the textual string, you need to use the hex string option mentioned next.
+
+  * a hex string till end of line (identified by having 0x at begining of the data)
+
+  * special data markers
+
+    * __TIME__STAMP__
+
+      * This puts the current time stamp into the buffer
+
+    * __RANDOM__BYTES__TheLength
+
+      * This puts TheLength amount of random bytes into the buffer
 
 
 IOBridge related
@@ -309,4 +329,20 @@ TODO
   * ALERT: Need to check what happens with valid http requests instead of invalid http requests.
 
 * A Fuzzer which allows a predefined string from a list of predefined strings to be randomly changed wrt some random positions in the string
+
+* New Ops
+
+  * call label (call a func)
+
+  * ret (return from func)
+
+  * chkjmp arg1 arg2 Label4LessThan Label4Equal Label4GreaterThan
+
+    * __NEXT__ a implicit label identifying the next instuction/op in the program
+
+    * prefix $ to arg1 or arg2 to treat it has a literal number, else treat it has a int var
+
+    * MAYBE a explicit jmp label (unconditional jump)
+
+  * buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
 
