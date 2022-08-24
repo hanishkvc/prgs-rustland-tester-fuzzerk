@@ -195,6 +195,14 @@ impl IOBridge {
                 }
                 return Ok(());
             },
+            Self::FileWriter(file) => {
+                let gotr = file.sync_all();
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Close:FileWriter:SyncAll:{}", gotr.unwrap_err()))
+                }
+                drop(file);
+                return Ok(());
+            }
             _ => {},
         }
         Ok(())
