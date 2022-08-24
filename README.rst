@@ -51,7 +51,30 @@ IOBridge
 ==========
 
 This is a helper module for the util program to help work with either
-Console or Tcp server or Tls server, in a generic way.
+Console or Tcp server or Tls server or File, in a generic way.
+
+* console
+
+* tcpclient:addr:port
+
+  * addr could be ip addr or domain name
+
+* tlsclient:addr:port
+
+  * addr could be ip addr or domain name
+
+  * ioargs supported
+
+    * server_cert_check=yes/no
+
+    * domain=the.domain.name
+
+* filewriter:path/to/file
+
+  * ioargs supported
+
+    * append=yes/no
+
 
 VM
 ====

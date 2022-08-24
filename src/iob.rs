@@ -8,6 +8,7 @@ use std::collections::HashMap;
 use std::io;
 use std::io::Write;
 use std::net;
+use std::fs;
 use boring::ssl;
 
 
@@ -16,6 +17,7 @@ pub enum IOBridge {
     Console(io::Stdout, io::Stdin),
     TcpClient(net::TcpStream),
     TlsClient(ssl::SslStream<net::TcpStream>),
+    FileWriter(fs::File),
 }
 
 impl IOBridge {
@@ -29,6 +31,11 @@ impl IOBridge {
         Self::TcpClient(ts)
     }
 
+    ///
+    /// Supported IOArgs
+    /// * server_cert_check=yes/no
+    /// * domain=the.domain.name
+    ///
     pub fn new_tlsclient(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
         let msgtag = "FuzzerK:IOBridge:TlsClient";
         let yes = String::from("yes");
@@ -47,12 +54,34 @@ impl IOBridge {
     }
 
     ///
+    /// Supported IOArgs
+    /// * append=yes/no
+    ///
+    pub fn new_filewriter(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
+        let msgtag = "FuzzerK:IOBridge:TlsClient";
+        let yes = String::from("yes");
+
+        let append = ioargs.get("append").or(Some(&yes)).unwrap();
+
+        let file: fs::File;
+        if append == "yes" {
+            file = fs::File::options().append(true).open(addr).expect(&format!("ERRR:{}:FileWriter:OpenAppend", msgtag));
+        } else {
+            file = fs::File::options().open(addr).expect(&format!("ERRR:{}:FileWriter:Create?", msgtag));
+        }
+        Self::FileWriter(file)
+    }
+
+    ///
     /// The ioaddr passed could be one of the following
     /// * none
     /// * console
     /// * tcpclient:addr:port
-    /// * tlsclient:addr:port,domain
+    /// * tlsclient:addr:port
+    /// * filewriter:path/to/file
+    ///
     /// NOTE: Address could be ip address or domain name
+    ///
     pub fn new(ioaddr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
         let ioaddr = ioaddr.to_lowercase();
         if ioaddr == "none" {
@@ -67,6 +96,9 @@ impl IOBridge {
         }
         if ioa.0 == "tlsclient" {
             return Self::new_tlsclient(ioa.1, ioargs);
+        }
+        if ioa.0 == "filewriter" {
+            return Self::new_filewriter(ioa.1, ioargs);
         }
         Self::None
     }
@@ -96,6 +128,13 @@ impl IOBridge {
                 }
                 return Ok(buf.len());
             },
+            Self::FileWriter(file) => {
+                let gotr = file.write_all(buf);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Write:FileWriter:{}", gotr.unwrap_err()))
+                }
+                return Ok(buf.len());
+            }
         }
         //Ok(0)
     }
@@ -122,6 +161,13 @@ impl IOBridge {
                 let gotr = ss.flush();
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Flush:TlsClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(());
+            },
+            Self::FileWriter(file) => {
+                let gotr = file.flush();
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Flush:FileWriter:{}", gotr.unwrap_err()))
                 }
                 return Ok(());
             },
