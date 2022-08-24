@@ -67,7 +67,7 @@ impl IOBridge {
         if append == "yes" {
             file = fs::File::options().append(true).open(addr).expect(&format!("ERRR:{}:FileWriter:OpenAppend", msgtag));
         } else {
-            file = fs::File::options().open(addr).expect(&format!("ERRR:{}:FileWriter:Create?", msgtag));
+            file = fs::File::create(addr).expect(&format!("ERRR:{}:FileWriter:Create?", msgtag));
         }
         Self::FileWriter(file)
     }
