@@ -198,6 +198,11 @@ Data/Variables Related
 
       * This puts TheLength amount of random bytes into the buffer
 
+* buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
+
+  * randomize randcount values from with in a part (start and end offset) of the buf
+    with values from a given range (start and end value).
+
 
 IOBridge related
 ~~~~~~~~~~~~~~~~~
@@ -344,5 +349,9 @@ TODO
 
     * MAYBE a explicit jmp label (unconditional jump)
 
-  * buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
+  * bufcopy destbuf srcbuf
+
+  * bufcat destbuf otherbuf
+
+    * destbuf = destbuf + otherbuf
 
