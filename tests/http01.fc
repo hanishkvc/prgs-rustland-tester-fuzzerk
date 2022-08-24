@@ -42,7 +42,7 @@ FuzzerType:RandomFixedStringsFuzzer:OKOK_HTTP_VER
 	list:
 		http/v1
 
-FuzzChain:FuzzChain:FC200
+FuzzChain:FuzzChain:FC_OkReqInBtw
 	OKOK_REQ_TYPE
 	OKOK_HTTP_PATH
 	OK_SPACE
