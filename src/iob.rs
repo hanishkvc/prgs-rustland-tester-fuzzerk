@@ -10,6 +10,7 @@ use std::io::Read;
 use std::io::Write;
 use std::net;
 use std::fs;
+use std::time::Duration;
 use boring::ssl;
 
 
@@ -27,8 +28,20 @@ impl IOBridge {
         Self::Console(io::stdout(), io::stdin())
     }
 
-    pub fn new_tcpclient(addr: &str) -> IOBridge {
+    ///
+    /// Supported IOArgs
+    /// * read_timeout=millisecs
+    ///
+    pub fn new_tcpclient(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
+        let invalid = String::from("INVALID");
+        let read_timeout = ioargs.get("read_timeout").or(Some(&invalid)).unwrap();
+
         let ts = net::TcpStream::connect(addr).expect("ERRR:FuzzerK:IOBridge:TcpClient:TcpStreamConnect");
+        if *read_timeout != invalid {
+            let timeout_millis = u64::from_str_radix(&read_timeout, 10).expect("ERRR:FuzzerK:IOBridge:TcpClient:New:ReadTimeout");
+            let tomillis = Duration::from_millis(timeout_millis);
+            ts.set_read_timeout(Some(tomillis)).expect("ERRR:FuzzerK:IOBridge:TcpClient:New:SetReadTimeout");
+        }
         Self::TcpClient(ts)
     }
 
@@ -93,7 +106,7 @@ impl IOBridge {
         }
         let ioa = ioaddr.split_once(':').expect("ERRR:FuzzerK:IOBridge:New:Setting up nw");
         if ioa.0 == "tcpclient" {
-            return Self::new_tcpclient(ioa.1);
+            return Self::new_tcpclient(ioa.1, ioargs);
         }
         if ioa.0 == "tlsclient" {
             return Self::new_tlsclient(ioa.1, ioargs);
