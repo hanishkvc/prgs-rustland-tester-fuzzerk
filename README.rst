@@ -59,6 +59,10 @@ Console or Tcp server or Tls server or File, in a generic way.
 
   * addr could be ip addr or domain name
 
+  * ioargs supported
+
+    * read_timeout=millisecs
+
 * tlsclient:addr:port
 
   * addr could be ip addr or domain name
@@ -68,6 +72,8 @@ Console or Tcp server or Tls server or File, in a generic way.
     * server_cert_check=yes/no
 
     * domain=the.domain.name
+
+    * read_timeout=millisecs
 
 * filewriter:path/to/file
 

@@ -49,11 +49,14 @@ impl IOBridge {
     /// Supported IOArgs
     /// * server_cert_check=yes/no
     /// * domain=the.domain.name
+    /// * read_timeout=millisecs
     ///
     pub fn new_tlsclient(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
         let msgtag = "FuzzerK:IOBridge:TlsClient";
         let yes = String::from("yes");
+        let invalid = String::from("INVALID");
 
+        let read_timeout = ioargs.get("read_timeout").or(Some(&invalid)).unwrap();
         let servercertcheck = ioargs.get("server_cert_check").or(Some(&yes)).unwrap();
         let domain = ioargs.get("domain").expect(&format!("ERRR:{}:domain missing", msgtag));
 
@@ -63,6 +66,11 @@ impl IOBridge {
         }
         let tlsconn = tlsconnbldr.build();
         let tcpstream = net::TcpStream::connect(addr).expect(&format!("ERRR:{}:TcpStreamConnect", msgtag));
+        if *read_timeout != invalid {
+            let timeout_millis = u64::from_str_radix(&read_timeout, 10).expect(&format!("ERRR:{}:New:ReadTimeout", msgtag));
+            let tomillis = Duration::from_millis(timeout_millis);
+            tcpstream.set_read_timeout(Some(tomillis)).expect(&format!("ERRR:{}:New:SetReadTimeout", msgtag));
+        }
         let tlsstream = tlsconn.connect(domain, tcpstream).expect(&format!("ERRR:{}:SslConnectorConnect", msgtag));
         Self::TlsClient(tlsstream)
     }
