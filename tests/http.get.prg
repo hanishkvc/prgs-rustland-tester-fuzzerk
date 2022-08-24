@@ -41,6 +41,6 @@
 	iobwrite fsave httpgot
 	sleepmsec 1000
 	inc loopcnt
-	iflt 10 loopcnt goto repeatagain
+	checkjump loopcnt $10 repeatagain __NEXT__ __NEXT__
 	iobclose fsave
 
