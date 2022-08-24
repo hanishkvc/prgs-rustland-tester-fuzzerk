@@ -59,27 +59,11 @@ Console or Tcp server or Tls server or File, in a generic way.
 
   * addr could be ip addr or domain name
 
-  * ioargs supported
-
-    * read_timeout=millisecs
-
 * tlsclient:addr:port
 
   * addr could be ip addr or domain name
 
-  * ioargs supported
-
-    * server_cert_check=yes/no
-
-    * domain=the.domain.name
-
-    * read_timeout=millisecs
-
 * filewriter:path/to/file
-
-  * ioargs supported
-
-    * append=yes/no
 
 
 VM
@@ -168,15 +152,95 @@ rst.
 |
 
 
-Run file
+Prg file
 ==========
 
 Overview
 ----------
 
-This gives the actions to be performed by fuzzerk
+This allows the end user to control the actions to be performed by fuzzerk, in a simple and flexible way.
 
-The commands possible in run file include
+The commands/operations that can be specified using prg file include
+
+
+Variables Related
+~~~~~~~~~~~~~~~~~~~
+
+* letstr <string_var_id> <string value>
+
+* letint <int_var_id> <integer_value>
+
+* inc <int_var_id>
+
+* dec <int_var_id>
+
+* bufnew <buf_id> <buf_size>
+
+  Create a named buffer of a given size
+
+
+IOBridge related
+~~~~~~~~~~~~~~~~~
+
+* iobnew <iob_id> <iobtype:typespecific_addr> <typespecific_ioarg=value> <typespecific_ioarg=value>
+
+  * supported iobtypes include
+
+    * console
+
+    * tcpclient - for connecting to a tcp server
+
+      * addr => <ipaddr|domainname><:port>
+
+      * ioargs supported
+
+        * read_timeout=millisecs
+
+    * tlsclient
+
+      * addr => <ipaddr|domainname><:port>
+
+      * ioargs supported
+
+        * server_cert_check=yes/no
+
+        * domain=the.domain.name
+
+        * read_timeout=millisecs
+
+    * filewriter
+
+      * addr => path/to/file
+
+      * ioargs supported
+
+        * append=yes/no
+
+* iobwrite <iob_id> <buf_id>
+
+* iobflush <iob_id>
+
+* iobclose <iob_id>
+
+
+Fuzzers related
+~~~~~~~~~~~~~~~~~
+
+* fcget <fc_id> <buf_id>
+
+  Generate a fuzzed buffer of data and store into buffer of specified id.
+
+
+Control/System related
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* sleepmsec <milliseconds>
+
+* !label <label_id>
+
+  a directive to mark the current location/address in the program where this directive is encountered
+
+* iflt <check_value> <int_var_id> goto <label_id>
 
 
 A sample file
