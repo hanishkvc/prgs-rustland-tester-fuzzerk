@@ -368,3 +368,7 @@ TODO
 
   * use $ prefix everywhere to indicate integer values.
 
+* allow whitespaces in between
+
+  * Ok with bufsmerge
+
