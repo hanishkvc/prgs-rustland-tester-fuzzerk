@@ -77,19 +77,27 @@ impl IOBridge {
 
     ///
     /// Supported IOArgs
-    /// * append=yes/no
+    /// * append=yes/no (default: yes)
+    /// * create=yes/no (default: no)
+    ///   create will truncate any existing file
     ///
     pub fn new_filewriter(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
-        let msgtag = "FuzzerK:IOBridge:TlsClient";
+        let msgtag = "FuzzerK:IOBridge:FileWriter:New:";
         let yes = String::from("yes");
+        let no = String::from("no");
 
         let append = ioargs.get("append").or(Some(&yes)).unwrap();
+        let create = ioargs.get("create").or(Some(&no)).unwrap();
 
         let file: fs::File;
         if append == "yes" {
-            file = fs::File::options().append(true).open(addr).expect(&format!("ERRR:{}:FileWriter:OpenAppend", msgtag));
+            file = fs::File::options().append(true).open(addr).expect(&format!("ERRR:{}:OpenAppend", msgtag));
         } else {
-            file = fs::File::create(addr).expect(&format!("ERRR:{}:FileWriter:Create?", msgtag));
+            if create == "yes" {
+                file = fs::File::create(addr).expect(&format!("ERRR:{}:Create", msgtag));
+            } else {
+                panic!("ERRR:{}:Either append or create ioarg needs to be specified and inturn true", msgtag);
+            }
         }
         Self::FileWriter(file)
     }
