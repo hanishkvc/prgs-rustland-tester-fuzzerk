@@ -27,6 +27,9 @@ test_http_tls_seperate_prgfile:
 test_http_tls_single_prgfile:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.singlesession.prg
 
+test_buf8randomize:
+	target/debug/fuzzerk --prgfile tests/test.buf8randomize.prg
+
 dump_ascii:
 	gcc -o misc/dump_ascii_printable misc/dump_ascii.c
 	gcc -o misc/dump_ascii misc/dump_ascii.c
