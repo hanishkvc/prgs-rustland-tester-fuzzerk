@@ -198,6 +198,20 @@ Data/Variables Related
 
       * This puts TheLength amount of random bytes into the buffer
 
+* bufsmerge destbuf srcbuf1 srcbuf2 ..... srcbufn
+
+  This allows a new buffer to be created with contents of the source buffers specified merged/concatenated together.
+
+  If only 1 source buffer is specified, it is equivalent to copying it into a new dest buffer.
+
+  * bufsmerge destbuf srcbuf
+
+    * destbuf = srcbuf
+
+  If more than 1 source buffer is specified, it concats all the source buffers into a new dest buffer.
+
+    * destbuf = srcbuf1 + srcbuf2 + ..... + srcbufn
+
 * buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
 
   * randomize randcount values from with in a part (start and end offset) of the buf
@@ -351,12 +365,6 @@ TODO
   * ret (return from func)
 
   * MAYBE a explicit jmp label (unconditional jump)
-
-  * bufcopy destbuf srcbuf
-
-  * bufcat destbuf otherbuf
-
-    * destbuf = destbuf + otherbuf
 
   * use $ prefix everywhere to indicate integer values.
 
