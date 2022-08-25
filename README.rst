@@ -226,6 +226,12 @@ Data/Variables Related
 
     * rand_startval will be mapped to 0 and rand_endval to 255, if needed
 
+  * buf_endoffset is inclusive, that is value at corresponding index may be randomized, if it gets
+    randomly selected during running/execution of the buf8randmoze instruction/operation.
+
+  * rand_endval is inclusive
+
+
 IOBridge related
 ~~~~~~~~~~~~~~~~~
 
