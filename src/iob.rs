@@ -84,10 +84,14 @@ impl IOBridge {
     pub fn new_filewriter(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
         let msgtag = "FuzzerK:IOBridge:FileWriter:New:";
         let yes = String::from("yes");
-        let no = String::from("no");
+        let maybe = String::from("maybe");
 
-        let append = ioargs.get("append").or(Some(&yes)).unwrap();
-        let create = ioargs.get("create").or(Some(&no)).unwrap();
+        let mut append = ioargs.get("append").or(Some(&maybe)).unwrap();
+        let create = ioargs.get("create").or(Some(&maybe)).unwrap();
+
+        if *append == maybe && *create == maybe {
+            append = &yes;
+        }
 
         let file: fs::File;
         if append == "yes" {
@@ -96,7 +100,7 @@ impl IOBridge {
             if create == "yes" {
                 file = fs::File::create(addr).expect(&format!("ERRR:{}:Create", msgtag));
             } else {
-                panic!("ERRR:{}:Either append or create ioarg needs to be specified and inturn true", msgtag);
+                panic!("ERRR:{}:Either append or create ioarg needs to be specified and inturn yes", msgtag);
             }
         }
         Self::FileWriter(file)
