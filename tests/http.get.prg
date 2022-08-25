@@ -12,6 +12,7 @@
 	letbuf marker02 *****************
 	letbuf markernl 0x0A
 	letbuf marker09 0x0A0930313233343536373839090A
+	buf8randomize marker09 3 2
 	iobwrite fsave sfileid
 	iobwrite fsave fileid
 	iobwrite fsave markernl

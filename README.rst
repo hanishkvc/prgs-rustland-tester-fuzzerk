@@ -217,6 +217,14 @@ Data/Variables Related
   * randomize randcount values from with in a part (start and end offset) of the buf
     with values from a given range (start and end value).
 
+  * other than bufid, other arguments are optional and if not given a suitable default value
+    will be used
+
+    * randcount - randomly generated to be less than buflen
+
+    * buf_startoffset and buf_endoffset map to begin and end of buffer being operated on, if not specified.
+
+    * rand_startval will be mapped to 0 and rand_endval to 255, if needed
 
 IOBridge related
 ~~~~~~~~~~~~~~~~~
@@ -254,6 +262,8 @@ IOBridge related
       * ioargs supported
 
         * append=yes/no
+
+        * create=yes/no
 
 * iobwrite <iob_id> <buf_id>
 
