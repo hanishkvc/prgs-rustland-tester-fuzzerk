@@ -8,7 +8,9 @@
 	iobwrite logme testbuf
 	iobwrite logme newline
 !label repeat
-	buf8randomize testbuf 1 -1 -1
+	#buf8randomize testbuf 1 -1 -1
+	#buf8randomize testbuf 2 -1 -1
+	buf8randomize testbuf 2 5 -1
 	iobwrite logme testbuf
 	iobwrite logme newline
 	inc loopcnt
