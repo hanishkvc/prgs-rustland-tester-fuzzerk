@@ -15,6 +15,9 @@
 	iobwrite fsave sfileid
 	iobwrite fsave fileid
 	iobwrite fsave markernl
+	bufsmerge markerstart markernl markernl markernl marker01 markernl
+	bufsmerge markerend marker09 markernl marker02 markernl
+
 !label repeatagain
 	iobnew srv1 tlsclient:127.0.0.1:8088 domain=127.0.0.1 server_cert_check=no
 	#fcget FC100 fc100Buf
@@ -24,21 +27,16 @@
 	bufnew httpgot 4096
 	iobread srv1 httpgot
 	iobclose srv1
-	iobwrite fsave markernl
-	iobwrite fsave markernl
-	iobwrite fsave markernl
-	iobwrite fsave marker01
-	iobwrite fsave markernl
+
+	iobwrite fsave markerstart
 	letbuf ts __TIME__STAMP__
 	iobwrite fsave ts
 	iobwrite fsave markernl
-	iobwrite fsave marker09
-	iobwrite fsave markernl
-	iobwrite fsave marker02
-	iobwrite fsave markernl
+	iobwrite fsave markerend
 	iobwrite fsave fc100Buf
 	iobwrite fsave markernl
 	iobwrite fsave httpgot
+
 	sleepmsec 1000
 	inc loopcnt
 	checkjump loopcnt $10 repeatagain __NEXT__ __NEXT__
