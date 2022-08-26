@@ -33,7 +33,7 @@
 !label START
 
 	letint loopcnt 0
-	iobnew fsave filewriter:/tmp/http.got.bin append=no
+	iobnew fsave filewriter:/tmp/http.got.bin create=yes
 	letbuf sfileid FuzzerK:Save Of:HttpGetPrg:FileID:
 	letbuf fileid __RANDOM__BYTES__16
 	letbuf marker01 **** NEW SET ****
