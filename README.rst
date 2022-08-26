@@ -306,6 +306,18 @@ Control/System related
 
   * prefix $ to arg1 or arg2 to treat it has a literal number, else it will be treated has a int var
 
+* jmp label
+
+  * a unconditional jump
+
+* call label
+
+  * call a func
+
+* ret
+
+  * return from func
+
 
 A sample file
 ---------------
@@ -375,12 +387,6 @@ TODO
 * A Fuzzer which allows a predefined string from a list of predefined strings to be randomly changed wrt some random positions in the string
 
 * New Ops
-
-  * call label (call a func)
-
-  * ret (return from func)
-
-  * MAYBE a explicit jmp label (unconditional jump)
 
   * use $ prefix everywhere to indicate integer values.
 
