@@ -4,6 +4,34 @@
 # Start a new/seperate session for each loop iteration
 # Save sent data as well as got response into a local file
 #
+
+	jump START
+
+!label COMM_WITH_SERVER
+	iobnew srv1 tlsclient:127.0.0.1:8088 domain=127.0.0.1 server_cert_check=no
+	#fcget FC100 fc100Buf
+	fcget FC_OkReqInBtw fc100Buf
+	iobwrite srv1 fc100Buf
+	iobflush srv1
+	bufnew httpgot 4096
+	iobread srv1 httpgot
+	iobclose srv1
+	ret
+
+!label SAVE_TO_FILE
+	iobwrite fsave markerstart
+	letbuf ts __TIME__STAMP__
+	iobwrite fsave ts
+	iobwrite fsave markernl
+	iobwrite fsave markerend
+	iobwrite fsave fc100Buf
+	iobwrite fsave markernl
+	iobwrite fsave httpgot
+	ret
+
+
+!label START
+
 	letint loopcnt 0
 	iobnew fsave filewriter:/tmp/http.got.bin append=no
 	letbuf sfileid FuzzerK:Save Of:HttpGetPrg:FileID:
@@ -20,23 +48,9 @@
 	bufsmerge markerend marker09 markernl marker02 markernl
 
 !label repeatagain
-	iobnew srv1 tlsclient:127.0.0.1:8088 domain=127.0.0.1 server_cert_check=no
-	#fcget FC100 fc100Buf
-	fcget FC_OkReqInBtw fc100Buf
-	iobwrite srv1 fc100Buf
-	iobflush srv1
-	bufnew httpgot 4096
-	iobread srv1 httpgot
-	iobclose srv1
 
-	iobwrite fsave markerstart
-	letbuf ts __TIME__STAMP__
-	iobwrite fsave ts
-	iobwrite fsave markernl
-	iobwrite fsave markerend
-	iobwrite fsave fc100Buf
-	iobwrite fsave markernl
-	iobwrite fsave httpgot
+	call COMM_WITH_SERVER
+	call SAVE_TO_FILE
 
 	sleepmsec 1000
 	inc loopcnt

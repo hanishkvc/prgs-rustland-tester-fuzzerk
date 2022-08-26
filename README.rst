@@ -314,6 +314,10 @@ Control/System related
 
   * call a func
 
+  * currently there are no function arguments support yet,
+    they have to work with the global data space directly.
+
+
 * ret
 
   * return from func
