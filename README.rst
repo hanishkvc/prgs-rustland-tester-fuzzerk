@@ -235,7 +235,7 @@ Data/Variables Related
 IOBridge related
 ~~~~~~~~~~~~~~~~~
 
-* iobnew <iob_id> <iobtype:typespecific_addr> <typespecific_ioarg=value> <typespecific_ioarg=value>
+* iobnew <iob_id> <iobtype:typespecific_addr> <typespecific_ioarg=value> <typespecific_ioarg=value> ...
 
   * supported iobtypes include
 
@@ -273,7 +273,21 @@ IOBridge related
 
 * iobwrite <iob_id> <buf_id>
 
+  * write contents of the specified buffer into the specified iobridge
+
 * iobflush <iob_id>
+
+  * request flushing of any buffering of written data by the library and or os into the underlying io device
+
+* iobread <iob_id> <buf_id>
+
+  * try to read upto specified buffer's buffer length of data from the specified iobridge
+
+    * one can use bufnew to create buffer of a required size with no data in it.
+
+  * while creating a new iobridge remember to set a read_timeout, so that read wont block indefinitely, if there is no data to read.
+
+    * all io bridge types may not support read_timeout (currently only network types ie tcpclient and tlsclient support it).
 
 * iobclose <iob_id>
 
@@ -394,7 +408,9 @@ TODO
 
   * use $ prefix everywhere to indicate integer values.
 
-* allow whitespaces in between
+* allow extra unneeded whitespaces in between
 
   * Ok with bufsmerge
+
+* allow hex strings wrt cfgfc files used for defining fuzzers and fuzzchains
 

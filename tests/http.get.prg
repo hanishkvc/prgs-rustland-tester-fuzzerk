@@ -22,7 +22,7 @@
 	iobwrite fsave markerstart
 	letbuf ts __TIME__STAMP__
 	iobwrite fsave ts
-	iobwrite fsave markernl
+	#iobwrite fsave markernl
 	iobwrite fsave markerend
 	iobwrite fsave bufFCGot
 	iobwrite fsave markernl
@@ -50,7 +50,7 @@
 	letbuf marker01 **** NEW SET ****
 	letbuf marker02 *****************
 	letbuf markernl 0x0A
-	bufsmerge markerstart markernl markernl markernl marker01 markernl
+	bufsmerge markerstart markernl markernl markernl markernl marker01 markernl
 	bufsmerge markerend markernl marker02 markernl
 	call FILE_ID
 
