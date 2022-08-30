@@ -15,7 +15,7 @@ use std::time;
 use std::time::Duration;
 use boring::ssl;
 
-use loggerk::log_d;
+use loggerk::{log_d, log_e};
 
 
 pub enum IOBridge {
@@ -261,21 +261,28 @@ impl IOBridge {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S1:{}", gotr.unwrap_err()))
                 }
                 log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S1:ShouldBe=SENT:{:?}", gotr.unwrap()));
-                for retry in 0..3 {
-                    let gotr = ss.get_shutdown();
-                    log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2-Wait4Recieve:{}:{:?}", retry, gotr));
-                    if gotr == ssl::ShutdownState::RECEIVED {
+                for retrycnt in 0..3 {
+                    let gotr = ss.shutdown();
+                    if gotr.is_ok() {
+                        let gotr = gotr.unwrap();
+                        if gotr == ssl::ShutdownResult::Received {
+                            log_d("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2:GotRecieved");
+                        } else {
+                            log_e(&format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:NotRecieved???:{:?}", gotr));
+                        }
                         break;
                     }
+                    let gotr = gotr.unwrap_err();
+                    println!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:{}:{:?},{:?} [{:?}, {:?}, {:?}]", retrycnt, gotr, gotr.code(), ssl::ErrorCode::SSL, ssl::ErrorCode::SYSCALL, ssl::ErrorCode::ZERO_RETURN);
+
+                    let mut tbuf = Vec::new();
+                    let gotr = ss.read_to_end(&mut tbuf);
+                    log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2+Read2End:{}:{:?}", retrycnt, gotr));
+                    let gotr = ss.get_shutdown();
+                    log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2+GetShutdown:{}:{:?}", retrycnt, gotr));
                     //thread::yield_now();
                     thread::sleep(time::Duration::from_millis(1000));
                 }
-                /*
-                let gotr = ss.shutdown();
-                if gotr.is_err() {
-                    return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:{}", gotr.unwrap_err()))
-                }
-                */
                 return Ok(());
             },
             Self::FileWriter(file) => {
