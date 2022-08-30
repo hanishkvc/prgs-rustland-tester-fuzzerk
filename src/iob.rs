@@ -10,8 +10,6 @@ use std::io::Read;
 use std::io::Write;
 use std::net;
 use std::fs;
-use std::thread;
-use std::time;
 use std::time::Duration;
 use boring::ssl;
 
@@ -260,29 +258,12 @@ impl IOBridge {
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S1:{}", gotr.unwrap_err()))
                 }
-                log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S1:ShouldBe=SENT:{:?}", gotr.unwrap()));
-                for retrycnt in 0..3 {
-                    let gotr = ss.shutdown();
-                    if gotr.is_ok() {
-                        let gotr = gotr.unwrap();
-                        if gotr == ssl::ShutdownResult::Received {
-                            log_d("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2:GotRecieved");
-                        } else {
-                            log_e(&format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:NotRecieved???:{:?}", gotr));
-                        }
-                        break;
-                    }
-                    let gotr = gotr.unwrap_err();
-                    println!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:{}:{:?},{:?} [{:?}, {:?}, {:?}]", retrycnt, gotr, gotr.code(), ssl::ErrorCode::SSL, ssl::ErrorCode::SYSCALL, ssl::ErrorCode::ZERO_RETURN);
-
-                    let mut tbuf = Vec::new();
-                    let gotr = ss.read_to_end(&mut tbuf);
-                    log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2+Read2End:{}:{:?}", retrycnt, gotr));
-                    let gotr = ss.get_shutdown();
-                    log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2+GetShutdown:{}:{:?}", retrycnt, gotr));
-                    //thread::yield_now();
-                    thread::sleep(time::Duration::from_millis(1000));
+                if *gotr.as_ref().unwrap() == ssl::ShutdownResult::Sent {
+                    log_d("DBUG:FuzzerK:IOBridge:Close:TlsClient:S1:GotSent");
+                } else {
+                    log_e(&format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S1:NotSent???:{:?}", gotr.unwrap()));
                 }
+                // Rather keeping it simple, ignoring any additional data that might be there to read etc
                 return Ok(());
             },
             Self::FileWriter(file) => {
