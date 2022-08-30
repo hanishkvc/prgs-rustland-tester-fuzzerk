@@ -74,8 +74,8 @@ by the end user using custom prg files, which use operations defined by
 a application specific VM. This provides the VM.
 
 
-MinimalFuzzerKUtil
-||||||||||||||||||||
+Minimal FuzzerK Util
+|||||||||||||||||||||
 
 A program which uses the modules mentioned previously to help test
 other programs by generating fuzz input for them and pushing to them
@@ -184,7 +184,7 @@ Data/Variables Related
 
   * a textual string till end of line. This can even include space in between.
 
-    * if you want white space at begin or end of the textual string, you need to use the hex string option mentioned next.
+    * if you want white space(s) at begin or end of the textual string, you need to use the hex string option mentioned next.
 
   * a hex string till end of line (identified by having 0x at begining of the data)
 
@@ -226,10 +226,12 @@ Data/Variables Related
 
     * rand_startval will be mapped to 0 and rand_endval to 255, if needed
 
-  * buf_endoffset is inclusive, that is value at corresponding index may be randomized, if it gets
-    randomly selected during running/execution of the buf8randmoze instruction/operation.
+  * inclusive ends
 
-  * rand_endval is inclusive
+    * buf_endoffset is inclusive, that is value at corresponding index may be randomized, if it gets
+      randomly selected during running/execution of the buf8randmoze instruction/operation.
+
+    * rand_endval is inclusive
 
 
 IOBridge related
@@ -382,17 +384,32 @@ DONE
 
 * end of prgfile
 
+  * implicit end of prgfile taken care of
+
+  * [TODO:MAYBE] Add a option for explicit !end directive or so
+    Will allow functions to be defined after the normal flow is
+    explicitly ended. Otherwise currently functions will have
+    to put between ideally a unconditional jump at the begin
+    and the start label/code.
+
 * the fallback predefined program in case
 
   * prgfile is not specified
 
   * instead fc, loopcnt, ioaddr, ioarg etal is passed.
 
+* iobclose and ssl session shutdown
+
+  * keep it simple for now and just verify the 1st shutdown returns a Sent result.
+    As noted in git commit logs, calling it 2nd time with or without reading of
+    any left over data etal, doesnt seem to work with getting the Recieved result.
+    Rather a syscall error is what is got, if there is no more data to read. So
+    keep it simple for now and just ensure that 1st shutdown call leads to a
+    proper Sent result.
 
 TODO
 ||||||
 
-* iobclose and ssl session shutdown (do I need two calls, most probably not, the doc seems bit confusing)
 
 * In http tls single session multi request testing (with invalid data)
 
