@@ -10,6 +10,8 @@ use std::io::Read;
 use std::io::Write;
 use std::net;
 use std::fs;
+use std::thread;
+use std::time;
 use std::time::Duration;
 use boring::ssl;
 
@@ -258,12 +260,22 @@ impl IOBridge {
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S1:{}", gotr.unwrap_err()))
                 }
-                log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S1:{:?}", gotr.unwrap()));
+                log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S1:ShouldBe=SENT:{:?}", gotr.unwrap()));
+                for retry in 0..3 {
+                    let gotr = ss.get_shutdown();
+                    log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2-Wait4Recieve:{}:{:?}", retry, gotr));
+                    if gotr == ssl::ShutdownState::RECEIVED {
+                        break;
+                    }
+                    //thread::yield_now();
+                    thread::sleep(time::Duration::from_millis(1000));
+                }
+                /*
                 let gotr = ss.shutdown();
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:{}", gotr.unwrap_err()))
                 }
-                log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2:{:?}", gotr.unwrap()));
+                */
                 return Ok(());
             },
             Self::FileWriter(file) => {
