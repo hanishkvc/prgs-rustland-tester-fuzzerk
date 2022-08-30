@@ -152,6 +152,74 @@ rst.
 |
 
 
+Predefined Fuzzers
+-------------------
+
+There are two types of fuzzers,
+
+* ones that work with mainly provided data, without changing them
+
+  * LoopFixedStringsFuzzer
+
+    * each time it is called, it returns/appends the next string from the
+      list of strings.
+
+    * once the end of list is reached, it moves back to begining of the list
+
+  * RandomFixedStringsFuzzer
+
+    * each time it is called, it returns/appends a randomly selected string
+      from the lsit of provided strings.
+
+  * TODO: Currently the list of provided strings is treated as textual strings
+    Rather convert it to a list of binary buffers, so that it can either store
+    binary data or textual data (in its binary form).
+
+* those that use random generation to a great extent
+
+  * RandomRandomFuzzer
+
+    * return/append a randomly generated buffer of random binary values
+
+      * whose length is randomly decided from a given min and max length limit.
+
+  * RandomFixedFuzzer
+
+    * return/append a buffer, whose values are randomly selected from a given
+      list of binary values.
+
+      * whose length is randomly decided from a given min and max length limit.
+
+      * the list of binary values to be used for selection, is specified
+        has a textual string containing hex values.
+
+  * Buf8RandomizeFuzzer [TODO]
+
+    * return/append a buffer which contains the originally provided data, with
+      some amount of random modifications to its contents, as noted below.
+
+      * a predefined number of bytes randomly modified
+
+        * if not predefined, then it is randomly decided as to how many bytes
+          should be randomly modified.
+
+      * the new random byte values are selected to be within a specified range
+        of values.
+
+        * if start value is not specified, it is assumed to be 0
+
+        * if end value is not specified, it is assumed to be 255
+
+      * the positions that are randomly modified are selected randomly, but
+        inturn restricted to be within a specified range of positions.
+
+        * if start position is not specified, it is assumed to be 0
+
+        * if end position is not specified, it is assumed to be till end
+          of the provided original buffer.
+
+
+
 Prg file
 ==========
 
