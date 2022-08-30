@@ -13,6 +13,8 @@ use std::fs;
 use std::time::Duration;
 use boring::ssl;
 
+use loggerk::log_d;
+
 
 pub enum IOBridge {
     None,
@@ -256,10 +258,12 @@ impl IOBridge {
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S1:{}", gotr.unwrap_err()))
                 }
+                log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S1:{:?}", gotr.unwrap()));
                 let gotr = ss.shutdown();
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Close:TlsClient:S2:{}", gotr.unwrap_err()))
                 }
+                log_d(&format!("DBUG:FuzzerK:IOBridge:Close:TlsClient:S2:{:?}", gotr.unwrap()));
                 return Ok(());
             },
             Self::FileWriter(file) => {
