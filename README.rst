@@ -219,6 +219,23 @@ There are two types of fuzzers,
           of the provided original buffer.
 
 
+Custom Fuzzers
+----------------
+
+If required the library can be extended to add custom fuzzers (they need to support
+the fuzz trait).
+
+If a custom fuzzer has to be created from the textual FuzzChains config file, then
+
+* the fuzzer needs to support cfgfiles::FromVecStrings trait
+
+  * and its from_vs method
+
+* the RunTimeManager.handle_cfggroup needs to be updated to create the custom fuzzer
+
+  * by calling the custom fuzzer's from_vs method
+
+
 
 Prg file
 ==========
