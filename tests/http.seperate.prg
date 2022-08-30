@@ -5,6 +5,8 @@
 	fcget FC100 fc100Buf
 	iobwrite srv1 fc100Buf
 	iobflush srv1
+	bufnew rbuf 1024
+	iobread srv1 rbuf
 	iobclose srv1
 	sleepmsec 1000
 	inc loopcnt
