@@ -131,6 +131,36 @@ It also allows one to test the libraries/modules in a simple yet
 flexible and potentially useful way.
 
 
+
+Usage Flow possibilities
+##########################
+
+One could use the logics of this system, in few different possible ways
+
+* instantiate and use the Fuzzers and FuzzChains provided by the core
+  library directly in your program.
+
+* use the Rtm and Cfgfiles along with core library, to allow a end user
+  to dynamically create the required fuzzchains by defining config files.
+  THe end user will be able to use the provided fuzzers (existings ones
+  provided by the library and or additional fuzzers created by you).
+
+  In turn your program uses the fuzzchains as needed.
+
+* use the fuzzerk utility program to exercise your console or network
+  based program. Here the program being tested/exercised doesnt require
+  to be modified. Rather one could
+
+  * create a config file (containing fuzzers and fuzzchains), and then
+    specify the specific fuzzchain and iobridge mechanism to use as
+    cmdline args. This is good enough for many simple test cases.
+
+  * create a config file (containing fuzzers and fuzzchains) and the
+    builtin VM related program/script file. This allows more complex
+    test cases to be realised.
+
+
+
 Runtime
 #########
 
