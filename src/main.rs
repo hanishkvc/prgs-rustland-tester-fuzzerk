@@ -4,7 +4,7 @@
 //! HanishKVC, 2022
 //!
 
-use std::collections::HashMap;
+use std::{collections::HashMap, process};
 
 use loggerk::*;
 use argsclsk;
@@ -91,8 +91,18 @@ fn main() {
     let (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile) = handle_cmdline();
 
     let mut vm = vm::VM::new();
+    if cfgfc.len() == 0 {
+        log_i(&format!("NOTE:FuzzerK:Args: --cfgfc <Fuzz++CfgFile> is a simple mechanism to create fuzzers and fuzzchains, usable in most cases"));
+    }
     vm.load_fcrtm(&cfgfc);
     if prgfile.len() == 0 {
+        if loopcnt <= 1 {
+            log_i(&format!("NOTE:FuzzerK:Args: --loopcnt <ANumber> allows one to control how many times to loop through fuzzchain generation and io handshake"));
+        }
+        if fc.len() == 0 {
+            log_w(&format!("WARN:FuzzerK:Args: If no --prgfile <ThePrgFile>, then --fc <FuzzChainId> is needed along with --cfgfc <Fuzz++Cfgfile>"));
+            process::exit(1);
+        }
         vm.predefined_prg(&fc, loopcnt, &ioaddr, &ioargs);
     } else {
         vm.load_prg(&prgfile);
