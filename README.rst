@@ -21,6 +21,7 @@ together to create the needed end pattern of data.
 In turn it also provides a set of predefined fuzzers, which generate new
 binary buffer each time they are called, with either random or looped or
 mixture of random and presetup data, based on how they are configured.
+
 One could define two kinds of fuzzers based on what is needed.
 
 * fuzzers which modify / update themselves each time they are called
@@ -126,8 +127,8 @@ rst.
 
 |
 | FuzzerType:TypeNameABC:InstanceNameABC1
-|   Arg1: ValueX,
-|   Arg2: ValueM,
+|   Arg1: ValueX
+|   Arg2: ValueM
 |   ArgA:
 |     Value1,
 |     Value2,

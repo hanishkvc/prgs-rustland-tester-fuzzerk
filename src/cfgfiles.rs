@@ -67,6 +67,11 @@ pub trait FromVecStrings {
     ///
     /// Get the value (single) associated with the specified key. Empty value is Ok
     ///
+    /// The key - value pair should be specified as key:value
+    ///
+    ///     * All data following ':' till end of line, will be returned as value, after trimming for spaces at either ends.
+    ///     * The key:value pair should be indented with whitespaces chars to match the specified spacesprefix.
+    ///
     fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<String, String> {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
@@ -87,7 +92,7 @@ pub trait FromVecStrings {
             return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:Expected key {}, got key {}", key, key, lt.0));
         }
         log_d(&format!("DBUG:FromVS:GetValueEmptyOk:{}-{}:[{:?}]", Self::get_name(), key, lt));
-        return Self::str_deescape(lt.1);
+        return Self::str_deescape(lt.1.trim());
     }
 
     ///

@@ -1,8 +1,8 @@
 # A test fuzzchain config file
 
 FuzzerType:TypeNameABC:InstanceNameABC1
-  Arg1: ValueX,
-  Arg2: ValueM,
+  Arg1: ValueX
+  Arg2: ValueM
   ArgA:
     Value1,
     Value2,
