@@ -9,6 +9,8 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 use loggerk::log_d;
 
+use crate::datautils;
+
 
 pub trait FromVecStrings {
 
@@ -62,6 +64,35 @@ pub trait FromVecStrings {
             }
         }
         Ok(outs)
+    }
+
+    ///
+    /// Handle the provided string appropriately and return a Vec<u8>
+    /// * trim the provided string
+    /// * remove double quotes, if it was used to protect the string
+    ///   * if one wants the resultant string to contain double quotes at either end, put a 2nd double quote, where required.
+    /// * interpret the given string has a hex string, if it starts with 0x
+    fn strval_process(ins: &str) -> Result<Vec<u8>, String> {
+        let mut outs = ins.trim();
+        if outs.len() >= 2 {
+            let mut outschars = outs.chars();
+            let startchar = outschars.nth(0).unwrap();
+            let endchar = outschars.nth(outs.len()-1).unwrap();
+            if (startchar == endchar) && (startchar == '"') {
+                outs = outs.strip_prefix('"').unwrap();
+                outs = outs.strip_suffix('"').unwrap();
+                let outs = Self::str_deescape(outs);
+                if outs.is_err() {
+                    return Err(outs.unwrap_err());
+                }
+                return Ok(Vec::from(outs.unwrap()));
+            }
+            if outs.starts_with("0x") {
+                let vdata = datautils::vu8_from_hex(&outs[2..]);
+                return vdata;
+            }
+        }
+        Ok(Vec::from(outs))
     }
 
     ///
