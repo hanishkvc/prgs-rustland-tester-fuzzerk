@@ -116,6 +116,9 @@ pub trait FromVecStrings {
     ///   * \[WHITESPACE*\]SomeKey:
     /// * each value needs to be on its own line, with a optional ',' termination
     ///   * \[WHITESPACE*\]WHITESPACE*The Value
+    ///   * the WHITESPACES at begin and end of the Value string will be trimmed.
+    ///   * if the optional ',' termination char is used, then any spaces at end of the value string before ','
+    ///     will be retained.
     ///
     fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<String>, String> {
         let sheadval = Self::get_value_emptyok(vs, key, spacesprefix);
