@@ -395,7 +395,10 @@ IOBridge related
 
   * supported iobtypes include
 
-    * console
+    * console - for writing generated data to stdout
+
+      * NOTE that there could be more textual info seen on the screen, but they are written to stderr,
+        so that the fuzzers and fuzzchains and their generated data is not disturbed.
 
     * tcpclient - for connecting to a tcp server
 
@@ -526,9 +529,13 @@ The key cmdline options are
 There are few additional options, in case one is not using a prgfile
 
 * --ioaddr <iobtype:addr>
+  * defaults to console, if not explicitly specified.
 * --ioarg <ioargkeyX=valY>
+  * defaults to no args, if not explicitly specified.
 * --loopcnt <number>
+  * defaults to 1, if not explicitly specified.
 * --fc <fcid>
+  * defaults to empty string, if not explicitly specified.
 
 
 TODO Plus
