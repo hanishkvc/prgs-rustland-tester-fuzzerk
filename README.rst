@@ -399,6 +399,8 @@ Control/System related
 
 * iflt <check_value> <int_var_id> goto <label_id>
 
+  if int value in the int_var_id is less than check_value, then goto (ie pass program flow control to) specified label.
+
 * checkjump arg1 arg2 Label4LessThan Label4Equal Label4GreaterThan
 
   * __NEXT__ a implicit label identifying the next instuction/op in the program
