@@ -103,7 +103,7 @@ pub trait FromVecStrings {
     ///     * All data following ':' till end of line, will be returned as value, after trimming for spaces at either ends.
     ///     * The key:value pair should be indented with whitespaces chars to match the specified spacesprefix.
     ///
-    fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<String, String> {
+    fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<u8>, String> {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
             return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:Prefix whitespaces mismatch:{} != {}", key, spacesprefix, cursp));
@@ -123,20 +123,20 @@ pub trait FromVecStrings {
             return Err(format!("ERRR:FromVS:GetValueEmptyOk:{}:Expected key {}, got key {}", key, key, lt.0));
         }
         log_d(&format!("DBUG:FromVS:GetValueEmptyOk:{}-{}:[{:?}]", Self::get_name(), key, lt));
-        return Self::str_deescape(lt.1.trim());
+        return Self::strval_process(lt.1);
     }
 
     ///
     /// Get the value (single) associated with the specified key. Empty value is not Ok with this.
     ///
-    fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<String, String> {
+    fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<u8>, String> {
         let val = Self::get_value_emptyok(vs, key, spacesprefix);
         if val.is_err() {
             return val;
         }
         let val = val.unwrap();
         if val.len() == 0 {
-            return Err(format!("ERRR:FromVS:GetValue:{}:No value given for {}", key, val));
+            return Err(format!("ERRR:FromVS:GetValue:{}:No value given for {:?}", key, val));
         }
         return Ok(val);
     }
@@ -156,7 +156,7 @@ pub trait FromVecStrings {
         if sheadval.is_err() {
             return Err(sheadval.unwrap_err());
         }
-        let sheadval = sheadval.unwrap();
+        let sheadval = String::from_utf8(sheadval.unwrap()).unwrap();
         if sheadval.len() != 0 {
             return Err(format!("ERRR:FromVS:GetValues:{}:Non array value {} found???", key, sheadval));
         }
