@@ -7,7 +7,6 @@
 use std::collections::VecDeque;
 use rand;
 
-use crate::datautils;
 
 
 ///
@@ -63,8 +62,10 @@ impl crate::cfgfiles::FromVecStrings for RandomRandomFuzzer {
         let spacesprefix = Self::get_spacesprefix(vs);
         let minlen = Self::get_value(vs, "minlen", spacesprefix).expect("ERRR:RandomRandomFuzzer:GetMinLen:");
         let maxlen = Self::get_value(vs, "maxlen", spacesprefix).expect("ERRR:RandomRandomFuzzer:GetMaxLen:");
-        let minlen = usize::from_str_radix(minlen.trim(), 10).expect(&format!("ERRR:RandomRandomFuzzer:MinLen issue:{}", minlen));
-        let maxlen = usize::from_str_radix(maxlen.trim(), 10).expect(&format!("ERRR:RandomRandomFuzzer:MaxLen issue:{}", maxlen));
+        let minlen = String::from_utf8(minlen).unwrap();
+        let maxlen = String::from_utf8(maxlen).unwrap();
+        let minlen = usize::from_str_radix(minlen.as_str(), 10).expect(&format!("ERRR:RandomRandomFuzzer:MinLen issue:{}", minlen));
+        let maxlen = usize::from_str_radix(maxlen.as_str(), 10).expect(&format!("ERRR:RandomRandomFuzzer:MaxLen issue:{}", maxlen));
         RandomRandomFuzzer::new(minlen, maxlen)
     }
 }
@@ -130,7 +131,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
     ///   * minlen
     ///   * maxlen
     ///   * charset
-    /// * as the charset can contain any binary value, one needs to define this has a hexstring (without 0x prefix)
+    /// * If the charset can contain any binary value, one needs to define this has a hexstring (with 0x prefix)
     /// ### FuzzerType:RandomFixedFuzzerPrintables:InstanceName
     /// * this requires only the below keys
     ///   * minlen
@@ -146,13 +147,14 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
         let spacesprefix = Self::get_spacesprefix(vs);
         let minlen = Self::get_value(vs, "minlen", spacesprefix).expect("ERRR:RandomFixedFuzzer:GetMinLen:");
         let maxlen = Self::get_value(vs, "maxlen", spacesprefix).expect("ERRR:RandomFixedFuzzer:GetMaxLen:");
+        let minlen = String::from_utf8(minlen).unwrap();
+        let maxlen = String::from_utf8(maxlen).unwrap();
         let minlen = usize::from_str_radix(minlen.trim(), 10).expect(&format!("ERRR:RandomFixedFuzzer:MinLen issue:{}", minlen));
         let maxlen = usize::from_str_radix(maxlen.trim(), 10).expect(&format!("ERRR:RandomFixedFuzzer:MaxLen issue:{}", maxlen));
         if la[1] == "RandomFixedFuzzerPrintables" {
             return RandomFixedFuzzer::new_printables(minlen, maxlen);
         }
         let charset = Self::get_value(vs, "charset", spacesprefix).expect("ERRR:RandomFixedFuzzer:GetCharSet:");
-        let charset = datautils::vu8_from_hex(charset.trim()).expect("ERRR:RandomFixedFuzzer:GetCharSet:");
         RandomFixedFuzzer::new(minlen, maxlen, charset)
     }
 
