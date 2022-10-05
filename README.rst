@@ -8,8 +8,8 @@ Version: 20220819IST0750
 Overview
 ##########
 
-Library
-|||||||||
+Library & Helper modules
+||||||||||||||||||||||||||
 
 Fuzzers and Chains
 ===================
@@ -48,6 +48,39 @@ Two kinds of FuzzChainers are provided currently
 This can be used to test input parsing logic of programs to see, that
 they handle all possible input cases sufficiently robustly.
 
+
+CfgFiles
+==========
+
+A generic config file handling module.
+
+It allows one to parse a config file, consisting of Config groups.
+
+Each Config group is made up of a bunch of non empty lines, with empty
+lines before and after it. If the Config group is at the begin of the
+config file, then empty line before such a config group is optional.
+Similarly if the config group is at the end of the config file, then
+empty line after such a config group is optional.
+
+A config group's 1st line should have a alpha numeric char as the 0th
+char in that line.
+
+If a line's 0th char begins with #, then it is treated as a comment
+and is skipped.
+
+One needs to call its parse_file function, passing it the config file
+to parse and the handler to call for handling the config groups found
+in the file.
+
+
+Rtm
+=====
+
+The runtime manager, is a helper module to allow the creation of predefined
+fuzzers, and its chaining into fuzzchains, based on the config info in the
+config groups (from config file) passed to it.
+
+
 IOBridge
 ==========
 
@@ -71,8 +104,13 @@ VM
 ====
 
 This is a helper module for the util program's operations to be controlled
-by the end user using custom prg files, which use operations defined by
-a application specific VM. This provides the VM.
+by the end user using custom prg files.
+
+It provides a VM, with a set of useful instructions, for use by these program
+files.
+
+It inturn uses Rtm and Cfgfiles module to instantiate fuzzers and fuzz chains
+as defined by the end user.
 
 
 Minimal FuzzerK Util
