@@ -12,12 +12,12 @@ use loggerk::log_e;
 /// Loop through a predefined list of strings, in given sequence
 ///
 pub struct LoopFixedStringsFuzzer {
-    list: Vec<String>,
+    list: Vec<Vec<u8>>,
     curi: usize,
 }
 
 impl LoopFixedStringsFuzzer {
-    pub fn new(fixed_list: Vec<String>) -> LoopFixedStringsFuzzer {
+    pub fn new(fixed_list: Vec<Vec<u8>>) -> LoopFixedStringsFuzzer {
         LoopFixedStringsFuzzer {
             list: fixed_list,
             curi: 0,
@@ -33,7 +33,7 @@ impl super::Fuzz for LoopFixedStringsFuzzer {
         }
         let curi = step % self.list.len();
         let tosend = self.list[curi].clone();
-        for b in tosend.bytes() {
+        for b in tosend {
             buf.push(b)
         }
     }
@@ -74,11 +74,11 @@ impl crate::cfgfiles::FromVecStrings for LoopFixedStringsFuzzer {
 /// Randomly select from predefined list of strings
 ///
 pub struct RandomFixedStringsFuzzer {
-    list: Vec<String>,
+    list: Vec<Vec<u8>>,
 }
 
 impl RandomFixedStringsFuzzer {
-    pub fn new(fixed_list: Vec<String>) -> RandomFixedStringsFuzzer {
+    pub fn new(fixed_list: Vec<Vec<u8>>) -> RandomFixedStringsFuzzer {
         RandomFixedStringsFuzzer {
             list: fixed_list,
         }
@@ -93,7 +93,7 @@ impl super::Fuzz for RandomFixedStringsFuzzer {
         }
         let curi = rand::random::<usize>() % self.list.len();
         let tosend = self.list[curi].clone();
-        for b in tosend.bytes() {
+        for b in tosend {
             buf.push(b)
         }
     }

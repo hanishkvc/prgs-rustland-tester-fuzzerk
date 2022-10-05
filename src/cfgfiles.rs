@@ -151,7 +151,7 @@ pub trait FromVecStrings {
     ///   * if the optional ',' termination char is used, then any spaces at end of the value string before ','
     ///     will be retained.
     ///
-    fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<String>, String> {
+    fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<Vec<u8>>, String> {
         let sheadval = Self::get_value_emptyok(vs, key, spacesprefix);
         if sheadval.is_err() {
             return Err(sheadval.unwrap_err());
@@ -176,13 +176,13 @@ pub trait FromVecStrings {
             if curline.chars().last().unwrap() == ',' {
                 curline = curline.strip_suffix(",").unwrap();
             }
-            let curline = Self::str_deescape(curline);
+            let curline = Self::strval_process(curline);
             if curline.is_err() {
                 return Err(curline.unwrap_err());
             }
             let curline = curline.unwrap();
             log_d(&format!("DBUG:FromVS:GetValues:{}-{}:[{:?}]", Self::get_name(), key, curline));
-            vdata.push(curline.to_string());
+            vdata.push(curline);
         }
         Ok(vdata)
     }
