@@ -11,6 +11,7 @@ use loggerk::log_e;
 ///
 /// Loop through a predefined list of strings, in given sequence
 ///
+#[derive(Debug)]
 pub struct LoopFixedStringsFuzzer {
     list: Vec<Vec<u8>>,
     curi: usize,
@@ -73,6 +74,7 @@ impl crate::cfgfiles::FromVecStrings for LoopFixedStringsFuzzer {
 ///
 /// Randomly select from predefined list of strings
 ///
+#[derive(Debug)]
 pub struct RandomFixedStringsFuzzer {
     list: Vec<Vec<u8>>,
 }

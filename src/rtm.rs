@@ -53,25 +53,25 @@ impl HandleCfgGroup for RunTimeManager {
                 "LoopFixedStringsFuzzer" => {
                     let fuzzer = fixed::LoopFixedStringsFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created LoopFixedStringsFuzzer [{}]", la[2]));
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created LoopFixedStringsFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedStringsFuzzer" => {
                     let fuzzer = fixed::RandomFixedStringsFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}]", la[2]));
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomRandomFuzzer" => {
                     let fuzzer = random::RandomRandomFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomRandomFuzzer [{}]", la[2]));
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomRandomFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedFuzzer" | "RandomFixedFuzzerPrintables" => {
                     let fuzzer = random::RandomFixedFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedFuzzer [{}]", la[2]));
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 _ => panic!("ERRR:RunTimeManager:HandleCfgGroup:UnknownFuzzer:{:?}",la),

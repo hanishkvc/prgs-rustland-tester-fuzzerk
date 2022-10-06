@@ -12,6 +12,7 @@ use rand;
 ///
 /// Generate a buffer of random bytes, of size within the specified limits of min and max len.
 ///
+#[derive(Debug)]
 pub struct RandomRandomFuzzer {
     minlen: usize,
     maxlen: usize,
@@ -75,6 +76,7 @@ impl crate::cfgfiles::FromVecStrings for RandomRandomFuzzer {
 /// Generate a random buffer of bytes, which containts byte values from the specified set,
 /// of size within the specified limits of min and max len.
 ///
+#[derive(Debug)]
 pub struct RandomFixedFuzzer {
     minlen: usize,
     maxlen: usize,
