@@ -268,7 +268,7 @@ the value(s) specified could be
 
   * key: value | key: " value with spaces at ends   "
 
-  * key: 0xABCDEF010203523092 | key: value\n with \t newline in it
+  * key: 0xABCDEF010203523092 | key: value\\n with \\t newline in it
 
 * list of int or string data
 
@@ -283,7 +283,7 @@ The string data could be
 
   * having the string enclosed within double quotes
 
-  * having the white spaces specified has escape sequences (\t, \n, \r)
+  * having the white spaces specified has escape sequences (\\t, \\n, \\r)
 
     * this also allows newline or carriage return to be embedded anywhere
       within the string data.
@@ -303,18 +303,29 @@ The list can be specified in one of the following ways
 * if the list has multiple values then
 
   * key:
+
       value 1
+
       value 2
+
       value 3 comma at the end is optional,
+
       more values
+
       ...
 
    * key: NumOfValues
+
         Value 1 out of NumOfValues(NOV)
+
         Value 2 out of NOV
+
         ...
+
         Value NOV of NOV
 
+NOTE: The empty lines between values of the list and two adjacent slashes wrt
+escape sequences are things done to satisfy rst format requirements.
 
 Predefined Fuzzers
 -------------------
