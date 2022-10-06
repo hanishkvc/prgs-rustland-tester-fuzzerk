@@ -286,7 +286,7 @@ There are two types of fuzzers,
       * the list of binary values to be used for selection, can be specified
         has a textual string or a hex string or so
 
-  * Buf8RandomizeFuzzer [TODO]
+  * Buf8RandomizeFuzzer
 
     * return/append a buffer which contains the originally provided data, with
       some amount of random modifications to its contents, as noted below.
@@ -605,6 +605,9 @@ DONE
 
   * use double quoted string to allow white spaces at either end of the string
 
+* A Fuzzer which allows a predefined string to be randomly changed wrt some random positions in the string
+
+  * TODO: Allow this fuzzer to work with a predefined list of strings, rather than one predefined string
 
 TODO
 ||||||
@@ -617,8 +620,6 @@ TODO
   * if 1000msec btw requests, then server seems to only get the 1st request most of the time
 
   * ALERT: Need to check what happens with valid http requests instead of invalid http requests.
-
-* A Fuzzer which allows a predefined string from a list of predefined strings to be randomly changed wrt some random positions in the string
 
 * New Ops
 

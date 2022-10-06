@@ -144,6 +144,22 @@ pub trait FromVecStrings {
     }
 
     ///
+    /// Get the int value associated with the specified key. Empty value is not Ok with this.
+    ///
+    fn get_ivalue(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<isize, String> {
+        let svalue = Self::get_value(vs, key, spacesprefix);
+        if svalue.is_err() {
+            return Err(svalue.unwrap_err());
+        }
+        let svalue = String::from_utf8(svalue.unwrap()).unwrap();
+        let ivalue = isize::from_str_radix(svalue.trim(), 10);
+        if ivalue.is_err() {
+            return Err(format!("ERRR:FromVS:GetIValue:{}:Conversion of {} to Int err", key, svalue))
+        }
+        Ok(ivalue.unwrap())
+    }
+
+    ///
     /// Retrieve the list of values associated with the specified key
     /// * key needs to be in its own line with empty/no value following it
     ///   * \[WHITESPACE*\]SomeKey:
