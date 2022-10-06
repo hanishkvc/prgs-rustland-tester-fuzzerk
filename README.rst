@@ -254,6 +254,67 @@ in reality it is only a single slash \ as part of the escape sequence.
 NOTE: The sample template above, also shows how string (textual or binary or
 a mixture of both) can be specified in different ways, based on what one needs.
 
+Types of data
+---------------
+
+As part of the key-value(s) pairs specified in fuzz chains config file, currently
+the value(s) specified could be
+
+* single int
+
+  * key:value | key: value
+
+* single string
+
+  * key: value | key: " value with spaces at ends   "
+
+  * key: 0xABCDEF010203523092 | key: value\n with \t newline in it
+
+* list of int or string data
+
+The int data needs to be decimal literal.
+
+The string data could be
+
+* a bunch of textual words/chars with literal single line white spaces
+  (ie normal space and tab space) between them.
+
+* string data could have white spaces at the begin or end by
+
+  * having the string enclosed within double quotes
+
+  * having the white spaces specified has escape sequences (\t, \n, \r)
+
+    * this also allows newline or carriage return to be embedded anywhere
+      within the string data.
+
+* binary or a mixture of textual and binary data by having the string data
+  specified has a hex string which begins with 0x
+
+The list can be specified in one of the following ways
+
+* if the list has only a single value then
+
+  * key: value OR
+
+  * key:
+      value a single value
+
+* if the list has multiple values then
+
+  * key:
+      value 1
+      value 2
+      value 3 comma at the end is optional,
+      more values
+      ...
+
+   * key: NumOfValues
+        Value 1 out of NumOfValues(NOV)
+        Value 2 out of NOV
+        ...
+        Value NOV of NOV
+
 
 Predefined Fuzzers
 -------------------
