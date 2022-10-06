@@ -221,6 +221,9 @@ impl super::Fuzz for Buf8sRandomizeFuzzer {
         let bufindex: usize = rand::random::<usize>() % self.buf8s.len();
         let mut inb = self.buf8s[bufindex].clone();
         let buflen = inb.len() as isize;
+        if buflen <= 0 {
+            return;
+        }
         let mut startoffset = self.startoffset;
         if startoffset < 0 {
             startoffset = 0;
