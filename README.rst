@@ -2,17 +2,23 @@
 FuzzerK library+
 ####################
 Author: HanishKVC,
-Version: 20220819IST0750
+Version: 20221007IST0039, Saraswathi + Ayudha (Knowledge,Work,Mechanisms,Tools,Processes,...) pooja release
+License: GPL
 
 
 Overview
 ##########
 
-This can be used to test input parsing logic of programs to see, that
-they handle all possible input cases sufficiently robustly.
+This can be used to test input parsing logic of programs to see, that they
+handle all possible input cases sufficiently robustly.
 
-The program could be expecting its input from console(/stdin) or from
-a file or over a tcp or tls connection.
+The program being tested could be expecting its input from console(/stdin)
+or from a file or over a tcp or tls connection.
+
+Consists of a library containing the main/core module, as well as additional
+helper modules if requried, that can be used by other programs. Or one could
+also use the helper utility program (fuzzerk) to test other programs, without
+modifying them.
 
 
 Library & Helper modules
@@ -436,8 +442,11 @@ Overview
 
 This allows the end user to control the actions to be performed by fuzzerk, in a simple and flexible way.
 
-The commands/operations that can be specified using prg file include
 
+Ops/Instructions supported
+---------------------------
+
+The commands/operations that can be specified as part of the prg file include
 
 Data/Variables Related
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -614,7 +623,6 @@ Control/System related
   * currently there are no function arguments support yet,
     they have to work with the global data space directly.
 
-
 * ret
 
   * return from func
@@ -635,6 +643,7 @@ A sample file
 |       iobclose <iobid>
 |       inc <intvarid>
 |       iflt <chkvalue> <intvarid> goto labelid
+| !label labelid_named_unneeded
 |       dec <intvarid>
 |
 
