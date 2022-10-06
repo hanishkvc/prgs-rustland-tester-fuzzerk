@@ -390,7 +390,9 @@ The following type of predefined fuzzers is provided by default
         * if start value is not specified, it is assumed to be 0
 
         * if end value is not specified, it is assumed to be 255
-          The end value is inclusive.
+          The end value is inclusive in the logic and will be used as part of
+          the possible range wrt new values to use when changing existing value
+          with new values.
 
       * the positions that are randomly modified are selected randomly, but
         inturn restricted to be within a specified range of positions.
@@ -399,9 +401,9 @@ The following type of predefined fuzzers is provided by default
 
         * if end position is not specified, it is assumed to be till end
           of the provided original buffer.
-          The end position specified is immidiately beyond the positions
-          that will be modified. NOTE: This behaviour is different from
-          that of the vm op buf8randomize.
+          The end position specified is inclusive in the logic and will be used
+          as part of the possible range of positions that may be randomly selected
+          for changing the byte value wrt that position.
 
 
 Custom Fuzzers

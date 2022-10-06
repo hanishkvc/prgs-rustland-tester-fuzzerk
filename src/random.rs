@@ -163,7 +163,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
 }
 
 ///
-/// Generate a random purterbance on a given buffer of bytes (buf8).
+/// Generate a random purterbance on a given buffer of bytes (buf8s).
 /// Its values are manipulated based on the following settings
 /// randcount, startoffset, endoffset, startval, endval
 ///
@@ -176,6 +176,7 @@ pub struct Buf8sRandomizeFuzzer {
     /// location within buffer from where purterbances should be created
     startoffset: isize,
     /// location within buffer till which purterbances should be created
+    /// this position is inclusive and will be included in the position range that may get modified.
     endoffset: isize,
     /// starting of the binary byte value range, wrt what values can be randomly used
     startval: isize,
@@ -232,13 +233,13 @@ impl super::Fuzz for Buf8sRandomizeFuzzer {
         }
         let mut endoffset = self.endoffset;
         if endoffset < 0 {
-            endoffset = buflen;
-        } else if endoffset > buflen {
-            endoffset = buflen;
+            endoffset = buflen-1;
+        } else if endoffset >= buflen {
+            endoffset = buflen-1;
         }
         // do the required purterbarance
         let valuerange: usize = (self.endval - self.startval + 1) as usize;
-        let offsetrange: usize = (endoffset - startoffset) as usize;
+        let offsetrange: usize = (endoffset - startoffset + 1) as usize;
         for _i in 0..self.randcount {
             let char = (self.startval as usize + (rand::random::<usize>() % valuerange)) as u8;
             let ipos = (startoffset as usize + (rand::random::<usize>() % offsetrange)) as usize;
@@ -263,10 +264,10 @@ impl crate::cfgfiles::FromVecStrings for Buf8sRandomizeFuzzer {
     /// In the cfgfile use
     /// ### FuzzerType:Buf8sRandomizeFuzzer:InstanceName
     /// * this requieres the following keys
-    ///   * buf8: a textual or hex string
+    ///   * buf8s: a list of textual or hex strings
     ///   * randcount: -1 (decide randomly) | 0 | +ve integer
-    ///   * startoffset: -1 (0) | 0 | +ve integer < buf8.len()
-    ///   * endoffset: -1 (buf8.len()) | 0 | +ve integer <= buf8.len()
+    ///   * startoffset: -1 (0) | 0 | +ve integer < selectedBuf8.len()
+    ///   * endoffset: -1 (selectedBuf8.len()-1) | 0 | +ve integer <= selectedBuf8.len()-1
     ///   * startval: -1 (0) | 0 | +ve integer <= 255
     ///   * endval: -1 (255) | 0 | +ve integer <= 255
     ///
@@ -281,7 +282,7 @@ impl crate::cfgfiles::FromVecStrings for Buf8sRandomizeFuzzer {
             panic!("ERRR:Buf8sRandomizeFuzzer:FromStringVec:Mismatch wrt Fuzzer Type????");
         }
         let spacesprefix = Self::get_spacesprefix(vs);
-        let buf8s = Self::get_values(vs, "buf8s", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetBuf8:");
+        let buf8s = Self::get_values(vs, "buf8s", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetBuf8s:");
         let randcount = Self::get_ivalue(vs, "randcount", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetRandCount:");
         let startoffset = Self::get_ivalue(vs, "startoffset", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetStartOffset:");
         let endoffset = Self::get_ivalue(vs, "endoffset", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetEndOffset:");
