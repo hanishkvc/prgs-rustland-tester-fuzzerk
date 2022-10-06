@@ -7,7 +7,7 @@
 use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
-use loggerk::{log_d, log_w, log_e, log_i};
+use loggerk::{log_d, log_w, log_i};
 
 use crate::datautils;
 
@@ -18,6 +18,7 @@ pub trait FromVecStrings {
 
     ///
     /// Get number of spaces in front of any text data, in the top most string in the vector.
+    /// NOTE: The top most string is not removed from the vector.
     ///
     fn get_spacesprefix(vs: &VecDeque<String>) -> usize {
         let l = vs.front();
@@ -163,9 +164,14 @@ pub trait FromVecStrings {
 
     ///
     /// Retrieve the list of values associated with the specified key
-    /// * key needs to be in its own line with empty/no value following it
-    ///   * \[WHITESPACE*\]SomeKey:
-    /// * each value needs to be on its own line, indented further in compared to its key, with a optional ',' termination
+    /// * key needs to be in its own line with
+    ///   * empty/no value following it OR
+    ///     * \[WHITESPACE*\]SomeKey:
+    ///   * a single value immidiately following it OR
+    ///     * \[WHITESPACE*\]SomeKey: A_Single Value
+    ///   * a count of the number of values which is contained in this list
+    ///     * \[WHITESPACE*\]SomeKey: NumOfValues
+    /// * each value in a multivalue list needs to be on its own line, indented further in compared to its key, with a optional ',' termination
     ///   * \[WHITESPACE*\]WHITESPACE*The Value
     ///   * the WHITESPACES at begin and end of the Value string will be trimmed.
     ///   * even if the optional ',' termination char is used, any spaces at end of the value string before ',' will be trimmed.
@@ -208,7 +214,10 @@ pub trait FromVecStrings {
                 break;
             }
             if childsp != cursp {
-                return Err(format!("ERRR:FromVS:GetValues:{}:Prefix whitespaces mismatch:{} != {}", key, spacesprefix, cursp));
+                if cursp == spacesprefix {
+                    break;
+                }
+                return Err(format!("ERRR:FromVS:GetValues:{}:Prefix whitespaces mismatch wrt values or ???:{} != {}", key, childsp, cursp));
             }
             let l = vs.pop_front();
             let curline = l.unwrap();
