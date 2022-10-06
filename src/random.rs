@@ -168,7 +168,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
 /// randcount, startoffset, endoffset, startval, endval
 ///
 #[derive(Debug)]
-pub struct Buf8RandomizeFuzzer {
+pub struct Buf8sRandomizeFuzzer {
     /// the Vector of multiple buffer of bytes to operate on
     buf8s: Vec<Vec<u8>>,
     /// number of bytes to manipulate
@@ -183,12 +183,12 @@ pub struct Buf8RandomizeFuzzer {
     endval: isize,
 }
 
-impl Buf8RandomizeFuzzer {
+impl Buf8sRandomizeFuzzer {
 
     ///
     /// Create a instance
     ///
-    pub fn new(buf8s: Vec<Vec<u8>>, mut randcount: isize, mut startoffset: isize, mut endoffset: isize, mut startval:isize, mut endval:isize) -> Buf8RandomizeFuzzer {
+    pub fn new(buf8s: Vec<Vec<u8>>, mut randcount: isize, mut startoffset: isize, mut endoffset: isize, mut startval:isize, mut endval:isize) -> Buf8sRandomizeFuzzer {
         if randcount < 0 {
             randcount = ((rand::random::<usize>() % buf8s.len()) + 1) as isize;
         }
@@ -202,7 +202,7 @@ impl Buf8RandomizeFuzzer {
         } else if endval > 255 {
             endval = 255;
         }
-        Buf8RandomizeFuzzer {
+        Buf8sRandomizeFuzzer {
             buf8s,
             randcount,
             startoffset,
@@ -214,7 +214,7 @@ impl Buf8RandomizeFuzzer {
 
 }
 
-impl super::Fuzz for Buf8RandomizeFuzzer {
+impl super::Fuzz for Buf8sRandomizeFuzzer {
 
     fn append_fuzzed_immut(&self, _step: usize, buf: &mut Vec<u8>) {
         // Get the string/buffer to work with and setup work boundries
@@ -250,15 +250,15 @@ impl super::Fuzz for Buf8RandomizeFuzzer {
 
 }
 
-impl crate::cfgfiles::FromVecStrings for Buf8RandomizeFuzzer {
+impl crate::cfgfiles::FromVecStrings for Buf8sRandomizeFuzzer {
 
     fn get_name() -> String {
-        return "Buf8RandomizeFuzzer".to_string();
+        return "Buf8sRandomizeFuzzer".to_string();
     }
 
     ///
     /// In the cfgfile use
-    /// ### FuzzerType:Buf8RandomizeFuzzer:InstanceName
+    /// ### FuzzerType:Buf8sRandomizeFuzzer:InstanceName
     /// * this requieres the following keys
     ///   * buf8: a textual or hex string
     ///   * randcount: -1 (decide randomly) | 0 | +ve integer
@@ -267,24 +267,24 @@ impl crate::cfgfiles::FromVecStrings for Buf8RandomizeFuzzer {
     ///   * startval: -1 (0) | 0 | +ve integer <= 255
     ///   * endval: -1 (255) | 0 | +ve integer <= 255
     ///
-    fn from_vs(vs: &mut VecDeque<String>) -> Buf8RandomizeFuzzer {
+    fn from_vs(vs: &mut VecDeque<String>) -> Buf8sRandomizeFuzzer {
         let l = vs.pop_front();
         if l.is_none() {
-            panic!("ERRR:Buf8RandomizeFuzzer:FromStringVec:Got empty vector");
+            panic!("ERRR:Buf8sRandomizeFuzzer:FromStringVec:Got empty vector");
         }
         let l = l.unwrap(); // This should identify this particular type of Fuzzer and a runtime instance name
         let la: Vec<&str> = l.split(":").collect();
-        if la[1] != "Buf8RandomizeFuzzer" {
-            panic!("ERRR:Buf8RandomizeFuzzer:FromStringVec:Mismatch wrt Fuzzer Type????");
+        if la[1] != "Buf8sRandomizeFuzzer" {
+            panic!("ERRR:Buf8sRandomizeFuzzer:FromStringVec:Mismatch wrt Fuzzer Type????");
         }
         let spacesprefix = Self::get_spacesprefix(vs);
-        let buf8s = Self::get_values(vs, "buf8s", spacesprefix).expect("ERRR:Buf8RandomizeFuzzer:GetBuf8:");
-        let randcount = Self::get_ivalue(vs, "randcount", spacesprefix).expect("ERRR:Buf8RandomizeFuzzer:GetRandCount:");
-        let startoffset = Self::get_ivalue(vs, "startoffset", spacesprefix).expect("ERRR:Buf8RandomizeFuzzer:GetStartOffset:");
-        let endoffset = Self::get_ivalue(vs, "endoffset", spacesprefix).expect("ERRR:Buf8RandomizeFuzzer:GetEndOffset:");
-        let startval = Self::get_ivalue(vs, "startval", spacesprefix).expect("ERRR:Buf8RandomizeFuzzer:GetStartVal:");
-        let endval = Self::get_ivalue(vs, "endval", spacesprefix).expect("ERRR:Buf8RandomizeFuzzer:GetEndVal:");
-        Buf8RandomizeFuzzer::new(buf8s, randcount, startoffset, endoffset, startval, endval)
+        let buf8s = Self::get_values(vs, "buf8s", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetBuf8:");
+        let randcount = Self::get_ivalue(vs, "randcount", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetRandCount:");
+        let startoffset = Self::get_ivalue(vs, "startoffset", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetStartOffset:");
+        let endoffset = Self::get_ivalue(vs, "endoffset", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetEndOffset:");
+        let startval = Self::get_ivalue(vs, "startval", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetStartVal:");
+        let endval = Self::get_ivalue(vs, "endval", spacesprefix).expect("ERRR:Buf8sRandomizeFuzzer:GetEndVal:");
+        Buf8sRandomizeFuzzer::new(buf8s, randcount, startoffset, endoffset, startval, endval)
     }
 
 }

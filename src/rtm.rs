@@ -75,10 +75,10 @@ impl HandleCfgGroup for RunTimeManager {
                     log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
-                "Buf8RandomizeFuzzer" => {
-                    let fuzzer = random::Buf8RandomizeFuzzer::from_vs(cg);
+                "Buf8sRandomizeFuzzer" => {
+                    let fuzzer = random::Buf8sRandomizeFuzzer::from_vs(cg);
                     let fuzzer = Rc::new(fuzzer);
-                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created Buf8RandomizeFuzzer [{}] ie [{:?}]", la[2], fuzzer));
+                    log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created Buf8sRandomizeFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 _ => panic!("ERRR:RunTimeManager:HandleCfgGroup:UnknownFuzzer:{:?}",la),
