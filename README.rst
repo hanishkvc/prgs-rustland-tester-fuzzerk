@@ -146,6 +146,9 @@ flexible and potentially useful way.
 Usage Flow possibilities
 ##########################
 
+Whether to use Library or Program
+===================================
+
 One could use the logics of this system, in few different possible ways
 
 * instantiate and use the Fuzzers and FuzzChains provided by the core
@@ -170,6 +173,13 @@ One could use the logics of this system, in few different possible ways
     builtin VM related program/script file. This allows more complex
     test cases to be realised.
 
+
+Wrt fuzzing
+=============
+
+One could either build a fuzz chain made up of parts of the data that
+is needed. Or one could specify the ideal data and then let the logic
+randomly change it. Or use a combination of both.
 
 
 Runtime
@@ -248,7 +258,7 @@ a mixture of both) can be specified in different ways, based on what one needs.
 Predefined Fuzzers
 -------------------
 
-There are two types of fuzzers,
+The following type of predefined fuzzers is provided by default
 
 * ones that work with mainly provided data, without changing them
 
@@ -286,15 +296,21 @@ There are two types of fuzzers,
       * the list of binary values to be used for selection, can be specified
         has a textual string or a hex string or so
 
-  * Buf8RandomizeFuzzer
+* ones that take predefined / provided data and inturn change it
 
-    * return/append a buffer which contains the originally provided data, with
-      some amount of random modifications to its contents, as noted below.
+  * Buf8sRandomizeFuzzer
 
-      * a predefined number of bytes randomly modified
+    * return/append a buffer which contains one of the originally provided data,
+      with some amount of random modifications to its contents, as noted below.
 
-        * if not predefined, then it is randomly decided as to how many bytes
-          should be randomly modified.
+    * one needs to provide the following info/data
+
+      * a list of strings (textual or binary or mixture of both)
+
+      * the number of bytes to randomly modified
+
+        * if not explicitly predefined (ie if set to -1), then it is randomly
+          decided as to how many bytes should be randomly modified.
 
       * the new random byte values are selected to be within a specified range
         of values.
@@ -302,6 +318,7 @@ There are two types of fuzzers,
         * if start value is not specified, it is assumed to be 0
 
         * if end value is not specified, it is assumed to be 255
+          The end value is inclusive.
 
       * the positions that are randomly modified are selected randomly, but
         inturn restricted to be within a specified range of positions.
@@ -310,6 +327,9 @@ There are two types of fuzzers,
 
         * if end position is not specified, it is assumed to be till end
           of the provided original buffer.
+          The end position specified is immidiately beyond the positions
+          that will be modified. NOTE: This behaviour is different from
+          that of the vm op buf8randomize.
 
 
 Custom Fuzzers
@@ -605,9 +625,11 @@ DONE
 
   * use double quoted string to allow white spaces at either end of the string
 
-* A Fuzzer which allows a predefined string to be randomly changed wrt some random positions in the string
+* A Fuzzer which allows predefined string(s) to be randomly changed in a controlled way,
+  wrt some random positions in the string and the values to use when changing.
 
-  * TODO: Allow this fuzzer to work with a predefined list of strings, rather than one predefined string
+  * This fuzzer takes a predefined list of strings, and inturn randomly changes one of
+    them, when ever it is called to generated a fuzzed data.
 
 TODO
 ||||||
