@@ -8,19 +8,33 @@ Version: 20220819IST0750
 Overview
 ##########
 
+This can be used to test input parsing logic of programs to see, that
+they handle all possible input cases sufficiently robustly.
+
+The program could be expecting its input from console(/stdin) or from
+a file or over a tcp or tls connection.
+
+
 Library & Helper modules
 ||||||||||||||||||||||||||
 
 Fuzzers and Chains
 ===================
 
-At the core, the library defines a Fuzz trait, which allows fuzzers to
-be created. And FuzzChain containers to allow fuzzers to be chained
-together to create the needed end pattern of data.
+At the core, the library defines
+
+* a Fuzz trait, which allows fuzzers to be created.
+
+* and FuzzChain containers to allow fuzzers to be chained together
+  to create the needed end pattern of data.
 
 In turn it also provides a set of predefined fuzzers, which generate new
 binary buffer each time they are called, with either random or looped or
 mixture of random and presetup data, based on how they are configured.
+
+NOTE: The logics involved maintain and generate binary data, so that
+it can contain either textual data or purely binary data or a mixture
+of both.
 
 One could define two kinds of fuzzers based on what is needed.
 
@@ -44,9 +58,6 @@ Two kinds of FuzzChainers are provided currently
 * one which expects its members to work, without updating/modifying any
   of their internal context. Such fuzzer instances can be reused as
   required within a single or even across multiple such chains.
-
-This can be used to test input parsing logic of programs to see, that
-they handle all possible input cases sufficiently robustly.
 
 
 CfgFiles
@@ -118,7 +129,7 @@ Minimal FuzzerK Util
 
 A program which uses the modules mentioned previously to help test
 other programs by generating fuzz input for them and pushing to them
-using either console or tcp or tls session.
+using either console or file or tcp or tls session.
 
 This allows a end user to quickly test their program using this fuzzer
 logic, without needing to modify their program to handshake with the
@@ -176,11 +187,11 @@ FuzzerChains File
 Overview
 -----------
 
-This defines one or more fuzzers and the fuzz chains created using them.
-End user can create these files and then pass it to the program, so that
-at runtime the needed fuzz chain can be created without having to recompile
-things, ie provided they can make do with the fuzzers that is already
-provided.
+This configures and instantiates one or more predefined fuzzers and the
+fuzz chains created using them. End user can create these files and then
+pass it to the program, so that at runtime the needed fuzz chain can be
+created without having to recompile things, ie provided they can make do
+with the fuzzers that is already provided.
 
 Alert: Dont intermix tab and spaces, even thou visually both may appear
 to be equivalent, the logic will not accept such intermixing, bcas it
@@ -189,14 +200,21 @@ cant be sure how many spaces a tab represents in a given context/instance.
 The Template
 ---------------
 
-NOTE: The | (and one space after that for non empty lines) is for rst to
-identify the below lines has a block of data to be retained as such by
-rst.
+NOTE1:RawRST: The | (and one space after that for non empty lines) is for
+rst to identify the below lines has a block of data to be retained as such
+by rst.
+
+NOTE2:RawRST: The two slashes \\ below is to work with rst format,
+in reality it is only a single slash \ as part of the escape sequence.
 
 |
 | FuzzerType:TypeNameABC:InstanceNameABC1
-|   Arg1: ValueX
-|   Arg2: ValueM
+|   Arg1: IntValueX
+|   Arg2: StringValueM
+|   Arg3: String   ValueN
+|   Arg4: "   String Value with SpacesAt Ends "
+|   Arg5: 0xABCDEF0102030405060708090A303132323334
+|   ArgX: String\\tValueY\\n
 |   ArgA:
 |     Value1,
 |     Value2,
@@ -206,7 +224,10 @@ rst.
 | FuzzerType:TypeNameXYZ:InstanceNameXYZ99
 |     Arg1:
 |         ValueA,
-|         ValueB,
+|         Value   B,
+|         Value\\tWhatElse\\nC\\t,
+|         " Value\\tWhatElse\\nF   ",
+|         0x3031203234203536,
 |         ValueZ,
 |     Arg2:
 |         ValueX,
@@ -219,6 +240,9 @@ rst.
 |     InstanceNameXYZ99
 |     InstanceNameXYZ99
 |
+
+NOTE: The sample template above, also shows how string (textual or binary or
+a mixture of both) can be specified in different ways, based on what one needs.
 
 
 Predefined Fuzzers
@@ -240,9 +264,9 @@ There are two types of fuzzers,
     * each time it is called, it returns/appends a randomly selected string
       from the lsit of provided strings.
 
-  * TODO: Currently the list of provided strings is treated as textual strings
+  * DONE: Currently the list of provided strings is treated as textual strings
     Rather convert it to a list of binary buffers, so that it can either store
-    binary data or textual data (in its binary form).
+    binary data or textual data (in its binary form) or a mixture of both.
 
 * those that use random generation to a great extent
 
@@ -259,8 +283,8 @@ There are two types of fuzzers,
 
       * whose length is randomly decided from a given min and max length limit.
 
-      * the list of binary values to be used for selection, is specified
-        has a textual string containing hex values.
+      * the list of binary values to be used for selection, can be specified
+        has a textual string or a hex string or so
 
   * Buf8RandomizeFuzzer [TODO]
 
@@ -299,6 +323,10 @@ If a custom fuzzer has to be created from the textual FuzzChains config file, th
 * the fuzzer needs to support cfgfiles::FromVecStrings trait
 
   * and its from_vs method
+
+  * inturn it can use the predefined helper functions of this trait to parse config
+    file, to help create instance of the custom fuzzer, based on users configuration
+    of the same.
 
 * the RunTimeManager.handle_cfggroup needs to be updated to create the custom fuzzer
 
@@ -570,6 +598,14 @@ DONE
     keep it simple for now and just ensure that 1st shutdown call leads to a
     proper Sent result.
 
+* specify strings flexibly in cfgfc files, when defining fuzzers. As needed
+  one could
+
+  * use hex strings to intermix text and binary data,
+
+  * use double quoted string to allow white spaces at either end of the string
+
+
 TODO
 ||||||
 
@@ -592,5 +628,4 @@ TODO
 
   * Ok with bufsmerge
 
-* allow hex strings wrt cfgfc files used for defining fuzzers and fuzzchains
 

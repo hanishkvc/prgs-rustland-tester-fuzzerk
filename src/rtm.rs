@@ -1,5 +1,6 @@
 //!
-//! RunTimeManager
+//! RunTimeManager - helps create and maintain the list of fuzzers and fuzzchains
+//! specified using cfgfiles mechanism.
 //!
 //! HanishKVC, 2022
 //!
