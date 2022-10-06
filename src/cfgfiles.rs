@@ -7,10 +7,12 @@
 use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
-use loggerk::log_d;
+use loggerk::{log_d, log_w, log_e, log_i};
 
 use crate::datautils;
 
+
+const LIST_MAXVALUES: usize = 1024;
 
 pub trait FromVecStrings {
 
@@ -174,12 +176,33 @@ pub trait FromVecStrings {
             return Err(sheadval.unwrap_err());
         }
         let sheadval = String::from_utf8(sheadval.unwrap()).unwrap();
+        let numvalues;
+        let mut vdata = Vec::new();
         if sheadval.len() != 0 {
-            return Err(format!("ERRR:FromVS:GetValues:{}:Non array value {} found???", key, sheadval));
+            let tnumvalues = usize::from_str_radix(&sheadval, 10);
+            if tnumvalues.is_err() {
+                let curline = Self::strval_process(&sheadval);
+                if curline.is_err() {
+                    return Err(curline.unwrap_err());
+                }
+                log_w(&format!("WARN:FromVS:GetValues:{}-{}:Assuming list has only a single value [{:?}]", Self::get_name(), key, curline));
+                vdata.push(curline.unwrap());
+                return Ok(vdata);
+            }
+            numvalues = tnumvalues.unwrap();
+            if numvalues > LIST_MAXVALUES {
+                log_w(&format!("WARN:FromVS:GetValues:{}-{}:Assuming list of values contains [{}] values", Self::get_name(), key, numvalues));
+            } else {
+                log_i(&format!("INFO:FromVS:GetValues:{}-{}:Assuming list of values contains [{}] values", Self::get_name(), key, numvalues));
+            }
+        } else {
+            numvalues = LIST_MAXVALUES;
+            log_w(&format!("WARN:FromVS:GetValues:{}-{}:Will accept max of [{}] values for this list", Self::get_name(), key, numvalues));
         }
         let childsp = Self::get_spacesprefix(vs);
-        let mut vdata = Vec::new();
-        loop {
+        let mut icurvalue = 0;
+        while icurvalue <= numvalues {
+            icurvalue += 1;
             let cursp = Self::get_spacesprefix(vs);
             if (cursp == spacesprefix) || (cursp == 0) {
                 break;
