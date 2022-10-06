@@ -50,10 +50,19 @@ FuzzerType:RandomFixedFuzzer:RFF02
 	maxlen: 8
 	charset: 0x02030405060708090A3031323334
 
+FuzzerType:Buf8RandomizeFuzzer:B8RF01
+	buf8: Hello world today
+	randcount: 2
+	startoffset: -1
+	endoffset: -1
+	startval: -1
+	endval: -1
+
 FuzzChain:FuzzChain:FC300
 	RRF01
 	LFSF01
 	RRF01
 	RFF01
 	RFF02
+	B8RF01
 
