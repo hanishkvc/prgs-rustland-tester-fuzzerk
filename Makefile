@@ -12,6 +12,9 @@ ctests:
 test_general:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300
 
+test_general_loop:
+	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300 --loopcnt 10
+
 test_http_console:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --loopcnt 4
 

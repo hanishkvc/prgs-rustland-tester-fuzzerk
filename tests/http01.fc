@@ -3,8 +3,8 @@
 # Mostly Ok req type, except for when there is no space wrt that last GET
 FuzzerType:RandomFixedStringsFuzzer:OKOK_REQ_TYPE
   list:
-    GET ,
-    PUT ,
+    "GET ",
+    "PUT ",
     GET,
 
 
@@ -19,12 +19,12 @@ FuzzerType:RandomFixedFuzzerPrintables:RANDOM_PATH
 FuzzerType:RandomFixedFuzzer:MAYBE_Space
 	minlen: 1
 	maxlen: 3
-	charset: 02090A30313233342F
+	charset: 0x02090A30313233342F
 
 FuzzerType:RandomFixedFuzzer:OK_SPACE
 	minlen: 1
 	maxlen: 1
-	charset: 20
+	charset: 0x20
 
 FuzzChain:FuzzChain:FC100
 	OKOK_REQ_TYPE
