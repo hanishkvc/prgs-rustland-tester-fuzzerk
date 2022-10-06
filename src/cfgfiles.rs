@@ -75,11 +75,12 @@ pub trait FromVecStrings {
     ///   * if one wants the resultant string to contain double quotes at either end, put a 2nd double quote, where required.
     /// * interpret the given string has a hex string, if it starts with 0x
     fn strval_process(ins: &str) -> Result<Vec<u8>, String> {
+        log_d(&format!("DBUG:FromVS:StrValProcess:{}:{}", Self::get_name(), ins));
         let mut outs = ins.trim();
         if outs.len() >= 2 {
             let mut outschars = outs.chars();
             let startchar = outschars.nth(0).unwrap();
-            let endchar = outschars.nth(outs.len()-1).unwrap();
+            let endchar = outschars.last().unwrap();
             if (startchar == endchar) && (startchar == '"') {
                 outs = outs.strip_prefix('"').unwrap();
                 outs = outs.strip_suffix('"').unwrap();
