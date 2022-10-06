@@ -68,8 +68,10 @@ pub trait FromVecStrings {
 
     ///
     /// Handle the provided string appropriately and return a Vec<u8>
-    /// * trim the provided string
+    /// * trim the provided string wrt literal whitespaces at either side
+    ///   * if one uses escape sequences like \t|\n|\r... at either end, such whitespaces will be retained
     /// * remove double quotes, if it was used to protect the string
+    ///   * double quotes mainly help, when we want whitespaces at either end of the string
     ///   * if one wants the resultant string to contain double quotes at either end, put a 2nd double quote, where required.
     /// * interpret the given string has a hex string, if it starts with 0x
     fn strval_process(ins: &str) -> Result<Vec<u8>, String> {
@@ -98,11 +100,8 @@ pub trait FromVecStrings {
     ///
     /// Get the value (single) associated with the specified key. Empty value is Ok
     ///
-    /// The key - value pair should be specified as key:value
-    ///
-    ///     * All data following ':' till end of line, will be returned as value, after trimming for spaces at either ends.
-    ///     * The key:value pair should be indented with whitespaces chars to match the specified spacesprefix.
-    ///
+    /// * The key-value pair should be specified as key:value | key: value | key: " value " | key: 0xvalue...
+    /// * The key-value pair should be indented with whitespaces chars to match the specified spacesprefix.
     fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<u8>, String> {
         let cursp = Self::get_spacesprefix(vs);
         if cursp != spacesprefix {
@@ -129,6 +128,8 @@ pub trait FromVecStrings {
     ///
     /// Get the value (single) associated with the specified key. Empty value is not Ok with this.
     ///
+    /// * The key-value pair should be specified as key:value | key: value | key: " value " | key: 0xvalue...
+    /// * The key-value pair should be indented with whitespaces chars to match the specified spacesprefix.
     fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<u8>, String> {
         let val = Self::get_value_emptyok(vs, key, spacesprefix);
         if val.is_err() {
@@ -145,11 +146,10 @@ pub trait FromVecStrings {
     /// Retrieve the list of values associated with the specified key
     /// * key needs to be in its own line with empty/no value following it
     ///   * \[WHITESPACE*\]SomeKey:
-    /// * each value needs to be on its own line, with a optional ',' termination
+    /// * each value needs to be on its own line, indented further in compared to its key, with a optional ',' termination
     ///   * \[WHITESPACE*\]WHITESPACE*The Value
     ///   * the WHITESPACES at begin and end of the Value string will be trimmed.
-    ///   * if the optional ',' termination char is used, then any spaces at end of the value string before ','
-    ///     will be retained.
+    ///   * even if the optional ',' termination char is used, any spaces at end of the value string before ',' will be trimmed.
     ///
     fn get_values(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<Vec<u8>>, String> {
         let sheadval = Self::get_value_emptyok(vs, key, spacesprefix);
