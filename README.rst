@@ -147,7 +147,7 @@ Usage Flow possibilities
 ##########################
 
 Whether to use Library or Program
-===================================
+|||||||||||||||||||||||||||||||||||
 
 One could use the logics of this system, in few different possible ways
 
@@ -175,7 +175,7 @@ One could use the logics of this system, in few different possible ways
 
 
 Wrt fuzzing
-=============
+|||||||||||||
 
 One could either build a fuzz chain made up of parts of the data that
 is needed. Or one could specify the ideal data and then let the logic
