@@ -36,7 +36,7 @@ FuzzChain:FuzzChain:FC200
     LFSF02
     LFSF01
 
-# Another FC Chain with true random data in it
+# Another FC Chain with true random data in it and Buf8sRandomizeFuzzer
 FuzzerType:RandomRandomFuzzer:RRF01
 	minlen: 3
 	maxlen: 8
@@ -50,8 +50,27 @@ FuzzerType:RandomFixedFuzzer:RFF02
 	maxlen: 8
 	charset: 0x02030405060708090A3031323334
 
-FuzzerType:Buf8RandomizeFuzzer:B8RF01
-	buf8: Hello world today
+FuzzerType:Buf8sRandomizeFuzzer:B8RF01
+	buf8s: Hello world today
+	randcount: 2
+	startoffset: -1
+	endoffset: -1
+	startval: -1
+	endval: -1
+
+FuzzerType:Buf8sRandomizeFuzzer:B8RF02
+	buf8s:
+		Hello world today
+	randcount: 2
+	startoffset: -1
+	endoffset: -1
+	startval: -1
+	endval: -1
+
+FuzzerType:Buf8sRandomizeFuzzer:B8RF03
+	buf8s:
+		Hello world today
+		Save Nature Save Earth
 	randcount: 2
 	startoffset: -1
 	endoffset: -1
@@ -65,4 +84,6 @@ FuzzChain:FuzzChain:FC300
 	RFF01
 	RFF02
 	B8RF01
+	B8RF02
+	B8RF03
 
