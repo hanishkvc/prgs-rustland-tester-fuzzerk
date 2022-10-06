@@ -188,7 +188,7 @@ impl Buf8sRandomizeFuzzer {
     ///
     /// Create a instance
     ///
-    pub fn new(buf8s: Vec<Vec<u8>>, mut randcount: isize, mut startoffset: isize, mut endoffset: isize, mut startval:isize, mut endval:isize) -> Buf8sRandomizeFuzzer {
+    pub fn new(buf8s: Vec<Vec<u8>>, mut randcount: isize, startoffset: isize, endoffset: isize, mut startval:isize, mut endval:isize) -> Buf8sRandomizeFuzzer {
         if randcount < 0 {
             randcount = ((rand::random::<usize>() % buf8s.len()) + 1) as isize;
         }
