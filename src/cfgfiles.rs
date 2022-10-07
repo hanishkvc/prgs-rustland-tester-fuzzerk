@@ -45,6 +45,7 @@ pub trait FromVecStrings {
         let mut bescape = false;
         let mut outs = String::new();
         for c in ins.chars() {
+            //println!("{}",c);
             if c == '\\' {
                 if bescape {
                     outs.push(c);
@@ -81,22 +82,22 @@ pub trait FromVecStrings {
         log_d(&format!("DBUG:FromVS:StrValProcess:{}:{}", Self::get_name(), ins));
         let mut outs = ins.trim();
         if outs.len() >= 2 {
+            if outs.starts_with("0x") {
+                let vdata = datautils::vu8_from_hex(&outs[2..]);
+                return vdata;
+            }
             let mut outschars = outs.chars();
             let startchar = outschars.nth(0).unwrap();
             let endchar = outschars.last().unwrap();
             if (startchar == endchar) && (startchar == '"') {
                 outs = outs.strip_prefix('"').unwrap();
                 outs = outs.strip_suffix('"').unwrap();
-                let outs = Self::str_deescape(outs);
-                if outs.is_err() {
-                    return Err(outs.unwrap_err());
-                }
-                return Ok(Vec::from(outs.unwrap()));
             }
-            if outs.starts_with("0x") {
-                let vdata = datautils::vu8_from_hex(&outs[2..]);
-                return vdata;
+            let outs = Self::str_deescape(outs);
+            if outs.is_err() {
+                return Err(outs.unwrap_err());
             }
+            return Ok(Vec::from(outs.unwrap()));
         }
         Ok(Vec::from(outs))
     }
