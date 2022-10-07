@@ -189,10 +189,7 @@ impl Buf8sRandomizeFuzzer {
     ///
     /// Create a instance
     ///
-    pub fn new(buf8s: Vec<Vec<u8>>, mut randcount: isize, startoffset: isize, endoffset: isize, mut startval:isize, mut endval:isize) -> Buf8sRandomizeFuzzer {
-        if randcount < 0 {
-            randcount = ((rand::random::<usize>() % buf8s.len()) + 1) as isize;
-        }
+    pub fn new(buf8s: Vec<Vec<u8>>, randcount: isize, startoffset: isize, endoffset: isize, mut startval:isize, mut endval:isize) -> Buf8sRandomizeFuzzer {
         if startval < 0 {
             startval = 0;
         } else if startval > 255 {
@@ -237,10 +234,15 @@ impl super::Fuzz for Buf8sRandomizeFuzzer {
         } else if endoffset >= buflen {
             endoffset = buflen-1;
         }
+        // fix randcount, if reqd
+        let mut randcount = self.randcount;
+        if randcount < 0 {
+            randcount = (rand::random::<usize>() % buflen as usize) as isize;
+        }
         // do the required purterbarance
         let valuerange: usize = (self.endval - self.startval + 1) as usize;
         let offsetrange: usize = (endoffset - startoffset + 1) as usize;
-        for _i in 0..self.randcount {
+        for _i in 0..randcount {
             let char = (self.startval as usize + (rand::random::<usize>() % valuerange)) as u8;
             let ipos = (startoffset as usize + (rand::random::<usize>() % offsetrange)) as usize;
             inb[ipos] = char;

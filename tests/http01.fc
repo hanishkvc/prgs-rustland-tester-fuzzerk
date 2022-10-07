@@ -48,3 +48,18 @@ FuzzChain:FuzzChain:FC_OkReqInBtw
 	OK_SPACE
 	OKOK_HTTP_VER
 
+# use Buf8sRandomize to generate lot invalid and few valid requests
+
+FuzzerType:Buf8sRandomizeFuzzer:REQS_LIST
+	buf8s:
+		GET /index.html http/v1
+		PUT /index.new.html http/v1
+	randcount: -1
+	startoffset: -1
+	endoffset: -1
+	startval: -1
+	endval: -1
+
+FuzzChain:FuzzChain:FC_B8sR
+	REQS_LIST
+
