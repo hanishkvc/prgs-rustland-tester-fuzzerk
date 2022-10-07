@@ -448,12 +448,20 @@ Ops/Instructions supported
 
 The commands/operations that can be specified as part of the prg file include
 
+General
+~~~~~~~~~
+
+Where ever int_var_or_$value is mentioned wrt instructions,
+* if one prefixes $ to what ever text is put in the corresponding position, the text will be treated as a integer literal
+* else it will be treated has a int var
+
+
 Data/Variables Related
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 * letstr <string_var_id> <string value>
 
-* letint <int_var_id> <integer_value>
+* letint <int_var_id> <int_var_or_$value>
 
 * inc <int_var_id>
 
@@ -599,18 +607,21 @@ Control/System related
 
   a directive to mark the current location/address in the program where this directive is encountered
 
-* iflt <check_value> <int_var_id> goto <label_id>
+* iflt <checkagainst_int_var_or_$value> <curvalue_int_var_or_$value> goto <label_id>
 
-  if int value in the int_var_id is less than check_value, then goto (ie pass program flow control to) specified label.
+  if int value in/corresponding to curvalue_int_var_or_$value is less than that in checkagainst,
+  then goto (ie pass program flow control to) specified label.
 
-* checkjump arg1 arg2 Label4LessThan Label4Equal Label4GreaterThan
+* checkjump arg1_int_var_or_$value arg2_int_var_or_$value Label4LessThan Label4Equal Label4GreaterThan
+
+  * based on whether int value corresponding to arg1 is lt or eq or gt wrt arg2,
+    the logic will jump to either Label4LessThan or Label4Equal or Label4GreateThan,
+    as the case may be.
 
   * __NEXT__ a implicit label identifying the next instuction/op in the program
 
     * useful if one doesnt want to jump to any specific location for a given condition,
       then the control will implicitly flow to next instruction in the program, in that case.
-
-  * prefix $ to arg1 or arg2 to treat it has a literal number, else it will be treated has a int var
 
 * jmp label
 
