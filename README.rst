@@ -13,7 +13,7 @@ This can be used to test input parsing logic of programs to see, that they
 handle all possible input cases sufficiently robustly.
 
 The program being tested could be expecting its input from console(/stdin)
-or from a file or over a tcp or tls connection.
+or from a file or over a tcp (client or server) or tls (server) connection.
 
 Consists of a library containing the main/core module, as well as additional
 helper modules if requried, that can be used by other programs. Or one could
@@ -101,14 +101,24 @@ config groups (from config file) passed to it.
 IOBridge
 ==========
 
-This is a helper module for the util program to help work with either
-Console or Tcp server or Tls server or File, in a generic way.
+This is a helper module for the util program to help work with either Console
+or Tcp client or Tcp server or Tls server or File, in a generic way.
 
 * console
 
 * tcpclient:addr:port
 
   * addr could be ip addr or domain name
+
+  * this can be used to simulate a tcpclient and will allow to connect
+    with a tcp server program.
+
+* tcpserver:addr:port
+
+  * addr could be ip addr or domain name
+
+  * this can be used to simulate a tcpserver and will allow a tcp client
+    program to connect to it, so that tcp client program can be tested.
 
 * tlsclient:addr:port
 
@@ -139,13 +149,13 @@ using either console or file or tcp or tls session.
 
 This allows a end user to quickly test their program using this fuzzer
 logic, without needing to modify their program to handshake with the
-fuzzer library provided by this package. They just need to write some
+fuzzer library provided by this package. They just need to write few
 simple text based control files and inturn test their program, provided
 their program takes inputs over the stdin or a tcp session or a tls
 session.
 
-It also allows one to test the libraries/modules in a simple yet
-flexible and potentially useful way.
+It also allows one to test the libraries/modules in this system/crate,
+in a simple yet flexible and potentially useful way.
 
 
 
@@ -539,7 +549,7 @@ IOBridge related
       * NOTE that there could be more textual info seen on the screen, but they are written to stderr,
         so that the fuzzers and fuzzchains and their generated data is not disturbed.
 
-    * tcpclient - for connecting to a tcp server
+    * tcpclient - for connecting to a tcp server; tcpserver - for allowing a tcp client to connect
 
       * addr => <ipaddr|domainname><:port>
 
