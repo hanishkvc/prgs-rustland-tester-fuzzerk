@@ -48,10 +48,22 @@ impl IOBridge {
         Self::TcpClient(ts)
     }
 
-    fn new_tcpserver(addr: &str, _ioargs: &HashMap<String, String>) -> IOBridge {
+    ///
+    /// Supported IOArgs
+    /// * read_timeout=millisecs
+    ///
+    fn new_tcpserver(addr: &str, ioargs: &HashMap<String, String>) -> IOBridge {
+        let invalid = String::from("INVALID");
+        let read_timeout = ioargs.get("read_timeout").or(Some(&invalid)).unwrap();
+
         let tl = net::TcpListener::bind(addr).expect("ERRR:FuzzerK:IOBridge:TcpServer:TcpListenerBind");
         let (ts, sa) = tl.accept().expect("ERRR:FuzzerK:IOBridge:TcpServer:TcpListenerAccept");
         log_o(&format!("INFO:FuzzerK:IOBridge:TcpServer:Client {} has connected to me", sa));
+        if *read_timeout != invalid {
+            let timeout_millis = u64::from_str_radix(&read_timeout, 10).expect("ERRR:FuzzerK:IOBridge:TcpServer:New:ReadTimeout");
+            let tomillis = Duration::from_millis(timeout_millis);
+            ts.set_read_timeout(Some(tomillis)).expect("ERRR:FuzzerK:IOBridge:TcpServer:New:SetReadTimeout");
+        }
         Self::TcpServer(ts)
     }
 

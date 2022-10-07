@@ -595,7 +595,7 @@ IOBridge related
 
   * while creating a new iobridge remember to set a read_timeout, so that read wont block indefinitely, if there is no data to read.
 
-    * all io bridge types may not support read_timeout (currently only network types ie tcpclient and tlsclient support it).
+    * all io bridge types may not support read_timeout (currently only network types ie tcpclient, tcpserver and tlsclient support it).
 
 * iobclose <iob_id>
 
