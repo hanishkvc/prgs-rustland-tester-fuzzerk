@@ -1,0 +1,15 @@
+# A simple test fuzzchain config file for tcp server
+
+FuzzerType:Buf8sRandomizeFuzzer:B8RF01
+	buf8s:
+		Hello world today\n
+		Save Nature Save Earth
+	randcount: -1
+	startoffset: -1
+	endoffset: -1
+	startval: -1
+	endval: -1
+
+FuzzChain:FuzzChain:FC100
+	B8RF01
+
