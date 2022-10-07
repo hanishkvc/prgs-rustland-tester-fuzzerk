@@ -33,6 +33,9 @@ test_http_tls_single_prgfile:
 test_buf8randomize:
 	target/debug/fuzzerk --prgfile tests/test.buf8randomize.prg
 
+test_client_using_tcpserver:
+	target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC100 --ioaddr tcpserver:127.0.0.1:8888 --loopcnt 1
+
 dump_ascii:
 	gcc -o misc/dump_ascii_printable misc/dump_ascii.c
 	gcc -o misc/dump_ascii misc/dump_ascii.c
