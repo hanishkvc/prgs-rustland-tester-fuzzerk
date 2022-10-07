@@ -601,7 +601,7 @@ Fuzzers related
 Control/System related
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* sleepmsec <milliseconds>
+* sleepmsec <milliseconds_int_var_or_$value>
 
 * !label <label_id>
 
