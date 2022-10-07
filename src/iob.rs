@@ -13,13 +13,14 @@ use std::fs;
 use std::time::Duration;
 use boring::ssl;
 
-use loggerk::{log_d, log_e};
+use loggerk::{log_d, log_e, log_o};
 
 
 pub enum IOBridge {
     None,
     Console(io::Stdout, io::Stdin),
     TcpClient(net::TcpStream),
+    TcpServer(net::TcpStream),
     TlsClient(ssl::SslStream<net::TcpStream>),
     FileWriter(fs::File),
 }
@@ -45,6 +46,13 @@ impl IOBridge {
             ts.set_read_timeout(Some(tomillis)).expect("ERRR:FuzzerK:IOBridge:TcpClient:New:SetReadTimeout");
         }
         Self::TcpClient(ts)
+    }
+
+    fn new_tcpserver(addr: &str, _ioargs: &HashMap<String, String>) -> IOBridge {
+        let tl = net::TcpListener::bind(addr).expect("ERRR:FuzzerK:IOBridge:TcpServer:TcpListenerBind");
+        let (ts, sa) = tl.accept().expect("ERRR:FuzzerK:IOBridge:TcpServer:TcpListenerAccept");
+        log_o(&format!("INFO:FuzzerK:IOBridge:TcpServer:Client {} has connected to me", sa));
+        Self::TcpServer(ts)
     }
 
     ///
@@ -113,6 +121,7 @@ impl IOBridge {
     /// * none
     /// * console
     /// * tcpclient:addr:port
+    /// * tcpserver:addr:port
     /// * tlsclient:addr:port
     /// * filewriter:path/to/file
     ///
@@ -129,6 +138,9 @@ impl IOBridge {
         let ioa = ioaddr.split_once(':').expect("ERRR:FuzzerK:IOBridge:New:Setting up nw");
         if ioa.0 == "tcpclient" {
             return Self::new_tcpclient(ioa.1, ioargs);
+        }
+        if ioa.0 == "tcpserver" {
+            return Self::new_tcpserver(ioa.1, ioargs);
         }
         if ioa.0 == "tlsclient" {
             return Self::new_tlsclient(ioa.1, ioargs);
@@ -154,6 +166,13 @@ impl IOBridge {
                 let gotr = ts.write_all(buf);
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Write:TcpClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(buf.len());
+            },
+            Self::TcpServer(ts) => {
+                let gotr = ts.write_all(buf);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Write:TcpServer:{}", gotr.unwrap_err()))
                 }
                 return Ok(buf.len());
             },
@@ -190,6 +209,13 @@ impl IOBridge {
                 let gotr = ts.flush();
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Flush:TcpClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(());
+            },
+            Self::TcpServer(ts) => {
+                let gotr = ts.flush();
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Flush:TcpServer:{}", gotr.unwrap_err()))
                 }
                 return Ok(());
             },
@@ -230,6 +256,13 @@ impl IOBridge {
                 }
                 return Ok(gotr.unwrap());
             },
+            Self::TcpServer(ts) => {
+                let gotr = ts.read(buf);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Read:TcpServer:{}", gotr.unwrap_err()))
+                }
+                return Ok(gotr.unwrap());
+            },
             Self::TlsClient(ss) => {
                 let gotr = ss.read(buf);
                 if gotr.is_err() {
@@ -250,6 +283,13 @@ impl IOBridge {
                 let gotr = ts.shutdown(net::Shutdown::Both);
                 if gotr.is_err() {
                     return Err(format!("ERRR:FuzzerK:IOBridge:Close:TcpClient:{}", gotr.unwrap_err()))
+                }
+                return Ok(());
+            },
+            Self::TcpServer(ts) => {
+                let gotr = ts.shutdown(net::Shutdown::Both);
+                if gotr.is_err() {
+                    return Err(format!("ERRR:FuzzerK:IOBridge:Close:TcpServer:{}", gotr.unwrap_err()))
                 }
                 return Ok(());
             },
