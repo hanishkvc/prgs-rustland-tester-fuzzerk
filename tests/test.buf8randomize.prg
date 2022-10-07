@@ -1,7 +1,7 @@
 #
 # Test Buf8Randomize
 #
-	letint loopcnt 0
+	letint loopcnt $0
 	letbuf testbuf 0x30313233343536373839
 	iobnew logme filewriter:/tmp/test.buf8randomize.bin create=yes
 	letbuf newline 0x0A

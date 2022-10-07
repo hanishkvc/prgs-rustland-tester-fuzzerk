@@ -45,7 +45,7 @@
 
 !label START
 
-	letint loopcnt 0
+	letint loopcnt $0
 	iobnew fsave filewriter:/tmp/http.got.bin create=yes
 	letbuf marker01 **** NEW SET ****
 	letbuf marker02 *****************
