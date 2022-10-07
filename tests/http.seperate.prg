@@ -8,7 +8,7 @@
 	bufnew rbuf 1024
 	iobread srv1 rbuf
 	iobclose srv1
-	sleepmsec 1000
+	sleepmsec $1000
 	inc loopcnt
 	iflt $10 loopcnt goto repeatagain
 

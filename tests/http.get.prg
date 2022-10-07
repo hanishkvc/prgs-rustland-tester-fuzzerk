@@ -59,7 +59,7 @@
 	call COMM_WITH_SERVER
 	call SAVE_TO_FILE
 
-	sleepmsec 1000
+	sleepmsec $1000
 
 	inc loopcnt
 	checkjump loopcnt $10 repeatagain __NEXT__ __NEXT__
