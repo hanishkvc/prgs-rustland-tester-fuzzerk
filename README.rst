@@ -725,6 +725,13 @@ DONE
   * This fuzzer takes a predefined list of strings, and inturn randomly changes one of
     them, when ever it is called to generated a fuzzed data.
 
+* Allow user to use either a int variable or int literal value interchangably,
+  in following instructions, where a int value is required.
+
+  * letint, iflt, checkjump, sleepmsec
+
+
+
 TODO
 ||||||
 
