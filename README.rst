@@ -740,6 +740,10 @@ DONE
 
   * letint, iflt, checkjump, sleepmsec
 
+  One needs to use $ prefix before a int literal to tell the vm compiler that
+  it is a int literal value and not a int variable.
+
+  TOTHINK: Should I add it in other places like wrt bufnew's buffer size arg, ...
 
 
 TODO
@@ -754,12 +758,11 @@ TODO
 
   * ALERT: Need to check what happens with valid http requests instead of invalid http requests.
 
-* New Ops
-
-  * use $ prefix everywhere to indicate integer values.
-
 * allow extra unneeded whitespaces in between
 
   * Ok with bufsmerge
 
+* Maybe: Merge TcpClient and TcpServer into a single entity in the IOBridge enum, and may be
+  even merge Tls with Tcp entity. Obviously the new_???? helpers wrt each specific type, needs
+  to be different, but beyond that it could be single, if things are kept simple.
 
