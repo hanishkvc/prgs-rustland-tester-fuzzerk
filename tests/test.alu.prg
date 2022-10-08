@@ -23,9 +23,15 @@
 
 	letbuf.s bradd radd
 	letbuf.s brsub rsub
+	letbuf.s brmult rmult
+	letbuf.s brdiv rdiv
+	letbuf.s brmod rmod
 	letbuf msgpre "RAdd:"
-	letbuf msgbtw ":RSub:"
-	bufsmerge bmsg msgpre bradd msgbtw brsub msgnl
+	letbuf msgbtw1 ":RSub:"
+	letbuf msgbtw2 ":RMult:"
+	letbuf msgbtw3 ":RDiv:"
+	letbuf msgbtw4 ":RMod:"
+	bufsmerge bmsg msgpre bradd msgbtw1 brsub msgbtw2 brmult msgbtw3 brdiv msgbtw4 brmod msgnl
 	iobwrite term bmsg
 
 	iobwrite term msgEnd
