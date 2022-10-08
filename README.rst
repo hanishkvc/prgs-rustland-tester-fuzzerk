@@ -473,10 +473,6 @@ Data/Variables Related
 
 * letint <int_var_id> <int_var_or_$value>
 
-* inc <int_var_id>
-
-* dec <int_var_id>
-
 * bufnew <buf_id> <buf_size>
 
   Create a named buffer of a given size
@@ -536,6 +532,22 @@ Data/Variables Related
 
     * rand_endval is inclusive
 
+Alu Operations
+~~~~~~~~~~~~~~~
+
+* inc <int_var_id>
+
+* dec <int_var_id>
+
+* add <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+
+* sub <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+
+* mult <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+
+* div <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+
+* mod <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
 
 IOBridge related
 ~~~~~~~~~~~~~~~~~
