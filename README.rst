@@ -477,17 +477,19 @@ Data/Variables Related
 
   Create a named buffer of a given size
 
-* letbuf <buf_id> data_for_buffer
+* letbuf <buf_id> var_or_bufdata
 
   Create a buffer and fill it with specified data. The data specified could be
 
-  * a textual string till end of line. This can even include space in between.
+  * a int or string or buf variable
 
-    * if you want white space(s) at begin or end of the textual string, you need to use the hex string option mentioned next.
+  * a int value prefixed with $
+
+  * a textual string enclosed within double quotes. This can include space in between or at ends.
 
   * a hex string till end of line (identified by having 0x at begining of the data)
 
-  * special data markers
+  * special data markers, prefixed with __
 
     * __TIME__STAMP__
 
@@ -757,6 +759,12 @@ DONE
 
   TOTHINK: Should I add it in other places like wrt bufnew's buffer size arg, ...
 
+* Add ALU commands add, sub, mult, div, mod
+
+* Make letbuf more flexible by allowing either
+  * literal int or textual or hex string values
+  * int or str or buf variable
+
 
 TODO
 ||||||
@@ -778,3 +786,10 @@ TODO
   even merge Tls with Tcp entity. Obviously the new_???? helpers wrt each specific type, needs
   to be different, but beyond that it could be single, if things are kept simple.
 
+* Allow similar literal value representation wrt FC Config files and Prg files.
+
+  * also allow escape sequences \t\n\r wrt VM:DataM strings
+
+* Allow all VM Op int literals to use $ prefix or rather better DataM based flow
+
+  * Allow $0xHexIntValue
