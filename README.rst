@@ -633,7 +633,7 @@ Control/System related
     * useful if one doesnt want to jump to any specific location for a given condition,
       then the control will implicitly flow to next instruction in the program, in that case.
 
-* jmp label
+* jump label
 
   * a unconditional jump
 
