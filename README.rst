@@ -462,16 +462,48 @@ General
 ~~~~~~~~~
 
 Where ever int_var_or_$value is mentioned wrt instructions,
+
 * if one prefixes $ to what ever text is put in the corresponding position, the text will be treated as a integer literal
+
   * $DecimalValue - represents decimal integer value or
+
   * $0xHexValue - represents hexadecimal integer value
+
 * else it will be treated has a int var
 
 Where ever str_var_or_"value" is mentioned wrt instructions,
+
 * If one uses textual data in double quotes, it will be treated as a string literal
+
   * "string value"
+
 * else it will be treated has a str var
+
 * NOTE: 0xHexString is not supported in such locations.
+
+Where ever any_var_or_data is mentioned wrt instructions,
+
+* a int or string or buf variable
+
+* a int value prefixed with $
+
+  * $DecimalValue
+
+  * $0xHexValue
+
+* a textual string enclosed within double quotes. This can include space in between or at ends.
+
+* a hex string till end of line (identified by having 0x at begining of the data)
+
+* special data markers, prefixed with __
+
+  * __TIME__STAMP__
+
+    * This puts the current time stamp into the buffer
+
+  * __RANDOM__BYTES__TheLength
+
+    * This puts TheLength amount of random bytes into the buffer
 
 
 Data/Variables Related
@@ -479,33 +511,19 @@ Data/Variables Related
 
 * letstr <string_var_id> <str_var_or_"value">
 
+  create a str var and set its value
+
 * letint <int_var_id> <int_var_or_$value>
+
+  create a int var and set its value
 
 * bufnew <buf_id> <buf_size>
 
   Create a named buffer of a given size
 
-* letbuf <buf_id> var_or_bufdata
+* letbuf <buf_id> bufdata_any_var_or_data
 
-  Create a buffer and fill it with specified data. The data specified could be
-
-  * a int or string or buf variable
-
-  * a int value prefixed with $
-
-  * a textual string enclosed within double quotes. This can include space in between or at ends.
-
-  * a hex string till end of line (identified by having 0x at begining of the data)
-
-  * special data markers, prefixed with __
-
-    * __TIME__STAMP__
-
-      * This puts the current time stamp into the buffer
-
-    * __RANDOM__BYTES__TheLength
-
-      * This puts TheLength amount of random bytes into the buffer
+  Create a buffer var and fill it with specified data.
 
 * bufsmerge destbuf srcbuf1 srcbuf2 ..... srcbufn
 
