@@ -21,7 +21,8 @@
 	letbuf brsub rsub
 	letbuf msgpre "RAdd and RSub:"
 	letbuf msgbtw ":"
-	bufsmerge bmsg msgpre bradd msgbtw brsub
+	letbuf msgnl 0x0A
+	bufsmerge bmsg msgpre bradd msgbtw brsub msgnl
 	iobwrite term bmsg
 
 	letbuf msg1 "End of the journey"

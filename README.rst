@@ -523,7 +523,9 @@ Data/Variables Related
 
 * letbuf <buf_id> bufdata_any_var_or_data
 
-  Create a buffer var and fill it with specified data.
+  Create a buffer var and fill it with specified data with could either be a literal value or a variable.
+
+  By allowing Int or Str var's value to be stored into a Buf var, the same can be written to a iobridge.
 
 * bufsmerge destbuf srcbuf1 srcbuf2 ..... srcbufn
 
