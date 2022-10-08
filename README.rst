@@ -463,13 +463,21 @@ General
 
 Where ever int_var_or_$value is mentioned wrt instructions,
 * if one prefixes $ to what ever text is put in the corresponding position, the text will be treated as a integer literal
+  * $DecimalValue - represents decimal integer value or
+  * $0xHexValue - represents hexadecimal integer value
 * else it will be treated has a int var
+
+Where ever str_var_or_"value" is mentioned wrt instructions,
+* If one uses textual data in double quotes, it will be treated as a string literal
+  * "string value"
+* else it will be treated has a str var
+* NOTE: 0xHexString is not supported in such locations.
 
 
 Data/Variables Related
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* letstr <string_var_id> <string value>
+* letstr <string_var_id> <str_var_or_"value">
 
 * letint <int_var_id> <int_var_or_$value>
 
