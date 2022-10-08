@@ -521,11 +521,15 @@ Data/Variables Related
 
   Create a named buffer of a given size
 
-* letbuf <buf_id> bufdata_any_var_or_data
+* letbuf[.s] <buf_id> bufdata_any_var_or_data
 
   Create a buffer var and fill it with specified data with could either be a literal value or a variable.
 
   By allowing Int or Str var's value to be stored into a Buf var, the same can be written to a iobridge.
+
+  * letbuf tries to read the int|str var as corresponding underlying binary data
+
+  * letbuf.s tries to read the int|str var's value as equivalent string literal
 
 * bufsmerge destbuf srcbuf1 srcbuf2 ..... srcbufn
 
@@ -780,7 +784,7 @@ DONE
 * Allow user to use either a int variable or int literal value interchangably,
   in following instructions, where a int value is required.
 
-  * letint, iflt, checkjump, sleepmsec
+  * letint, iflt, checkjump, sleepmsec, alu ops
 
   One needs to use $ prefix before a int literal to tell the vm compiler that
   it is a int literal value and not a int variable.
@@ -792,6 +796,8 @@ DONE
 * Make letbuf more flexible by allowing either
   * literal int or textual or hex string values
   * int or str or buf variable
+    * letbuf which tries to get binary data wrt vars
+    * letbuf.s which tries to get string literals corresponding to these var
 
 
 TODO
