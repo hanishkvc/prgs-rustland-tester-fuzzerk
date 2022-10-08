@@ -10,5 +10,5 @@
 	iobclose srv1
 	sleepmsec $1000
 	inc loopcnt
-	iflt $10 loopcnt goto repeatagain
+	iflt loopcnt $10 goto repeatagain
 

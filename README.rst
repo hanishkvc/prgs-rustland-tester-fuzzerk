@@ -663,10 +663,10 @@ Control/System related
 
   a directive to mark the current location/address in the program where this directive is encountered
 
-* iflt <checkagainst_int_var_or_$value> <curvalue_int_var_or_$value> goto <label_id>
+* iflt <value1_int_var_or_$value> <value2_int_var_or_$value> goto <label_id>
 
-  if int value in/corresponding to curvalue_int_var_or_$value is less than that in checkagainst,
-  then goto (ie pass program flow control to) specified label.
+  if int value in/corresponding to value1_int_var_or_$value is less than that in value2, then
+  goto (ie pass program flow control to) specified label.
 
 * checkjump arg1_int_var_or_$value arg2_int_var_or_$value Label4LessThan Label4Equal Label4GreaterThan
 
@@ -709,7 +709,7 @@ A sample file
 |       iobread <iobid> <bufid>
 |       iobclose <iobid>
 |       inc <intvarid>
-|       iflt <chkvalue> <intvarid> goto labelid
+|       iflt <intvarid> <chkvalue> goto labelid
 | !label labelid_named_unneeded
 |       dec <intvarid>
 |
@@ -794,10 +794,16 @@ DONE
 * Add ALU commands add, sub, mult, div, mod
 
 * Make letbuf more flexible by allowing either
+
   * literal int or textual or hex string values
+
   * int or str or buf variable
+
     * letbuf which tries to get binary data wrt vars
+
     * letbuf.s which tries to get string literals corresponding to these var
+
+* switch order of value args check wrt iflt, so that it is similar to that of checkjump.
 
 
 TODO
