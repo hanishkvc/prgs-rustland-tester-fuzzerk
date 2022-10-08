@@ -17,6 +17,13 @@
 	div rdiv i01 i02
 	mod rmod i01 i02
 
+	letbuf bradd radd
+	letbuf brsub rsub
+	letbuf msgpre "RAdd and RSub:"
+	letbuf msgbtw ":"
+	bufsmerge bmsg msgpre bradd msgbtw brsub
+	iobwrite term bmsg
+
 	letbuf msg1 "End of the journey"
 	iobwrite term msg1
 
