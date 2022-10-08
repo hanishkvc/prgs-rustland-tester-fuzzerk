@@ -92,12 +92,12 @@ fn main() {
 
     let mut vm = vm::VM::new();
     if cfgfc.len() == 0 {
-        log_i(&format!("NOTE:FuzzerK:Args: --cfgfc <Fuzz++CfgFile> is a simple mechanism to create fuzzers and fuzzchains, usable in most cases"));
+        log_o(&format!("NOTE:FuzzerK:Args: --cfgfc <Fuzz++CfgFile> is a simple mechanism to create fuzzers and fuzzchains, usable in most cases"));
     }
     vm.load_fcrtm(&cfgfc);
     if prgfile.len() == 0 {
         if loopcnt <= 1 {
-            log_i(&format!("NOTE:FuzzerK:Args: --loopcnt <ANumber> allows one to control how many times to loop through fuzzchain generation and io handshake"));
+            log_o(&format!("NOTE:FuzzerK:Args: --loopcnt <ANumber> allows one to control how many times to loop through fuzzchain generation and io handshake"));
         }
         if fc.len() == 0 {
             log_w(&format!("WARN:FuzzerK:Args: If no --prgfile <ThePrgFile>, then --fc <FuzzChainId> is needed along with --cfgfc <Fuzz++Cfgfile>"));

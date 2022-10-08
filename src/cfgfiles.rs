@@ -7,7 +7,7 @@
 use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
-use loggerk::{log_d, log_w, log_i};
+use loggerk::{log_d, log_w, log_o};
 
 use crate::datautils;
 
@@ -200,7 +200,7 @@ pub trait FromVecStrings {
             if numvalues > LIST_MAXVALUES {
                 log_w(&format!("WARN:FromVS:GetValues:{}-{}:Assuming list of values contains [{}] values", Self::get_name(), key, numvalues));
             } else {
-                log_i(&format!("INFO:FromVS:GetValues:{}-{}:Assuming list of values contains [{}] values", Self::get_name(), key, numvalues));
+                log_o(&format!("INFO:FromVS:GetValues:{}-{}:Assuming list of values contains [{}] values", Self::get_name(), key, numvalues));
             }
         } else {
             numvalues = LIST_MAXVALUES;
