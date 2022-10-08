@@ -30,7 +30,7 @@
 	ret
 
 !label FILE_ID
-	letbuf sfileid FuzzerK:Save Of:HttpGetPrg:FileID:
+	letbuf sfileid "FuzzerK:Save Of:HttpGetPrg:FileID:"
 	letbuf fileid __RANDOM__BYTES__16
 	iobwrite fsave sfileid
 	iobwrite fsave fileid
@@ -47,8 +47,8 @@
 
 	letint loopcnt $0
 	iobnew fsave filewriter:/tmp/http.got.bin create=yes
-	letbuf marker01 **** NEW SET ****
-	letbuf marker02 *****************
+	letbuf marker01 "**** NEW SET ****"
+	letbuf marker02 "*****************"
 	letbuf markernl 0x0A
 	bufsmerge markerstart markernl markernl markernl markernl marker01 markernl
 	bufsmerge markerend markernl marker02 markernl
