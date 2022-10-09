@@ -490,13 +490,16 @@ If none of above, then it will be treated as a var name. However it should start
 
 
 Where ever int_var_or_value is mentioned wrt instructions, then it should represent a int variable or value.
-
 Where ever ideally_int_var_or_value is mentioned wrt instructions, then it should ideally represent a int
-variable or value. However If it refers to a string or binary buffer entity, then logic will try to convert
-it into int value.
+variable or value. However If it refers to
 
-Where ever str_var_or_value is mentioned wrt instructions, then it should ideally represent a string variable
-or value. If not, the logic will try to convert other types to equivalent string representation.
+* a string entity, then treat it has a textual literal value of the int and convert it into int
+
+* binary buffer entity, then logic will try to interpret it has raw byte values of the int and
+  inturn convert it into int.
+
+Where ever str_var_or_value is mentioned wrt instructions, then it should represent a string variable or value.
+If not, the logic will try to convert other types to equivalent string representation.
 
 * if a $0xHexString based literal is specified, it should represent a valid utf8 string.
 
@@ -525,9 +528,13 @@ Data/Variables Related
 
   By allowing Int or Str var's value to be stored into a Buf var, the same can be written to a iobridge.
 
-  * letbuf tries to read the int|str var as corresponding underlying binary data
+  * letbuf tries to read the src int|str var as corresponding underlying binary data
 
-  * letbuf.s tries to read the int|str var's value as equivalent string literal
+  * letbuf.s tries to read the src
+
+    * int var/value as equivalent string/textual literal value
+
+    * buf var/value as hex string
 
 * bufsmerge destbuf srcbuf1 srcbuf2 ..... srcbufn
 
@@ -785,7 +792,7 @@ Previously
 * Allow user to use either a int variable or int literal value interchangably,
   in following instructions, where a int value is required.
 
-  * letint, iflt, checkjump, sleepmsec, alu ops
+  * letint, iflt, checkjump, sleepmsec, alu ops, bufnew
 
   One needs to use $ prefix before a int literal to tell the vm compiler that
   it is a int literal value and not a int variable.
