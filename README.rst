@@ -562,6 +562,8 @@ Data/Variables Related
 
 * buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
 
+  * all the int arguments (ie other than bufid) belong to the int_var_or_value class
+
   * randomize randcount values from with in a part (start and end offset) of the buf
     with values from a given range (start and end value).
 
@@ -572,7 +574,8 @@ Data/Variables Related
 
     * buf_startoffset and buf_endoffset map to begin and end of buffer being operated on, if not specified.
 
-    * rand_startval will be mapped to 0 and rand_endval to 255, if needed
+    * rand_startval will be mapped to 0 and rand_endval to 255, if needed.
+      Both these need to be u8 values, else it will be truncated to u8.
 
   * inclusive ends
 
@@ -802,7 +805,7 @@ Previously
 * Allow user to use either a int variable or int literal value interchangably,
   in following instructions, where a int value is required.
 
-  * letint, iflt, checkjump, sleepmsec, alu ops, bufnew
+  * letint, iflt, checkjump, sleepmsec, alu ops, bufnew, buf8randomize
 
   One needs to use $ prefix before a int literal to tell the vm compiler that
   it is a int literal value and not a int variable.
@@ -832,6 +835,8 @@ Previously
 
 * allow extra unneeded whitespaces in between operands of the instructions.
 
+* Allow all VM Op int literals to use the flexible and better DataM based flow
+
 
 TODO
 ||||||
@@ -852,5 +857,4 @@ TODO
 
   * also allow escape sequences \t\n\r wrt VM:DataM strings
 
-* Allow all VM Op int literals to use the flexible and better DataM based flow
 
