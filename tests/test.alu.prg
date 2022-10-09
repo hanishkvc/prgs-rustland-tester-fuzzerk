@@ -9,12 +9,14 @@
 	letbuf.s brmult rmult
 	letbuf.s brdiv rdiv
 	letbuf.s brmod rmod
-	letbuf msgpre "RAdd:"
-	letbuf msgbtw1 ":RSub:"
-	letbuf msgbtw2 ":RMult:"
-	letbuf msgbtw3 ":RDiv:"
-	letbuf msgbtw4 ":RMod:"
-	bufsmerge bmsg msgpre bradd msgbtw1 brsub msgbtw2 brmult msgbtw3 brdiv msgbtw4 brmod msgnl
+	letbuf msgArg1 "Arg1:"
+	letbuf msgArg2 ":Arg2:"
+	letbuf msgAdd ":RAdd:"
+	letbuf msgSub ":RSub:"
+	letbuf msgMult ":RMult:"
+	letbuf msgDiv ":RDiv:"
+	letbuf msgMod ":RMod:"
+	bufsmerge bmsg msgAdd bradd msgSub brsub msgMult brmult msgDiv brdiv msgMod brmod msgnl
 	iobwrite term bmsg
 	ret
 
@@ -23,6 +25,7 @@
 	letint i02 2
 
 	iobnew term console
+	# letbuf msgnl 0x0A, will work, but will have extra unwanted 00 bytes wrt native isize bytes size
 	letbuf msgnl $0x0A
 	letbuf msg1 "Staring on the journey"
 	bufsmerge msgStart msg1 msgnl
