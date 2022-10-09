@@ -452,14 +452,11 @@ Overview
 
 This allows the end user to control the actions to be performed by fuzzerk, in a simple and flexible way.
 
+General
+---------
 
-Ops/Instructions supported
----------------------------
-
-The commands/operations that can be specified as part of the prg file include
-
-General - Data and or Variable
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Data and or Variable
+~~~~~~~~~~~~~~~~~~~~~~
 
 Where ever var_or_value is mentioned wrt instruction operands, the text-tokens/content specified in the
 corresponding location in the prgfile will be interpreted as below.
@@ -506,6 +503,19 @@ If not, the logic will try to convert other types to equivalent string represent
 Where ever any_var_or_value is mentioned wrt instructions, it could represent int or string or binary buffer
 variable or value.
 
+
+Clean coding (Comments, White spaces)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If required one can put extra spaces around operands to align them across lines or so, for easy reading.
+
+If required one can put # at the beginning of a line to make it a comment line.
+
+
+Ops/Instructions supported
+---------------------------
+
+The commands/operations that can be specified as part of the prg file include
 
 Data/Variables Related
 ~~~~~~~~~~~~~~~~~~~~~~~
