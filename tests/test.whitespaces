@@ -1,0 +1,7 @@
+This is a test file wrt whitespaces
+
+This    line    contains whitespaces 		outside 	double quoted   strings
+The   extra   adjacent	whitespace outside    quotes will be trimmed  "  This    line    contains whitespaces 		outside 	double quoted   strings   "
+The   extra   adjacent	whitespace outside    quotes will be trimmed  "  This    line    contains\" whitespaces 		outside 	double quoted   strings   "
+The   extra   adjacent	whitespace outside    quotes will be trimmed  "  This    line    contains\" whitespaces 		outside\" 	double quoted   strings   "
+The\"   extra   adjacent	whitespace outside    quotes will be trimmed  "  This    line    contains\" whitespaces 		outside\" 	double quoted   strings   "

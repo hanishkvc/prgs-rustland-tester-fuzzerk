@@ -820,6 +820,8 @@ Previously
 
 * VM: simplify and cleanup the Data var or value interpretation, through DataM mechanism.
 
+* allow extra unneeded whitespaces in between operands of the instructions.
+
 
 TODO
 ||||||
@@ -831,10 +833,6 @@ TODO
   * if 1000msec btw requests, then server seems to only get the 1st request most of the time
 
   * ALERT: Need to check what happens with valid http requests instead of invalid http requests.
-
-* allow extra unneeded whitespaces in between
-
-  * Ok with bufsmerge
 
 * Maybe: Merge TcpClient and TcpServer into a single entity in the IOBridge enum, and may be
   even merge Tls with Tcp entity. Obviously the new_iobtype helpers wrt each specific type, needs
