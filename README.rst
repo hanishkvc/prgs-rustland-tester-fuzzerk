@@ -857,4 +857,9 @@ TODO
 
   * also allow escape sequences \t\n\r wrt VM:DataM strings
 
+* More if condition check types using a new CondOp enum
+
+  * Add support for ifeq wrt string types
+
+  * Later add support for other if types (ie iflt, ifle, ifeq, ifge, ifgt) wrt int
 
