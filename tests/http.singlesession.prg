@@ -8,5 +8,5 @@
 	#sleepmsec 10
 	sleepmsec 1000
 	inc loopcnt
-	iflt loopcnt 10 goto repeatagain
+	iflt.i loopcnt 10 goto repeatagain
 
