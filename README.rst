@@ -458,62 +458,57 @@ Ops/Instructions supported
 
 The commands/operations that can be specified as part of the prg file include
 
-General
-~~~~~~~~~
+General - Data and or Variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Where ever int_var_or_$value is mentioned wrt instructions,
+Where ever var_or_value is mentioned wrt instruction operands, the text-tokens/content specified in the
+corresponding location in the prgfile will be interpreted as below.
 
-* if one prefixes $ to what ever text is put in the corresponding position, the text will be treated as a integer literal
+If it starts with a numeric char or + or - will be treated has a numeric/integer literal.
 
-  * $DecimalValue - represents decimal integer value or
+* if it starts with 0x, then it will be treated has a hexadecimal integer value
 
-  * $0xHexValue - represents hexadecimal integer value
+* else it will be treated has a decimal integer value
 
-* else it will be treated has a int var
+If it starts or ends with double quotes, it will be treated as a string literal.
 
-Where ever str_var_or_"value" is mentioned wrt instructions,
+* this also allows spaces to be specified at begin or end of the string literal.
 
-* If one uses textual data in double quotes, it will be treated as a string literal
+If it starts with $0x then it will be treated has a binary buffer specified has a hex string.
 
-  * "string value"
+If it starts with __ then it will be treated has a special data value.
 
-* else it will be treated has a str var
+* __TIME__STAMP__
 
-* NOTE: 0xHexString is not supported in such locations.
+  * This puts the current time stamp into the buffer
 
-Where ever any_var_or_data is mentioned wrt instructions,
+* __RANDOM__BYTES__TheLength
 
-* a int or string or buf variable
+  * This puts TheLength amount of random bytes into the buffer
 
-* a int value prefixed with $
+If none of above, then it will be treated as a var name. However it should start with a alphabhetic char.
 
-  * $DecimalValue
 
-  * $0xHexValue
+Where ever int_var_or_value is mentioned wrt instructions, then it should ideally represent a int variable or
+value. If it refers to a string or binary buffer entity, then logic will try to convert it into int value.
 
-* a textual string enclosed within double quotes. This can include space in between or at ends.
+Where ever str_var_or_value is mentioned wrt instructions, then it should ideally represent a string variable
+or value. If not, the logic will try to convert other types to equivalent string representation.
 
-* a hex string till end of line (identified by having 0x at begining of the data)
+* if a $0xHexString based literal is specified, it should represent a valid utf8 string.
 
-* special data markers, prefixed with __
-
-  * __TIME__STAMP__
-
-    * This puts the current time stamp into the buffer
-
-  * __RANDOM__BYTES__TheLength
-
-    * This puts TheLength amount of random bytes into the buffer
+Where ever any_var_or_value is mentioned wrt instructions, it could represent int or string or binary buffer
+variable or value.
 
 
 Data/Variables Related
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* letstr <string_var_id> <str_var_or_"value">
+* letstr <string_var_id> <str_var_or_value>
 
   create a str var and set its value
 
-* letint <int_var_id> <int_var_or_$value>
+* letint <int_var_id> <int_var_or_value>
 
   create a int var and set its value
 
@@ -521,7 +516,7 @@ Data/Variables Related
 
   Create a named buffer of a given size
 
-* letbuf[.s] <buf_id> bufdata_any_var_or_data
+* letbuf[.s] <buf_id> bufdata_any_var_or_value
 
   Create a buffer var and fill it with specified data with could either be a literal value or a variable.
 
@@ -573,15 +568,15 @@ Alu Operations
 
 * dec <int_var_id>
 
-* add <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+* add <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
 
-* sub <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+* sub <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
 
-* mult <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+* mult <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
 
-* div <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+* div <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
 
-* mod <dest_int_var_id> <src1_int_var_or_$value> <src2_int_var_or_$value>
+* mod <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
 
 IOBridge related
 ~~~~~~~~~~~~~~~~~
@@ -657,18 +652,18 @@ Fuzzers related
 Control/System related
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* sleepmsec <milliseconds_int_var_or_$value>
+* sleepmsec <milliseconds_int_var_or_value>
 
 * !label <label_id>
 
   a directive to mark the current location/address in the program where this directive is encountered
 
-* iflt <value1_int_var_or_$value> <value2_int_var_or_$value> goto <label_id>
+* iflt <value1_int_var_or_value> <value2_int_var_or_value> goto <label_id>
 
-  if int value in/corresponding to value1_int_var_or_$value is less than that in value2, then
+  if int value in/corresponding to value1_int_var_or_value is less than that in value2, then
   goto (ie pass program flow control to) specified label.
 
-* checkjump arg1_int_var_or_$value arg2_int_var_or_$value Label4LessThan Label4Equal Label4GreaterThan
+* checkjump arg1_int_var_or_value arg2_int_var_or_value Label4LessThan Label4Equal Label4GreaterThan
 
   * based on whether int value corresponding to arg1 is lt or eq or gt wrt arg2,
     the logic will jump to either Label4LessThan or Label4Equal or Label4GreateThan,
@@ -743,6 +738,9 @@ TODO Plus
 DONE
 |||||||
 
+Previously
+============
+
 * end of prgfile
 
   * implicit end of prgfile taken care of
@@ -791,6 +789,11 @@ DONE
 
   TOTHINK: Should I add it in other places like wrt bufnew's buffer size arg, ...
 
+
+
+20221009
+===========
+
 * Add ALU commands add, sub, mult, div, mod
 
 * Make letbuf more flexible by allowing either
@@ -805,10 +808,11 @@ DONE
 
 * switch order of value args check wrt iflt, so that it is similar to that of checkjump.
 
+* VM: simplify and cleanup the Data var or value interpretation, through DataM mechanism.
+
 
 TODO
 ||||||
-
 
 * In http tls single session multi request testing (with invalid data)
 
@@ -830,6 +834,5 @@ TODO
 
   * also allow escape sequences \t\n\r wrt VM:DataM strings
 
-* Allow all VM Op int literals to use $ prefix or rather better DataM based flow
+* Allow all VM Op int literals to use the flexible and better DataM based flow
 
-  * Allow $0xHexIntValue
