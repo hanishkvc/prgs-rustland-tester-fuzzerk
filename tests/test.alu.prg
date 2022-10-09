@@ -19,11 +19,11 @@
 	ret
 
 !label START
-	letint i01 $10
-	letint i02 $2
+	letint i01 10
+	letint i02 2
 
 	iobnew term console
-	letbuf msgnl 0x0A
+	letbuf msgnl $0x0A
 	letbuf msg1 "Staring on the journey"
 	bufsmerge msgStart msg1 msgnl
 	letbuf msg1 "End of the journey"
@@ -37,13 +37,13 @@
 	mod rmod i01 i02
 	call PRINT_ALUVARS
 
-	sub rsub i01 $12
+	sub rsub i01 12
 	mult rmult i01 rsub
 	call PRINT_ALUVARS
 
-	sub rsub i01 $0x12
+	sub rsub i01 0x12
 	mult rmult i01 rsub
-	mod rmod $0x15 i02
+	mod rmod 0x15 i02
 	call PRINT_ALUVARS
 
 	iobwrite term msgEnd

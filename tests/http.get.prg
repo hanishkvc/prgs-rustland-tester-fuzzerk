@@ -35,7 +35,7 @@
 	iobwrite fsave sfileid
 	iobwrite fsave fileid
 	iobwrite fsave markernl
-	letbuf marker09 0x0A0930313233343536373839090A
+	letbuf marker09 $0x0A0930313233343536373839090A
 	buf8randomize marker09 3 2
 	iobwrite fsave marker09
 	iobwrite fsave markernl
@@ -45,11 +45,11 @@
 
 !label START
 
-	letint loopcnt $0
+	letint loopcnt 0
 	iobnew fsave filewriter:/tmp/http.got.bin create=yes
 	letbuf marker01 "**** NEW SET ****"
 	letbuf marker02 "*****************"
-	letbuf markernl 0x0A
+	letbuf markernl $0x0A
 	bufsmerge markerstart markernl markernl markernl markernl marker01 markernl
 	bufsmerge markerend markernl marker02 markernl
 	call FILE_ID
@@ -59,10 +59,10 @@
 	call COMM_WITH_SERVER
 	call SAVE_TO_FILE
 
-	sleepmsec $1000
+	sleepmsec 1000
 
 	inc loopcnt
-	checkjump loopcnt $10 repeatagain __NEXT__ __NEXT__
+	checkjump loopcnt 10 repeatagain __NEXT__ __NEXT__
 
 	iobclose fsave
 
