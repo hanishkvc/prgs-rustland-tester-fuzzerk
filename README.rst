@@ -489,8 +489,11 @@ If it starts with __ then it will be treated has a special data value.
 If none of above, then it will be treated as a var name. However it should start with a alphabhetic char.
 
 
-Where ever int_var_or_value is mentioned wrt instructions, then it should ideally represent a int variable or
-value. If it refers to a string or binary buffer entity, then logic will try to convert it into int value.
+Where ever int_var_or_value is mentioned wrt instructions, then it should represent a int variable or value.
+
+Where ever ideally_int_var_or_value is mentioned wrt instructions, then it should ideally represent a int
+variable or value. However If it refers to a string or binary buffer entity, then logic will try to convert
+it into int value.
 
 Where ever str_var_or_value is mentioned wrt instructions, then it should ideally represent a string variable
 or value. If not, the logic will try to convert other types to equivalent string representation.
@@ -512,7 +515,7 @@ Data/Variables Related
 
   create a int var and set its value
 
-* bufnew <buf_id> <buf_size>
+* bufnew <buf_id> <bufsize_ideally_int_var_or_value>
 
   Create a named buffer of a given size
 
