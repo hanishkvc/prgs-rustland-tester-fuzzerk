@@ -681,10 +681,16 @@ Control/System related
 
   a directive to mark the current location/address in the program where this directive is encountered
 
-* iflt <value1_int_var_or_value> <value2_int_var_or_value> goto <label_id>
+* if condition check
 
-  if int value in/corresponding to value1_int_var_or_value is less than that in value2, then
-  goto (ie pass program flow control to) specified label.
+  * iflt.i <value1_int_var_or_value> <value2_int_var_or_value> goto <label_id>
+
+    if int value in/corresponding to value1_int_var_or_value is less than that in value2, then
+    goto (ie pass program flow control to) specified label.
+
+  * ifeq.i <val1_int_var_or_value> <val2_int_var_or_value> goto <label_id>
+
+  * ifeq.s <val1_str_var_or_value> <val2_str_var_or_value> goto <label_id>
 
 * checkjump arg1_int_var_or_value arg2_int_var_or_value Label4LessThan Label4Equal Label4GreaterThan
 
@@ -814,7 +820,7 @@ Previously
 
 
 
-20221009
+20221009++
 ===========
 
 * Add ALU commands add, sub, mult, div, mod
@@ -836,6 +842,10 @@ Previously
 * allow extra unneeded whitespaces in between operands of the instructions.
 
 * Allow all VM Op int literals to use the flexible and better DataM based flow
+
+* More if condition check types using a new CondOp enum
+
+  * Add support for ifeq wrt int and string types
 
 
 TODO
@@ -859,7 +869,8 @@ TODO
 
 * More if condition check types using a new CondOp enum
 
-  * Add support for ifeq wrt string types
+  * Later add support for other if types (ie ifle, ifge, ifgt) wrt int
 
-  * Later add support for other if types (ie iflt, ifle, ifeq, ifge, ifgt) wrt int
+* iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
+  Need to check whats occuring, initially by adding a iobwrite to console of what is read.
 
