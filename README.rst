@@ -683,14 +683,19 @@ Control/System related
 
 * if condition check
 
-  * iflt.i <value1_int_var_or_value> <value2_int_var_or_value> goto <label_id>
+  These check values specified between themselves and inturn either call spcified function or goto specified label
 
-    if int value in/corresponding to value1_int_var_or_value is less than that in value2, then
-    goto (ie pass program flow control to) specified label.
+  The values can be specified either has literal values of the required type, or has a variable.
 
-  * ifeq.i <val1_int_var_or_value> <val2_int_var_or_value> goto <label_id>
+  * Check involving integers
 
-  * ifeq.s <val1_str_var_or_value> <val2_str_var_or_value> goto <label_id>
+    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i <value1_int_var_or_value> <value2_int_var_or_value> goto|call <label_id>
+
+  * Check involving string and buffer
+
+    * ifeq|ifeq.s|ifne|ifne.s <val1_str_var_or_value> <val2_str_var_or_value> goto|call <label_id>
+
+    * ifeq|ifeq.b|ifne|ifne.b <val1_any_var_or_value> <val2_any_var_or_value> goto|call <label_id>
 
 * checkjump arg1_int_var_or_value arg2_int_var_or_value Label4LessThan Label4Equal Label4GreaterThan
 
@@ -710,6 +715,8 @@ Control/System related
 * call label
 
   * call a func
+
+  * one needs to end the func body with a ret instruction
 
   * currently there are no function arguments support yet,
     they have to work with the global data space directly.
