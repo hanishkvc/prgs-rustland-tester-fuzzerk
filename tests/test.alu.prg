@@ -4,19 +4,9 @@
 	jump START
 
 !label PRINT_ALUVARS
-	letbuf.s bradd radd
-	letbuf.s brsub rsub
-	letbuf.s brmult rmult
-	letbuf.s brdiv rdiv
-	letbuf.s brmod rmod
 	letbuf msgArg1 "Arg1:"
 	letbuf msgArg2 ":Arg2:"
-	letbuf msgAdd ":RAdd:"
-	letbuf msgSub ":RSub:"
-	letbuf msgMult ":RMult:"
-	letbuf msgDiv ":RDiv:"
-	letbuf msgMod ":RMod:"
-	bufsmerge bmsg msgAdd bradd msgSub brsub msgMult brmult msgDiv brdiv msgMod brmod msgnl
+	bufmerged.s bmsg ":RAdd:" radd ":RSub:" rsub ":RMult:" rmult ":RDiv:" rdiv ":RMod:" rmod "\n"
 	iobwrite term bmsg
 	ret
 
@@ -25,12 +15,7 @@
 	letint i02 2
 
 	iobnew term console
-	# letbuf msgnl 0x0A, will work, but will have extra unwanted 00 bytes wrt native isize bytes size
-	letbuf msgnl $0x0A
-	letbuf msg1 "Staring on the journey"
-	bufsmerge msgStart msg1 msgnl
-	letbuf msg1 "End of the journey"
-	bufsmerge msgEnd msg1 msgnl
+	letbuf msgStart "Starting on the journey\n"
 	iobwrite term msgStart
 
 	add radd i01 i02
@@ -49,5 +34,6 @@
 	mod rmod 0x15 i02
 	call PRINT_ALUVARS
 
+	letbuf msgEnd "End of the journey\n"
 	iobwrite term msgEnd
 

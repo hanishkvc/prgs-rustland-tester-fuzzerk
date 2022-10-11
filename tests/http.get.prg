@@ -19,22 +19,16 @@
 	ret
 
 !label SAVE_TO_FILE
-	iobwrite fsave markerstart
-	letbuf ts __TIME__STAMP__
-	iobwrite fsave ts
-	#iobwrite fsave markernl
-	iobwrite fsave markerend
+	bufmerged theMarker "\n\n\n\n**** NEW SET ****\n" __TIME__STAMP__ "\n*****************\n"
+	iobwrite fsave theMarker
 	iobwrite fsave bufFCGot
 	iobwrite fsave markernl
 	iobwrite fsave bufHttpGot
 	ret
 
 !label FILE_ID
-	letbuf sfileid "FuzzerK:Save Of:HttpGetPrg:FileID:"
-	letbuf fileid __RANDOM__BYTES__16
-	iobwrite fsave sfileid
+	bufmerged fileid "FuzzerK:Save Of:HttpGetPrg:FileID:" __RANDOM__BYTES__16 "\n"
 	iobwrite fsave fileid
-	iobwrite fsave markernl
 	letbuf marker09 $0x0A0930313233343536373839090A
 	buf8randomize marker09 3 2
 	iobwrite fsave marker09
@@ -47,11 +41,7 @@
 
 	letint loopcnt 0
 	iobnew fsave filewriter:/tmp/http.got.bin create=yes
-	letbuf marker01 "**** NEW SET ****"
-	letbuf marker02 "*****************"
 	letbuf markernl $0x0A
-	bufsmerge markerstart markernl markernl markernl markernl marker01 markernl
-	bufsmerge markerend markernl marker02 markernl
 	call FILE_ID
 
 !label repeatagain
