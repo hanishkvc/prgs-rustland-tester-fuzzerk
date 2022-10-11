@@ -471,6 +471,11 @@ If it starts or ends with double quotes, it will be treated as a string literal.
 
 * this also allows spaces to be specified at begin or end of the string literal.
 
+* a small set of escape sequences (\\n, \\t, \\r, \\") are supported within these strings.
+  These will be replaced with equivalent char.
+
+  * The double quote at the begin and end of string literal will be dropped.
+
 If it starts with $0x then it will be treated has a binary buffer specified has a hex string.
 
 If it starts with __ then it will be treated has a special data value.
@@ -867,6 +872,8 @@ Previously
   * Add support for iflt|gt wrt int
 
   * Either goto a specified label or call a specified function
+
+* DataM support some basic esc sequences wrt string literals
 
 
 TODO
