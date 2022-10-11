@@ -48,17 +48,14 @@
 !label START
 	iobnew term console
 	letint CheckValue1 0
-	letbuf msg1 "Msg1: "
-	letbuf msg2 "Msg2:"
 	letbuf msgSad "Msg:May not see me"
-	letbuf msgNL $0x0A
 
 	call COND_CALLS
 
 !label DUMP_MSG1
 	add CheckValue1 CheckValue1 1
 	letbuf.s CV1 CheckValue1
-	bufsmerge theMsg msg1 CV1 msgNL
+	mergedbuf theMsg "Msg1: " CV1 $0x0A
 	iobwrite term theMsg
 	iflt CheckValue1 2 goto DUMP_MSG1
 
@@ -69,5 +66,6 @@
 	iobwrite term msgSad
 
 !label DUMP_MSG2
-	iobwrite term msg2
+	mergedbuf theMsg "Msg2: At end CheckValue1:" CheckValue1 $0x0A
+	iobwrite term theMsg
 
