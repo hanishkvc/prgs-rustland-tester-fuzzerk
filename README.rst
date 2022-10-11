@@ -919,3 +919,9 @@ TODO
 * iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
   Need to check whats occuring, initially by adding a iobwrite to console of what is read.
 
+* Instructions
+
+  * allow arguments to be passed to call
+
+  * dont allow more than one variable to have same name
+
