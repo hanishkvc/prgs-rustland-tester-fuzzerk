@@ -2,6 +2,9 @@
 # A intro program
 #
 
+	#
+	# Jump to create some space to put required code in between
+	#
 	jump StArT
 
 
@@ -21,32 +24,32 @@
 
 
 	#
-	# Check out conditions
+	# Check out few if condition instructions
 	#
-!label LT_GOOD
+!label CC_GOOD
 	add CheckInt CheckInt 1
 	ret
 
-!label LT_BAD
+!label CC_BAD
 	add CheckInt CheckInt 1
 	ret
 
-!label LT_CHECK
-	ifge CheckInt 2 goto LTC_BAD
+!label CC_CHECK
+	ifge CheckInt 2 goto CCC_BAD
 	letbuf tMsg "Yes IfLT seems fine\n"
 	iobwrite term tMsg
-	jump LTC_RET
-!label LTC_BAD
+	jump CCC_RET
+!label CCC_BAD
 	letbuf tMsg "No IfLT seems messed up\n"
 	iobwrite term tMsg
-!label LTC_RET
+!label CCC_RET
 	ret
 
 !label CONDITIONS
 	letint CheckInt 0
-	iflt 0 1 call LT_GOOD
-	iflt 1 0 call LT_BAD
-	call LT_CHECK
+	iflt 0 1 call CC_GOOD
+	ifgt 0 1 call CC_BAD
+	call CC_CHECK
 	ret
 
 
@@ -57,6 +60,10 @@
 	iobnew term console
 	ret
 
+
+	#
+	# The practical Program entry point
+	#
 !label StArT
 	call INIT
 	call VARIABLES
