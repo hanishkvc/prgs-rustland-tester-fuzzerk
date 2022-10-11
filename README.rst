@@ -925,3 +925,5 @@ TODO
 
   * dont allow more than one variable to have same name
 
+  * if-goto use Op::GoTo::run rather than duplicating goto's code in if-goto
+
