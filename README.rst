@@ -532,19 +532,25 @@ Data/Variables Related
 
   Create a named buffer of a given size
 
-* letbuf[.s] <buf_id> bufdata_any_var_or_value
+* letbuf[.s|.b] <buf_id> bufdata_any_var_or_value
 
   Create a buffer var and fill it with specified data with could either be a literal value or a variable.
 
   By allowing Int or Str var's value to be stored into a Buf var, the same can be written to a iobridge.
 
-  * letbuf tries to read the src int|str var as corresponding underlying binary data
+  * letbuf or letbuf.b tries to read the src int|str|buf var as corresponding underlying binary bytes data
+
+    * this is useful for most cases except may be when printing to console/screen
+
+    * this retains the underlying byte values of the source variable (or literal after suitable interpretation)
 
   * letbuf.s tries to read the src
 
     * int var/value as equivalent string/textual literal value
 
     * buf var/value as hex string
+
+    * this will be very useful when trying to print something to console/screen
 
 * bufsmerge destbuf srcbuf1 srcbuf2 ..... srcbufn
 
