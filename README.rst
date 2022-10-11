@@ -571,6 +571,24 @@ Data/Variables Related
 
     * destbuf = srcbuf1 + srcbuf2 + ..... + srcbufn
 
+* bufmerged[.b]|bufmerged.s destbufid src1_any_var_or_value src2_any_var_or_value ..... srcn_any_var_or_value
+
+  This allows a new buffer to be created, which contains the contents of the specified source items.
+
+  The source item could be either a int or str or hexstring(buf literal value) or it could be a variable of
+  any supported type.
+
+  if bufmerged or bufmerged.b is used, then the raw byte values corresponding to the specified src item will
+  be used. This is useful when one needs to send underlying byte values corresponding to specified items/values
+  like when sending to another program or storing into a binary file or so.
+
+  if bufmerged.s is used, then equivalent string representation of the specified src item will be used. This is
+  useful especially, when writing to console or so, where user will be interested in a human readable textual
+  form of the underlying data.
+
+  This avoids the need to create temporary bufs using letbuf[.s] and then merging into a buf using bufsmerge.
+
+
 * buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
 
   * all the int arguments (ie other than bufid) belong to the int_var_or_value class
@@ -874,6 +892,9 @@ Previously
   * Either goto a specified label or call a specified function
 
 * DataM support some basic esc sequences wrt string literals
+
+* BufMerged to merge different type vars and or values on a single line
+
 
 
 TODO
