@@ -55,7 +55,7 @@
 !label DUMP_MSG1
 	add CheckValue1 CheckValue1 1
 	letbuf.s CV1 CheckValue1
-	mergedbuf theMsg "Msg1: " CV1 $0x0A
+	bufmerged theMsg "Msg1: " CV1 $0x0A
 	iobwrite term theMsg
 	iflt CheckValue1 2 goto DUMP_MSG1
 
@@ -66,7 +66,10 @@
 	iobwrite term msgSad
 
 !label DUMP_MSG2
-	mergedbuf.s theMsg "Msg2: At end CheckValue1:" CheckValue1 $0x0A
-	mergedbuf.s theMsg "Msg2: At end CheckValue1:" CheckValue1 "\n"
+	bufmerged.b theMsg "Msg2: At end CheckValue1:" CV1 $0x0A
+	iobwrite term theMsg
+	#WONTWORK bcas binbuf $0x0A gets converted to hexstring by bufmerged.s
+	#bufmerged.s theMsg "Msg2: At end CheckValue1:" CheckValue1 $0x0A
+	bufmerged.s theMsg "Msg2: At end CheckValue1:" CheckValue1 "\n"
 	iobwrite term theMsg
 
