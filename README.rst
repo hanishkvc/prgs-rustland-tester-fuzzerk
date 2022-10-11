@@ -895,6 +895,7 @@ Previously
 
 * BufMerged to merge different type vars and or values on a single line
 
+* dont allow more than one variable to have same name, ie across var types.
 
 
 TODO
@@ -922,8 +923,6 @@ TODO
 * Instructions
 
   * allow arguments to be passed to call
-
-  * dont allow more than one variable to have same name
 
   * if-goto use Op::GoTo::run rather than duplicating goto's code in if-goto
 
