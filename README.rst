@@ -681,6 +681,10 @@ Control/System related
 
   a directive to mark the current location/address in the program where this directive is encountered
 
+  This can be the destination of either if-goto|if-jump or if-call or call or jump|goto or checkjump
+
+  ie destination of conditional/unconditional jumps as well as calls.
+
 * if condition check
 
   These check values specified between themselves and inturn either call spcified function or goto specified label
@@ -708,7 +712,7 @@ Control/System related
     * useful if one doesnt want to jump to any specific location for a given condition,
       then the control will implicitly flow to next instruction in the program, in that case.
 
-* jump label
+* jump|goto label
 
   * a unconditional jump
 
@@ -850,9 +854,13 @@ Previously
 
 * Allow all VM Op int literals to use the flexible and better DataM based flow
 
-* More if condition check types using a new CondOp enum
+* More flexible if condition checks using a new CondOp enum ++
 
-  * Add support for ifeq wrt int and string types
+  * Add support for ifeq|ne wrt int | string | buf types
+
+  * Add support for iflt|gt wrt int
+
+  * Either goto a specified label or call a specified function
 
 
 TODO
