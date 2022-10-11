@@ -704,7 +704,7 @@ Control/System related
 
   * Check involving integers
 
-    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i <value1_int_var_or_value> <value2_int_var_or_value> goto|call <label_id>
+    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i|ifle|ifle.i|ifge|ifge.i <value1_int_var_or_value> <value2_int_var_or_value> goto|call <label_id>
 
   * Check involving string and buffer
 
@@ -869,7 +869,7 @@ Previously
 
   * Add support for ifeq|ne wrt int | string | buf types
 
-  * Add support for iflt|gt wrt int
+  * Add support for iflt|gt|le|ge wrt int
 
   * Either goto a specified label or call a specified function
 
@@ -893,9 +893,7 @@ TODO
 
 * Allow similar literal value representation wrt FC Config files and Prg files.
 
-* More if condition check types using a new CondOp enum
-
-  * Later add support for other if types (ie ifle, ifge) wrt int
+* Maybe: Add support for string/buf data type wrt iflt|gt|le|ge
 
 * iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
   Need to check whats occuring, initially by adding a iobwrite to console of what is read.
