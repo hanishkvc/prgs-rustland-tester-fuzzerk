@@ -16,11 +16,11 @@
 	letbuf.s CV1 CheckValue1
 	bufsmerge theMsg msg1 CV1 msgNL
 	iobwrite term theMsg
-	iflt.i CheckValue1 2 goto DUMP_MSG1
+	iflt CheckValue1 2 goto DUMP_MSG1
 
-	ifeq.s "Msg1: 1\n" theMsg goto DUMP_MSG1
+	ifeq "Msg1: 1\n" theMsg goto DUMP_MSG1
 
-	ifeq.s "Msg1: 2\n" theMsg goto DUMP_MSG2
+	ifeq "Msg1: 2\n" theMsg goto DUMP_MSG2
 
 	iobwrite term msgSad
 
