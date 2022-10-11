@@ -66,6 +66,7 @@
 	iobwrite term msgSad
 
 !label DUMP_MSG2
-	mergedbuf theMsg "Msg2: At end CheckValue1:" CheckValue1 $0x0A
+	mergedbuf.s theMsg "Msg2: At end CheckValue1:" CheckValue1 $0x0A
+	mergedbuf.s theMsg "Msg2: At end CheckValue1:" CheckValue1 "\n"
 	iobwrite term theMsg
 
