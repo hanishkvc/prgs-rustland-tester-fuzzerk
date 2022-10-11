@@ -893,11 +893,9 @@ TODO
 
 * Allow similar literal value representation wrt FC Config files and Prg files.
 
-  * also allow escape sequences \t\n\r wrt VM:DataM strings
-
 * More if condition check types using a new CondOp enum
 
-  * Later add support for other if types (ie ifle, ifge, ifgt) wrt int
+  * Later add support for other if types (ie ifle, ifge) wrt int
 
 * iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
   Need to check whats occuring, initially by adding a iobwrite to console of what is read.
