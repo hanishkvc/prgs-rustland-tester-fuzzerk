@@ -89,9 +89,9 @@
 	letlocal lint 123
 	letlocal lstr "hello me local in"
 	letlocal lbuf $0x39383736353433323130
-	bufmerged.s tmsg "LocalsIN: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	bufmerged.s tmsg "LocalsIN:DestStr: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
-	bufmerged.b tmsg "LocalsIN: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	bufmerged.b tmsg "LocalsIN:DestBuf: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
 	ret
 
@@ -100,9 +100,9 @@
 	letlocal lstr "hello me local"
 	letlocal lbuf $0x30313233343536373839
 	call LOCAL_VARS_IN
-	bufmerged.s tmsg "Locals: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	bufmerged.s tmsg "Locals:DestStr: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
-	bufmerged.b tmsg "Locals: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	bufmerged.b tmsg "Locals:DestBuf: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
 	ret
 
