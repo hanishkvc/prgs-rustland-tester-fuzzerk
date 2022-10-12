@@ -725,6 +725,8 @@ Control/System related
 
   * these function arguments can inturn be only used as src operands and not as destination operands
 
+    * ie they can be read from and not written to
+
   * the caller can currently only pass variables and not literal values wrt these args.
 
   Any function has access to the global variables, as well as the function arguments specified directly
@@ -963,5 +965,20 @@ TODO
 * iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
   Need to check whats occuring, initially by adding a iobwrite to console of what is read.
 
-* Maybe: Local variables within a func
+* Wrt functions
+
+  * Maybe: Local variables within a func, by maintaining a stack of list of local variables
+    or temporary global variables with func name prefix and running counter values added to
+    the local var.
+
+  * Maybe: pass literal values to a func (by creating temporary global/local/??? variables, which
+    are prefixed with function name or so).
+
+    * ie call will create these (using a running counter as part of the temp name in addition to
+      func name prefix)
+
+    * and ret will remove the corresponding temp variables.
+
+  * rather than running counter, may be it can also just be call depth level, need to think this
+    once more.
 
