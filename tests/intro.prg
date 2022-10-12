@@ -83,6 +83,20 @@
 
 
 #
+# Check function local vars
+#
+!func LOCAL_VARS
+	letlocal lint 565
+	letlocal lstr "hello me local"
+	letlocal lbuf $0x30313233343536373839
+	bufmerged.s tmsg "Locals: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	call PRINT_ME tmsg
+	bufmerged.b tmsg "Locals: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	call PRINT_ME tmsg
+	ret
+
+
+#
 # Initialise
 #
 !func INIT
@@ -98,4 +112,5 @@
 	call VARIABLES
 	call CONDITIONS
 	call CHECK_FARGS
+	call LOCAL_VARS
 
