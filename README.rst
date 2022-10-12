@@ -672,9 +672,9 @@ IOBridge related
 
         * create=yes/no
 
-* iobwrite <iob_id> <buf_id>
+* iobwrite <iob_id> <buf_any_var_or_value>
 
-  * write contents of the specified buffer into the specified iobridge
+  * write the underlying raw byte contents (ie a binary buffer) of the specified var or literal value into the specified iobridge
 
 * iobflush <iob_id>
 
@@ -706,13 +706,32 @@ Control/System related
 
 * sleepmsec <milliseconds_int_var_or_value>
 
+
 * !label <label_id>
 
   a directive to mark the current location/address in the program where this directive is encountered
 
-  This can be the destination of either if-goto|if-jump or if-call or call or jump|goto or checkjump
+  This can be the destination of either if-goto|if-jump or jump|goto or checkjump
 
-  ie destination of conditional/unconditional jumps as well as calls.
+  ie act as the destination of conditional/unconditional jumps
+
+
+* !func <func_id> [<func_arg1_name> <func_arg2_name> ...]
+
+  a directive to mark the current location/address in the program where this directive is encountered
+  as a function and inturn its name.
+
+  Additional specify a list of function arguments.
+
+  * these function arguments can inturn be only used as src operands and not as destination operands
+
+  * the caller can currently only pass variables and not literal values wrt these args.
+
+  Any function has access to the global variables, as well as the function arguments specified directly
+  wrt it. It doesnt have access to function arguments specified wrt any of its parent callers.
+
+  One needs to end the func body with a ret instruction
+
 
 * if condition check
 
@@ -722,13 +741,20 @@ Control/System related
 
   * Check involving integers
 
-    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i|ifle|ifle.i|ifge|ifge.i <value1_int_var_or_value> <value2_int_var_or_value> goto|call <label_id>
+    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i|ifle|ifle.i|ifge|ifge.i <value1_int_var_or_value> <value2_int_var_or_value> goto <label_id>
+
+    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i|ifle|ifle.i|ifge|ifge.i <value1_int_var_or_value> <value2_int_var_or_value> call <func_id> [passed1_any_var passed2_any_var ...]
 
   * Check involving string and buffer
 
-    * ifeq|ifeq.s|ifne|ifne.s <val1_str_var_or_value> <val2_str_var_or_value> goto|call <label_id>
+    * ifeq|ifeq.s|ifne|ifne.s <val1_str_var_or_value> <val2_str_var_or_value> goto <label_id>
 
-    * ifeq|ifeq.b|ifne|ifne.b <val1_any_var_or_value> <val2_any_var_or_value> goto|call <label_id>
+    * ifeq|ifeq.s|ifne|ifne.s <val1_str_var_or_value> <val2_str_var_or_value> call <func_id> [passed1_any_var passed2_any_var ...]
+
+    * ifeq|ifeq.b|ifne|ifne.b <val1_any_var_or_value> <val2_any_var_or_value> goto <label_id>
+
+    * ifeq|ifeq.b|ifne|ifne.b <val1_any_var_or_value> <val2_any_var_or_value> call <func_id> [passed1_any_var passed2_any_var ...]
+
 
 * checkjump arg1_int_var_or_value arg2_int_var_or_value Label4LessThan Label4Equal Label4GreaterThan
 
@@ -741,18 +767,26 @@ Control/System related
     * useful if one doesnt want to jump to any specific location for a given condition,
       then the control will implicitly flow to next instruction in the program, in that case.
 
-* jump|goto label
+
+* jump|goto <label_id>
 
   * a unconditional jump
 
-* call label
+
+* call <func_id> [passed1_any_var passed2_any_var ...]
 
   * call a func
 
-  * one needs to end the func body with a ret instruction
+  * If the func being called requires arguments to be passed to it, then one needs to specify
+    the corresponding/matching variables that should be passed to the called function.
 
-  * currently there are no function arguments support yet,
-    they have to work with the global data space directly.
+    The passed variables could either be
+
+    * global variables or
+
+    * any function arguments belonging to the current function, ie provided the call is being
+      made from a function.
+
 
 * ret
 
@@ -899,17 +933,24 @@ Previously
 
 * if-goto use Op::GoTo::run rather than duplicating goto's code in if-goto
 
+* explicitly marked functions and Allow arguments to be passed to a function
+
+* iobwrite now works with DataM for its src operand.
+
 
 TODO
 ||||||
 
-* In http tls single session multi request testing (with invalid data)
+* In http tls single session multi request testing (with invalid data and with my experimental
+  rust based webserver)
 
   * if 10msec btw requests, then server seems to get all requests.
 
   * if 1000msec btw requests, then server seems to only get the 1st request most of the time
+    Maybe bcas of any timeout I may have set wrt keeping a session alive or so?
 
   * ALERT: Need to check what happens with valid http requests instead of invalid http requests.
+    Also need to check wrt a standard web server, to verify as to its not a issue at fuzzerk end.
 
 * Maybe: Merge TcpClient and TcpServer into a single entity in the IOBridge enum, and may be
   even merge Tls with Tcp entity. Obviously the new_iobtype helpers wrt each specific type, needs
@@ -922,8 +963,5 @@ TODO
 * iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
   Need to check whats occuring, initially by adding a iobwrite to console of what is read.
 
-* Instructions
-
-  * allow arguments to be passed to call
-
+* Maybe: Local variables within a func
 
