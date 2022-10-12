@@ -11,7 +11,7 @@
 	#
 	# Check out variables
 	#
-!label	VARIABLES
+!func	VARIABLES
 	letint MeInt 101
 	letstr MeStr "Me a String"
 	letbuf MeBuf "I can have any binary value"
@@ -26,15 +26,15 @@
 	#
 	# Check out few if condition instructions
 	#
-!label CC_GOOD
+!func CC_GOOD
 	add CheckInt CheckInt 1
 	ret
 
-!label CC_BAD
+!func CC_BAD
 	add CheckInt CheckInt 1
 	ret
 
-!label CC_CHECK
+!func CC_CHECK
 	ifge CheckInt 2 goto CCC_BAD
 	letbuf tMsg "Yes IfLT seems fine\n"
 	iobwrite term tMsg
@@ -45,7 +45,7 @@
 !label CCC_RET
 	ret
 
-!label CONDITIONS
+!func CONDITIONS
 	letint CheckInt 0
 	iflt 0 1 call CC_GOOD
 	ifgt 0 1 call CC_BAD
@@ -56,7 +56,7 @@
 	#
 	# Initialise
 	#
-!label INIT
+!func INIT
 	iobnew term console
 	ret
 
