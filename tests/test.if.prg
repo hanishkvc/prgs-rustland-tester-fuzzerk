@@ -2,37 +2,32 @@
 
 	jump START
 
-!label PRINT_IFLT
-	letbuf tmsg "IfLt Call Ok\n"
-	iobwrite term tmsg
+!func PRINT_IFLT
+	iobwrite term "IfLt Call Ok\n"
 	ret
 
 
-!label PRINT_IFGT
-	letbuf tmsg "Ifgt Call Ok\n"
-	iobwrite term tmsg
+!func PRINT_IFGT
+	iobwrite term "Ifgt Call Ok\n"
 	ret
 
 
-!label PRINT_IFEQINT
-	letbuf tmsg "Ifeqint Call Ok\n"
-	iobwrite term tmsg
+!func PRINT_IFEQINT
+	iobwrite term "Ifeqint Call Ok\n"
 	ret
 
 
-!label PRINT_IFEQSTR
-	letbuf tmsg "Ifeqstr Call Ok\n"
-	iobwrite term tmsg
+!func PRINT_IFEQSTR
+	iobwrite term "Ifeqstr Call Ok\n"
 	ret
 
 
-!label PRINT_NOTME
-	letbuf tmsg "IfInvalidCondCall: Shouldnt see me\n"
-	iobwrite term tmsg
+!func PRINT_NOTME
+	iobwrite term "IfInvalidCondCall: Shouldnt see me\n"
 	ret
 
 
-!label COND_CALLS
+!func COND_CALLS
 	letint Int1		1
 	iflt   0		1 	call PRINT_IFLT
 	ifgt   Int1		0 	call PRINT_IFGT

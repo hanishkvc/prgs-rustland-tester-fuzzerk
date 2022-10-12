@@ -7,7 +7,7 @@
 
 	jump START
 
-!label COMM_WITH_SERVER
+!func COMM_WITH_SERVER
 	iobnew srv1 tlsclient:127.0.0.1:8088 domain=127.0.0.1 server_cert_check=no
 	fcget FC100 bufFCGot
 	#fcget FC_OkReqInBtw bufFCGot
@@ -18,7 +18,7 @@
 	iobclose srv1
 	ret
 
-!label SAVE_TO_FILE
+!func SAVE_TO_FILE
 	bufmerged theMarker "\n\n\n\n**** NEW SET ****\n" __TIME__STAMP__ "\n*****************\n"
 	iobwrite fsave theMarker
 	iobwrite fsave bufFCGot
@@ -26,7 +26,7 @@
 	iobwrite fsave bufHttpGot
 	ret
 
-!label FILE_ID
+!func FILE_ID
 	bufmerged fileid "FuzzerK:Save Of:HttpGetPrg:FileID:" __RANDOM__BYTES__16 "\n"
 	iobwrite fsave fileid
 	letbuf marker09 $0x0A0930313233343536373839090A

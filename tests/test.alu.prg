@@ -3,7 +3,7 @@
 
 	jump START
 
-!label PRINT_ALUVARS
+!func PRINT_ALUVARS
 	letbuf msgArg1 "Arg1:"
 	letbuf msgArg2 ":Arg2:"
 	bufmerged.s bmsg ":RAdd:" radd ":RSub:" rsub ":RMult:" rmult ":RDiv:" rdiv ":RMod:" rmod "\n"
@@ -15,8 +15,7 @@
 	letint i02 2
 
 	iobnew term console
-	letbuf msgStart "Starting on the journey\n"
-	iobwrite term msgStart
+	iobwrite term "Starting on the journey\n"
 
 	add radd i01 i02
 	sub rsub i01 i02
@@ -34,6 +33,5 @@
 	mod rmod 0x15 i02
 	call PRINT_ALUVARS
 
-	letbuf msgEnd "End of the journey\n"
-	iobwrite term msgEnd
+	iobwrite term "End of the journey\n"
 

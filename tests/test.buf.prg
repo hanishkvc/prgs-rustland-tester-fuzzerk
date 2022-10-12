@@ -7,13 +7,13 @@
 
 
 # Expects bsize buffer to contain size of buffer created
-!label PRINT_BCREATED
+!func PRINT_BCREATED
 	bufmerged.s bmsg "BufCreated:" bsize "\n"
 	iobwrite    term bmsg
 	ret
 
 
-!label TEST_BUFS
+!func TEST_BUFS
 	letbuf    msgStart "Test Bufs\n"
 	iobwrite  term     msgStart
 
@@ -38,7 +38,7 @@
 	ret
 
 
-!label INITS
+!func INITS
 	iobnew term  console
 	ret
 
