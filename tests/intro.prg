@@ -56,8 +56,13 @@
 	#
 	# Check function arg mechanism
 	#
+
+!func PRINT_ME msg
+	iobwrite term msg
+	ret
+
 !func CHECK_FARG_L1 arg1
-	iobwrite term arg1
+	call PRINT_ME arg1
 	ret
 
 
