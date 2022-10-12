@@ -935,7 +935,14 @@ Previously
 
 * if-goto use Op::GoTo::run rather than duplicating goto's code in if-goto
 
-* explicitly marked functions and Allow arguments to be passed to a function
+* explicitly marked functions (!func) and Allow arguments to be passed to a function
+
+* Use DataType to decide whether a var name is FuncArg or Global (or in future Local)
+  and inturn handle appropriately.
+
+  * initial logic was running through the func args aliases hashmap, for all vars
+    however now with data type meta data, this hashmap blessing is only done for
+    actual func args.
 
 * iobwrite now works with DataM for its src operand.
 
@@ -967,9 +974,12 @@ TODO
 
 * Wrt functions
 
-  * Maybe: Local variables within a func, by maintaining a stack of list of local variables
-    or temporary global variables with func name prefix and running counter values added to
-    the local var.
+  * Maybe: Local variables within a func, by maintaining
+
+    * a stack of list of local variables
+
+    * or temporary global variables with func name prefix and running counter (to help with
+      recursive calls) values added to the local var name.
 
   * Maybe: pass literal values to a func (by creating temporary global/local/??? variables, which
     are prefixed with function name or so).
