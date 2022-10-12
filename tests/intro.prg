@@ -54,6 +54,14 @@
 
 
 	#
+	# Check function arg mechanism
+	#
+!func CHECK_FARG_L1 arg1
+	iobwrite term arg1
+	ret
+
+
+	#
 	# Initialise
 	#
 !func INIT
@@ -68,4 +76,8 @@
 	call INIT
 	call VARIABLES
 	call CONDITIONS
+	letstr fargtest1 "This is a global var passed to func using func args"
+	call CHECK_FARG_L1 fargtest1
+	letstr fargtest2 "This is another global var passed to func using func args"
+	call CHECK_FARG_L1 fargtest2
 
