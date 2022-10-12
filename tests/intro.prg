@@ -8,10 +8,10 @@
 	jump StArT
 
 
-	#
-	# Check out variables
-	#
-!func	VARIABLES
+#
+# Check out variables
+#
+!func VARIABLES
 	letint MeInt 101
 	letstr MeStr "Me a String"
 	letbuf MeBuf "I can have any binary value"
@@ -23,9 +23,10 @@
 	ret
 
 
-	#
-	# Check out few if condition instructions
-	#
+#
+# Check out few if condition instructions
+#
+
 !func CC_GOOD
 	add CheckInt CheckInt 1
 	ret
@@ -53,9 +54,9 @@
 	ret
 
 
-	#
-	# Check function arg mechanism
-	#
+#
+# Check function arg mechanism
+#
 
 !func PRINT_ME msg
 	iobwrite term msg
@@ -65,24 +66,36 @@
 	call PRINT_ME arg1
 	ret
 
+!func CHECK_FARG_MULTI str1 int1
+	add intres int1 20
+	bufmerged.s tmsg "\n\nArg1:" str1 "\n" "Arg2:Adjusted int1 is:" intres "\n\n"
+	call PRINT_ME tmsg
+	ret
 
-	#
-	# Initialise
-	#
+!func CHECK_FARGS
+	letstr fargtest1 "This is a global var passed to func using func args"
+	call CHECK_FARG_L1 fargtest1
+	letstr fargtest2 "This is another global var passed to func using func args"
+	call CHECK_FARG_L1 fargtest2
+	letint testint1 100
+	call CHECK_FARG_MULTI fargtest1 testint1
+	ret
+
+
+#
+# Initialise
+#
 !func INIT
 	iobnew term console
 	ret
 
 
-	#
-	# The practical Program entry point
-	#
+#
+# The practical Program entry point
+#
 !label StArT
 	call INIT
 	call VARIABLES
 	call CONDITIONS
-	letstr fargtest1 "This is a global var passed to func using func args"
-	call CHECK_FARG_L1 fargtest1
-	letstr fargtest2 "This is another global var passed to func using func args"
-	call CHECK_FARG_L1 fargtest2
+	call CHECK_FARGS
 
