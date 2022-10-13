@@ -100,9 +100,12 @@
 	letlocal lstr "hello me local"
 	letlocal lbuf $0x30313233343536373839
 	call LOCAL_VARS_IN
-	bufmerged.s tmsg "Locals:DestStr: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	bufmerged.s tmsg "Locals:DestStr:  Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
-	bufmerged.b tmsg "Locals:DestBuf: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	bufmerged.b tmsg "Locals:DestBuf:  Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	call PRINT_ME tmsg
+	letint gint 565
+	bufmerged.b tmsg "Locals:DestBuf: GInt[" gint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
 	ret
 
