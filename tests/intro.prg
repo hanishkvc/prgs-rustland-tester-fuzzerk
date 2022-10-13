@@ -86,11 +86,21 @@
 # Check function local vars
 #
 
+!func LOCAL_VARS_OK
+	letlocal.i lint 987
+	letlocal.s lstr "hello world, me local"
+	letlocal.b lbuf $0x30313233353436373839
+	bufmerged.s tmsg "LocalsOk:DestStr: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	call PRINT_ME tmsg
+	bufmerged.b tmsg "LocalsOk:DestBuf: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
+	call PRINT_ME tmsg
+	ret
+
 !func LOCAL_VARS_INT
 	letlocal lint 0x55555555
 	letlocal oint 123
 	add gint lint oint
-	bufmerged.s printme "GInt:" gint " lint:" lint " oint:" oint
+	bufmerged.s printme "GInt:" gint " lint:" lint " oint:" oint "\n"
 	call PRINT_ME printme
 	ret
 
@@ -116,6 +126,7 @@
 	letint gint 565
 	bufmerged.b tmsg "Locals:DestBuf: GInt[" gint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
+	call LOCAL_VARS_OK
 	call LOCAL_VARS_INT
 	ret
 
