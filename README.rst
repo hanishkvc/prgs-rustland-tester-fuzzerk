@@ -732,6 +732,10 @@ Control/System related
   Any function has access to the global variables, as well as the function arguments specified directly
   wrt it. It doesnt have access to function arguments specified wrt any of its parent callers.
 
+  One can define local variables within a function. When ever a variable is used, 1st it is checked
+  wrt the current function's local variables list, only if not found, it will be checked for in global
+  variables list.
+
   One needs to end the func body with a ret instruction
 
 
@@ -946,6 +950,19 @@ Previously
 
 * iobwrite now works with DataM for its src operand.
 
+20221013
+===========
+
+Functions
+
+* Add support for local variables by maintaining a stack of local variables wrt function
+  calls. This also allows recursion, obviously limited by available memory.
+
+  * TODO: add support for writing into a local variable, as part of operations other than
+    setlocal
+
+  * TODO: add support for use in arithmatic operations
+
 
 TODO
 ||||||
@@ -973,13 +990,6 @@ TODO
   Need to check whats occuring, initially by adding a iobwrite to console of what is read.
 
 * Wrt functions
-
-  * Maybe: Local variables within a func, by maintaining
-
-    * a stack of list of local variables
-
-    * or temporary global variables with func name prefix and running counter (to help with
-      recursive calls) values added to the local var name.
 
   * Maybe: pass literal values to a func (by creating temporary global/local/??? variables, which
     are prefixed with function name or so).
