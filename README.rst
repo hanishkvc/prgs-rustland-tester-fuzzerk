@@ -647,15 +647,18 @@ Alu Operations
 
 * dec <int_var_id>
 
-* add <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
+* add <dest_int_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
 
-* sub <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
+* sub <dest_int_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
 
-* mult <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
+* mult <dest_int_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
 
-* div <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
+* div <dest_int_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
 
-* mod <dest_int_var_id> <src1_int_var_or_value> <src2_int_var_or_value>
+* mod <dest_int_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
+
+If one uses a string or binary buffer, instead of int var or value, as the source data,
+it should be convertable to a valid int as expected by this program.
 
 IOBridge related
 ~~~~~~~~~~~~~~~~~
@@ -988,7 +991,7 @@ Functions
   * TODO: add support for writing into a local variable, as part of operations other than
     setlocal
 
-  * TODO: add support for use in arithmatic operations
+  * allow them to be used in arithmatic operations, as source data
 
 
 TODO
