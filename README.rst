@@ -15,10 +15,25 @@ handle all possible input cases sufficiently robustly.
 The program being tested could be expecting its input from console(/stdin)
 or from a file or over a tcp (client or server) or tls (server) connection.
 
-Consists of a library containing the main/core module, as well as additional
-helper modules if requried, that can be used by other programs. Or one could
-also use the helper utility program (fuzzerk) to test other programs, without
-modifying them.
+The data generated to test any program, could be
+
+* predefined and or deterministic in nature wrt the content and or structure.
+
+* totally randomly generated, while maintaining certain structures and or
+  predefined content(s) still, if required.
+
+* take predefined data and manipulate in controlled yet random ways.
+
+* or mixture of above.
+
+One can either define parts that make up the end data to feed into the program
+being tested, and inturn mix and match them to create the required end structure
+in the data being fed. Or one could start with a valid data and manipulate it
+in controlled yet random way.
+
+This consits of a library of modules that can be used by other programs, as well
+as a helper utility program (fuzzerk) to test other programs (without having to
+modify them to integrate with the provided library).
 
 
 Library & Helper modules
@@ -32,7 +47,7 @@ At the core, the library defines
 * a Fuzz trait, which allows fuzzers to be created.
 
 * and FuzzChain containers to allow fuzzers to be chained together
-  to create the needed end pattern of data.
+  to create the needed end pattern of data in a flexible manner.
 
 In turn it also provides a set of predefined fuzzers, which generate new
 binary buffer each time they are called, with either random or looped or
@@ -143,20 +158,32 @@ as defined by the end user.
 Minimal FuzzerK Util
 |||||||||||||||||||||
 
-A program which uses the modules mentioned previously to help test
-other programs by generating fuzz input for them and pushing to them
-using either console or file or tcp or tls session.
+A program which uses the modules mentioned previously to help test other
+programs by generating fuzz input for them and pushing to them using either
+console or file or tcp or tls session.
 
-This allows a end user to quickly test their program using this fuzzer
-logic, without needing to modify their program to handshake with the
-fuzzer library provided by this package. They just need to write few
-simple text based control files and inturn test their program, provided
-their program takes inputs over the stdin or a tcp session or a tls
-session.
+This allows a end user to quickly test their program using this fuzzer logic,
+without needing to modify their program to handshake with the fuzzer library
+provided by this package. They just need to write few simple text based control
+files and inturn test their program, provided their program takes inputs over
+the stdin or a file or a tcp session or a tls session.
 
-It also allows one to test the libraries/modules in this system/crate,
-in a simple yet flexible and potentially useful way.
+It also parallely allows one to test the libraries/modules provided here, in a
+simple yet flexible and potentially useful way.
 
+It includes a basic application specific vm and scripting language to easily
+control its operation in a flexible way. It does a basic quasi ahead of time
+compilation of the script file and inturn runs the generated program.
+
+One could either just define the fuzzers and the fuzz chains and let the vm
+run it directly. Or if one wants more control and flexibility, then one could
+create a program script file.
+
+This vm scripting language supports basic programming constructs like variables,
+arithmatic operation, condition checks, labels and conditional and unconditional
+gotos, io operations and so. Additionally few conviniance features are also
+supported like functions with arguments and recursion support, global and local
+variables, variant data type, conditional function calls, io abstraction, ...
 
 
 Usage Flow possibilities
@@ -195,7 +222,7 @@ Wrt fuzzing
 
 One could either build a fuzz chain made up of parts of the data that
 is needed. Or one could specify the ideal data and then let the logic
-randomly change it. Or use a combination of both.
+randomly change it in a controlled manner. Or use a combination of both.
 
 
 Runtime
