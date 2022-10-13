@@ -993,6 +993,8 @@ Functions
 
   * allow them to be used in arithmatic operations, as source data
 
+DataType enum renamed to DataKind and inturn Variable or FuncArg rather than Global or FuncArg.
+
 
 TODO
 ||||||
