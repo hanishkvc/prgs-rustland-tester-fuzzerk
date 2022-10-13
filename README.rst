@@ -988,12 +988,18 @@ Functions
 * Add support for local variables by maintaining a stack of local variables wrt function
   calls. This also allows recursion, obviously limited by available memory.
 
-  * TODO: add support for writing into a local variable, as part of operations other than
-    setlocal
+  * add support for writing into a local variable, as part of operations other than setlocal
 
   * allow them to be used in arithmatic operations, as source data
 
 DataType enum renamed to DataKind and inturn Variable or FuncArg rather than Global or FuncArg.
+
+Switch to a new proper minimal Variant data type and Var's built on top of these Variants.
+There is no longer seperate hashmaps wrt different basic data types. Now there is a single
+hashmap for global vars and another (rather a stack of those) wrt local vars. The dest operands
+are also DataM's. The local var's can be specified to be of a specific type.
+
+* The overall flow is simplified and cleaned up as part of these and related changes.
 
 
 TODO
