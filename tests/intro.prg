@@ -94,6 +94,13 @@
 	call PRINT_ME tmsg
 	bufmerged.b tmsg "LocalsOk:DestBuf: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
+	letlocal oint 789
+	letlocal ostr "me also string"
+	letlocal obuf $0x303132
+	bufmerged.s tmsg "LocalsOkAutoType:DestStr: Int[" oint "] Str[" ostr "] Buf[" obuf "]\n"
+	call PRINT_ME tmsg
+	bufmerged.b tmsg "LocalsOkAutoType:DestBuf: Int[" oint "] Str[" ostr "] Buf[" obuf "]\n"
+	call PRINT_ME tmsg
 	ret
 
 !func LOCAL_VARS_INT
