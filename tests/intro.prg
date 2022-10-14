@@ -201,6 +201,7 @@
 #
 !label StArT
 	call INIT
+	letglobal tbuf $0x1234567
 	call VARIABLES
 	call GLOBAL_VARS
 	call CONDITIONS
