@@ -87,6 +87,7 @@
 #
 
 !func LOCAL_VARS_OK
+	# Explicitly specified local var types
 	letlocal.i lint 987
 	letlocal.s lstr "hello world, me local"
 	letlocal.b lbuf $0x30313233353436373839
@@ -94,12 +95,21 @@
 	call PRINT_ME tmsg
 	bufmerged.b tmsg "LocalsOk:DestBuf: Int[" lint "] Str[" lstr "] Buf[" lbuf "]\n"
 	call PRINT_ME tmsg
+	# Implicitly infered local var types, based on assigned literal value; Compile time
 	letlocal oint 789
 	letlocal ostr "me also string"
 	letlocal obuf $0x303132
-	bufmerged.s tmsg "LocalsOkAutoType:DestStr: Int[" oint "] Str[" ostr "] Buf[" obuf "]\n"
+	bufmerged.s tmsg "LocalsOkAutoCompile:DestStr: Int[" oint "] Str[" ostr "] Buf[" obuf "]\n"
 	call PRINT_ME tmsg
-	bufmerged.b tmsg "LocalsOkAutoType:DestBuf: Int[" oint "] Str[" ostr "] Buf[" obuf "]\n"
+	bufmerged.b tmsg "LocalsOkAutoCompile:DestBuf: Int[" oint "] Str[" ostr "] Buf[" obuf "]\n"
+	call PRINT_ME tmsg
+	# Implicitly infered local var types, based on assigned var; Run time
+	letlocal xint oint
+	letlocal xstr ostr
+	letlocal xbuf obuf
+	bufmerged.s tmsg "LocalsOkAutoRuntime:DestStr: Int[" xint "] Str[" xstr "] Buf[" xbuf "]\n"
+	call PRINT_ME tmsg
+	bufmerged.b tmsg "LocalsOkAutoRuntime:DestBuf: Int[" xint "] Str[" xstr "] Buf[" xbuf "]\n"
 	call PRINT_ME tmsg
 	ret
 
