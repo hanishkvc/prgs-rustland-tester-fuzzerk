@@ -23,6 +23,34 @@
 	ret
 
 
+!func GLOBAL_VARS
+	# Global vars using explicit lettype var setting
+	letint gint1 201
+	letstr gstr1 "Global Vars Set1"
+	letbuf gbuf1 $0x393138323733363435
+	bufmerged.s tmsg1 "Globals:Str: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
+	call PRINT_ME tmsg1
+	bufmerged.b tmsg1 "Globals:Buf: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
+	call PRINT_ME tmsg1
+	# Global vars using explicit letglobal.type var setting
+	letglobal.i gint2 202
+	letglobal.s gstr2 "Global Vars Set2"
+	letglobal.b gbuf2 $0x393831323733363435
+	bufmerged.s tmsg2 "Globals:Str: Int[" gint2 "] Str[" gstr2 "] Buf[" gbuf2 "]\n"
+	call PRINT_ME tmsg2
+	bufmerged.b tmsg2 "Globals:Buf: Int[" gint2 "] Str[" gstr2 "] Buf[" gbuf2 "]\n"
+	call PRINT_ME tmsg2
+	# Global vars using implicit letglobal var setting
+	letglobal gint3 203
+	letglobal gstr3 "Global Vars Set3"
+	letglobal gbuf3 $0x393837363132333435
+	bufmerged.s tmsg3 "Globals:Str: Int[" gint3 "] Str[" gstr3 "] Buf[" gbuf3 "]\n"
+	call PRINT_ME tmsg3
+	bufmerged.b tmsg3 "Globals:Buf: Int[" gint3 "] Str[" gstr3 "] Buf[" gbuf3 "]\n"
+	call PRINT_ME tmsg3
+	ret
+
+
 #
 # Check out few if condition instructions
 #
@@ -166,6 +194,7 @@
 !label StArT
 	call INIT
 	call VARIABLES
+	call GLOBAL_VARS
 	call CONDITIONS
 	call CHECK_FARGS
 	call LOCAL_VARS
