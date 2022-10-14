@@ -32,8 +32,8 @@ in the data being fed. Or one could start with a valid data and manipulate it
 in controlled yet random way.
 
 This consits of a library of modules that can be used by other programs, as well
-as a helper utility program (fuzzerk) to test other programs (without having to
-modify them to integrate with the provided library).
+as a scriptable helper utility program (fuzzerk) to test other programs (without
+having to modify these programs to integrate with the provided library).
 
 
 Library & Helper modules
@@ -146,7 +146,7 @@ VM
 ====
 
 This is a helper module for the util program's operations to be controlled
-by the end user using custom prg files.
+by the end user using custom prg/script files.
 
 It provides a VM, with a set of useful instructions, for use by these program
 files.
@@ -183,7 +183,8 @@ This vm scripting language supports basic programming constructs like variables,
 arithmatic operation, condition checks, labels and conditional and unconditional
 gotos, io operations and so. Additionally few conviniance features are also
 supported like functions with arguments and recursion support, global and local
-variables, variant data type, conditional function calls, io abstraction, ...
+variables, variant data type, automatic variable type inference, conditional
+function calls, io abstraction, ...
 
 
 Usage Flow possibilities
@@ -501,7 +502,7 @@ If it starts or ends with double quotes, it will be treated as a string literal.
 * a small set of escape sequences (\\n, \\t, \\r, \\") are supported within these strings.
   These will be replaced with equivalent char.
 
-  * The double quote at the begin and end of string literal will be dropped.
+* The double quote at the begin and end of string literal will be dropped.
 
 If it starts with $0x then it will be treated has a binary buffer specified has a hex string.
 
@@ -509,31 +510,48 @@ If it starts with __ then it will be treated has a special data value.
 
 * __TIME__STAMP__
 
-  * This puts the current time stamp into the buffer
+  * This puts the current time stamp in terms of milliseconds from UnixEpoch, in a suitable way.
 
 * __RANDOM__BYTES__TheLength
 
-  * This puts TheLength amount of random bytes into the buffer
+  * This puts TheLength amount of random bytes into var, in a suitable way.
 
 If none of above, then it will be treated as a var name. However it should start with a alphabhetic char.
 
+The VM maintains the data internally as a flexible variant type. It allows one type of data to be transparently
+treated as a different type, by applying relatively sane default conversion rules.
 
-Where ever int_var_or_value is mentioned wrt instructions, then it should represent a int variable or value.
-Where ever ideally_int_var_or_value is mentioned wrt instructions, then it should ideally represent a int
-variable or value. However If it refers to
+Where ever
 
-* a string entity, then treat it has a textual literal value of the int and convert it into int
+* int_var_or_value is mentioned wrt instructions, then it should represent a int variable or value.
+  However if it represents a different type, the following conversion will be applied
 
-* binary buffer entity, then logic will try to interpret it has raw byte values of the int and
-  inturn convert it into int.
+  * treat strings as textual literal representation of a integer.
 
-Where ever str_var_or_value is mentioned wrt instructions, then it should represent a string variable or value.
-If not, the logic will try to convert other types to equivalent string representation.
+  * treat buf as raw byte values corresponding to a integer.
 
-* if a $0xHexString based literal is specified, it should represent a valid utf8 string.
+* str_var_or_value is mentioned wrt instructions, then it should represent a string variable or value.
+  However if a different type entity (value or variable) is provided, then
+
+  * ints will be converted to their textual literal representation
+
+  * bufs will be converted to hex string. (So that even if there are non printable characters, they are not lost)
+
+  * Strings are generally really useful, when displaying something to the screen or when writing to a text file.
+
+* buf_var_or_value is mentioned wrt instructions, then it should represent a binary buffer variable or value.
+  However if different type entity is provided then the underlying byte values of the source variable (or literal
+  after suitable interpretation) is retained.
+
+  * int's underlying raw byte values will be passed as a binary buffer.
+
+  * string's underlying raw byte values will be passed as a binary buffer.
+
+  * binary buffers are useful for most cases except may be when printing to console/screen
 
 Where ever any_var_or_value is mentioned wrt instructions, it could represent int or string or binary buffer
 variable or value.
+
 
 
 Clean coding (Comments, White spaces)
@@ -552,51 +570,30 @@ The commands/operations that can be specified as part of the prg file include
 Data/Variables Related
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-* letstr <string_var_id> <str_var_or_value>
+Variables can be either global or local. Additionally one can specify a default value type wrt the variable,
+which could be int(i) or str(s) or buf(b, a binary buffer).
+
+## Global variables
+
+* letglobal.s|letstr <string_var_id> <str_var_or_value>
 
   create a str var and set its value
 
-* letint <int_var_id> <int_var_or_value>
+* letglobal.i|letint <int_var_id> <int_var_or_value>
 
   create a int var and set its value
 
-* bufnew <buf_id> <bufsize_ideally_int_var_or_value>
+* letglobal.b|letbuf <buf_var_id> <buf_var_or_value>
+
+  create a binary buffer and set its value.
+
+* letglobal <var_id> <any_var_or_value>
+
+  This creates a global variable, whose type is infered based on the type of the source entity specified.
+
+* bufnew <buf_var_id> <bufsize_int_var_or_value>
 
   Create a named buffer of a given size
-
-* letbuf[.s|.b] <buf_id> bufdata_any_var_or_value
-
-  Create a buffer var and fill it with specified data with could either be a literal value or a variable.
-
-  By allowing Int or Str var's value to be stored into a Buf var, the same can be written to a iobridge.
-
-  * letbuf or letbuf.b tries to read the src int|str|buf var as corresponding underlying binary bytes data
-
-    * this is useful for most cases except may be when printing to console/screen
-
-    * this retains the underlying byte values of the source variable (or literal after suitable interpretation)
-
-  * letbuf.s tries to read the src
-
-    * int var/value as equivalent string/textual literal value
-
-    * buf var/value as hex string
-
-    * this will be very useful when trying to print something to console/screen
-
-* bufsmerge destbuf srcbuf1 srcbuf2 ..... srcbufn
-
-  This allows a new buffer to be created with contents of the source buffers specified merged/concatenated together.
-
-  If only 1 source buffer is specified, it is equivalent to copying it into a new dest buffer.
-
-  * bufsmerge destbuf srcbuf
-
-    * destbuf = srcbuf
-
-  If more than 1 source buffer is specified, it concats all the source buffers into a new dest buffer.
-
-    * destbuf = srcbuf1 + srcbuf2 + ..... + srcbufn
 
 * bufmerged[.b]|bufmerged.s destbufid src1_any_var_or_value src2_any_var_or_value ..... srcn_any_var_or_value
 
@@ -613,8 +610,16 @@ Data/Variables Related
   useful especially, when writing to console or so, where user will be interested in a human readable textual
   form of the underlying data.
 
-  This avoids the need to create temporary bufs using letbuf[.s] and then merging into a buf using bufsmerge.
+## Local variables
 
+One can use letlocal to create a local variable
+
+* letlocal[.i|.s|.b] <var_id> <suitable_var_or_value>
+
+This works similar to how letglobal and its variants work, except that the variable is created in the localstack
+and not in the global hashmap.
+
+## special operations
 
 * buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
 
@@ -658,7 +663,8 @@ Alu Operations
 * mod <dest_int_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
 
 If one uses a string or binary buffer, instead of int var or value, as the source data,
-it should be convertable to a valid int as expected by this program.
+it will be converted into a int value, using rules specified previously, so it should
+contain int value in the required way.
 
 IOBridge related
 ~~~~~~~~~~~~~~~~~
@@ -710,7 +716,7 @@ IOBridge related
 
   * request flushing of any buffering of written data by the library and or os into the underlying io device
 
-* iobread <iob_id> <buf_id>
+* iobread <iob_id> <buf_var_id>
 
   * try to read upto specified buffer's buffer length of data from the specified iobridge
 
@@ -726,7 +732,7 @@ IOBridge related
 Fuzzers related
 ~~~~~~~~~~~~~~~~~
 
-* fcget <fc_id> <buf_id>
+* fcget <fc_id> <buf_var_id>
 
   Generate a fuzzed buffer of data and store into buffer of specified id.
 
@@ -980,7 +986,7 @@ Previously
 
 * iobwrite now works with DataM for its src operand.
 
-20221013
+20221013++
 ===========
 
 Functions
@@ -997,9 +1003,14 @@ DataType enum renamed to DataKind and inturn Variable or FuncArg rather than Glo
 Switch to a new proper minimal Variant data type and Var's built on top of these Variants.
 There is no longer seperate hashmaps wrt different basic data types. Now there is a single
 hashmap for global vars and another (rather a stack of those) wrt local vars. The dest operands
-are also DataM's. The local var's can be specified to be of a specific type.
+are also DataM's.
 
 * The overall flow is simplified and cleaned up as part of these and related changes.
+
+The global and local var's can be specified to be of a specific type or else based on the src
+data type, the new variable will auto infer its suitable type.
+
+Logic for Getting and Setting of variables moved into common helper logics.
 
 
 TODO
@@ -1039,4 +1050,18 @@ TODO
 
   * rather than running counter, may be it can also just be call depth level, need to think this
     once more.
+
+* func arguments and readwrite and locavariables etal
+
+  * if just supporting readonly func arguments currently as well as in future. Then one can simplify
+    the logic wrt func arguments and just add func arguments as local variables in the function's localsstack.
+
+  * if we want to allow writable func arguments, as well as inturn allow local variables to be
+    passed as arguments to the function, and inturn have those local variables' value get udpated
+    wrt those function's context and not just the child func in which the value was changed.
+
+    * extend the current fargsstack to include not just the base/origianl variable name, but also
+      a index which will indicate whether that base var name belongs to global hashmap or one of
+      the function related hash maps in the localsstack.
+
 
