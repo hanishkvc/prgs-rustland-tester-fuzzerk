@@ -86,6 +86,10 @@
 # Check function local vars
 #
 
+!func LOCAL_VARS_FARG_NOINFER testme
+	letlocal xvar testme
+	ret
+
 !func LOCAL_VARS_OK
 	# Explicitly specified local var types
 	letlocal.i lint 987
