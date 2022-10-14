@@ -100,6 +100,13 @@
 	call PRINT_ME tmsg
 	ret
 
+!func CHECK_FARG_REF_LOCAL_NOGO
+	letlocal lsrc "LOCAL_NOGO:1: FArg passed cant be a local var"
+	call PRINT_ME lsrc
+	letstr gsrc "LOCAL_NOGO:2: FArg passed can be a global var"
+	call PRINT_ME gsrc
+	ret
+
 !func CHECK_FARGS
 	letstr fargtest1 "This is a global var passed to func using func args"
 	call CHECK_FARG_L1 fargtest1
@@ -107,6 +114,7 @@
 	call CHECK_FARG_L1 fargtest2
 	letint testint1 100
 	call CHECK_FARG_MULTI fargtest1 testint1
+	call CHECK_FARG_REF_LOCAL_NOGO
 	ret
 
 
