@@ -12,41 +12,41 @@
 # Check out variables
 #
 !func VARIABLES
-	letint MeInt 101
-	letstr MeStr "Me a String"
-	letbuf MeBuf "I can have any binary value"
-	letbuf MeBuf $0x3031322D6362612D373839
-	bufmerged.s AMsg "The Vars are:StringMode:\n" "\tInt:" MeInt "\n\tStr:" MeStr "\n\tBuf:" MeBuf "\n"
-	iobwrite term AMsg
-	bufmerged.b AMsg "The Vars are:BinBufMode:\n" "\tInt:" MeInt "\n\tStr:" MeStr "\n\tBuf:" MeBuf "\n"
-	iobwrite term AMsg
+	letint 		MeInt 101
+	letstr 		MeStr "Me a String"
+	letbuf 		MeBuf "I can have any binary value"
+	letbuf 		MeBuf $0x3031322D6362612D373839
+	bufmerged.s 	AMsg "The Vars are:StringMode:\n" "\tInt:" MeInt "\n\tStr:" MeStr "\n\tBuf:" MeBuf "\n"
+	iobwrite 	term AMsg
+	bufmerged.b	AMsg "The Vars are:BinBufMode:\n" "\tInt:" MeInt "\n\tStr:" MeStr "\n\tBuf:" MeBuf "\n"
+	iobwrite 	term AMsg
 	ret
 
 
 !func GLOBAL_VARS
 	# Global vars using explicit lettype var setting
-	letint gint1 201
-	letstr gstr1 "Global Vars Set1"
-	letbuf gbuf1 $0x393138323733363435
-	bufmerged.s tmsg1 "GlobalsLetType:Str: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
+	letint		gint1 201
+	letstr		gstr1 "Global Vars Set1"
+	letbuf		gbuf1 $0x393138323733363435
+	bufmerged.s	tmsg1 "GlobalsLetType:Str: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
 	call PRINT_ME tmsg1
-	bufmerged.b tmsg1 "GlobalsLetType:Buf: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
+	bufmerged.b	tmsg1 "GlobalsLetType:Buf: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
 	call PRINT_ME tmsg1
 	# Global vars using explicit letglobal.type var setting
-	letglobal.i gint2 202
-	letglobal.s gstr2 "Global Vars Set2"
-	letglobal.b gbuf2 $0x393831323733363435
-	bufmerged.s tmsg2 "GlobalsLetGlobal.Type:Str: Int[" gint2 "] Str[" gstr2 "] Buf[" gbuf2 "]\n"
+	letglobal.i	gint2 202
+	letglobal.s	gstr2 "Global Vars Set2"
+	letglobal.b	gbuf2 $0x393831323733363435
+	bufmerged.s	tmsg2 "GlobalsLetGlobal.Type:Str: Int[" gint2 "] Str[" gstr2 "] Buf[" gbuf2 "]\n"
 	call PRINT_ME tmsg2
-	bufmerged.b tmsg2 "GlobalsLetGlobal.Type:Buf: Int[" gint2 "] Str[" gstr2 "] Buf[" gbuf2 "]\n"
+	bufmerged.b	tmsg2 "GlobalsLetGlobal.Type:Buf: Int[" gint2 "] Str[" gstr2 "] Buf[" gbuf2 "]\n"
 	call PRINT_ME tmsg2
 	# Global vars using implicit letglobal var setting
-	letglobal gint3 203
-	letglobal gstr3 "Global Vars Set3"
-	letglobal gbuf3 $0x393837363132333435
-	bufmerged.s tmsg3 "GlobalsLetGlobal:Str: Int[" gint3 "] Str[" gstr3 "] Buf[" gbuf3 "]\n"
+	letglobal	gint3 203
+	letglobal	gstr3 "Global Vars Set3"
+	letglobal	gbuf3 $0x393837363132333435
+	bufmerged.s	tmsg3 "GlobalsLetGlobal:Str: Int[" gint3 "] Str[" gstr3 "] Buf[" gbuf3 "]\n"
 	call PRINT_ME tmsg3
-	bufmerged.b tmsg3 "GlobalsLetGlobal:Buf: Int[" gint3 "] Str[" gstr3 "] Buf[" gbuf3 "]\n"
+	bufmerged.b	tmsg3 "GlobalsLetGlobal:Buf: Int[" gint3 "] Str[" gstr3 "] Buf[" gbuf3 "]\n"
 	call PRINT_ME tmsg3
 	ret
 
@@ -95,26 +95,26 @@
 	ret
 
 !func CHECK_FARG_MULTI str1 int1
-	add intres int1 20
-	bufmerged.s tmsg "\n\nArg1:" str1 "\n" "Arg2:Adjusted int1 is:" intres "\n\n"
-	call PRINT_ME tmsg
+	add		intres int1 20
+	bufmerged.s	tmsg "\n\nArg1:" str1 "\n" "Arg2:Adjusted int1 is:" intres "\n\n"
+	call		PRINT_ME tmsg
 	ret
 
 !func CHECK_FARG_REF_LOCAL_NOGO
-	letlocal lsrc "LOCAL_NOGO:1: FArg passed cant be a local var"
-	#call PRINT_ME lsrc
-	letstr gsrc "LOCAL_NOGO:2: FArg passed can be a global var"
-	call PRINT_ME gsrc
+	letlocal	lsrc		"LOCAL_NOGO:1: FArg passed cant be a local var"
+	call		PRINT_ME	lsrc
+	letstr		gsrc		"LOCAL_NOGO:2: FArg passed can be a global var"
+	call		PRINT_ME	gsrc
 	ret
 
 !func CHECK_FARGS
-	letstr fargtest1 "This is a global var passed to func using func args"
-	call CHECK_FARG_L1 fargtest1
-	letstr fargtest2 "This is another global var passed to func using func args"
-	call CHECK_FARG_L1 fargtest2
-	letint testint1 100
-	call CHECK_FARG_MULTI fargtest1 testint1
-	call CHECK_FARG_REF_LOCAL_NOGO
+	letstr	fargtest1 "This is a global var passed to func using func args"
+	call	CHECK_FARG_L1 fargtest1
+	letstr	fargtest2 "This is another global var passed to func using func args"
+	call	CHECK_FARG_L1 fargtest2
+	letint	testint1 100
+	call	CHECK_FARG_MULTI fargtest1 testint1
+	call	CHECK_FARG_REF_LOCAL_NOGO
 	ret
 
 
