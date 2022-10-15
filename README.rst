@@ -1012,6 +1012,9 @@ data type, the new variable will auto infer its suitable type.
 
 Logic for Getting and Setting of variables moved into common helper logics.
 
+Maintain src line number with compiled ops, so that errors noticied while running the op, can
+be linked back to the source for easy debugging and fixing.
+
 
 TODO
 ||||||
