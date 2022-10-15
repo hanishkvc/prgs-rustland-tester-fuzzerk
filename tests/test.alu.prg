@@ -4,9 +4,7 @@
 	jump START
 
 !func PRINT_ALUVARS
-	letbuf msgArg1 "Arg1:"
-	letbuf msgArg2 ":Arg2:"
-	bufmerged.s bmsg ":RAdd:" radd ":RSub:" rsub ":RMult:" rmult ":RDiv:" rdiv ":RMod:" rmod "\n"
+	bufmerged.s bmsg "Results :RAdd:" radd ":RSub:" rsub ":RMult:" rmult ":RDiv:" rdiv ":RMod:" rmod "\n"
 	iobwrite term bmsg
 	ret
 
@@ -26,11 +24,15 @@
 
 	sub rsub i01 12
 	mult rmult i01 rsub
+	bufmerged.s msgIn "Sub using " i01 " and " 12 "\nMult using " i01 " and rsub\n"
+	iobwrite term msgIn
 	call PRINT_ALUVARS
 
 	sub rsub i01 0x12
 	mult rmult i01 rsub
 	mod rmod 0x15 i02
+	bufmerged.s msgIn "Sub using " i01 " and " 0x12 "\nMult using " i01 " and rsub\nMod using " 0x15 " and " i02 "\n"
+	iobwrite term msgIn
 	call PRINT_ALUVARS
 
 	iobwrite term "End of the journey\n"

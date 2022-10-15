@@ -17,6 +17,6 @@
 	iobwrite logme testbuf
 	iobwrite logme newline
 	inc loopcnt
-	checkjump loopcnt 10 repeat __NEXT__ __NEXT__
+	iflt loopcnt 10 repeat
 	iobclose logme
 

@@ -52,7 +52,8 @@
 	sleepmsec 1000
 
 	inc loopcnt
-	checkjump loopcnt 10 repeatagain __NEXT__ __NEXT__
+	#checkjump loopcnt 10 repeatagain __NEXT__ __NEXT__
+	iflt loopcnt 10 repeatagain
 
 	iobclose fsave
 
