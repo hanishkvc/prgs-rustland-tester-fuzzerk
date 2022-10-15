@@ -782,7 +782,13 @@ Control/System related
 
     * ie they can be read from and not written to
 
-  * the caller can currently only pass variables and not literal values wrt these args.
+  * the caller can pass variables and or literal values wrt these args.
+
+    * if literal values are passed, then during AOT compilation, instructions to create temporary variables
+      to correspond to these will be created and inserted before the call instruction, which uses/passes
+      literal values wrt function arguments. These will be created as local variables of the current func
+      if called from within a function, else these will be created as global variables. This should ensure
+      automatic clearing of these temporary variables if called from within functions.
 
   Any function has access to
 
@@ -847,19 +853,24 @@ Control/System related
   * a unconditional jump
 
 
-* call <func_id> [passed1_any_var passed2_any_var ...]
+* call <func_id> [passed1_any_var_or_value passed2_any_var_or_value ...]
 
   * call a func
 
   * If the func being called requires arguments to be passed to it, then one needs to specify
-    the corresponding/matching variables that should be passed to the called function.
+    the corresponding/matching variables or values that should be passed to the called function.
 
-    The passed variables could either be
+    The passed variables and or values could be
 
     * global variables or
 
-    * any function arguments belonging to the current function, ie provided the call is being
-      made from a function.
+    * literal values (int or string or buf type)
+
+    * if the call is being made from within a function, then
+
+      * local variables, if any, belonging to the current function
+
+      * any function arguments belonging to the current function
 
 
 * ret
@@ -1062,6 +1073,12 @@ arguments.
     getting the location of the real variable behind the function argument, and inturn
     updating the corresponding variables-hash-map.
 
+Allow literal values to be used as function arguments. These will be converted to temporary
+variables and used across the function chain. The logic tries to keep the memory use wrt
+these temp variables in control by creating local variables, if called from within a func.
+Only temp variables related to literals for calls outside of any functions, will remainin
+in the global variables space.
+
 
 TODO
 ||||||
@@ -1087,17 +1104,4 @@ TODO
 
 * iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
   Need to check whats occuring, initially by adding a iobwrite to console of what is read.
-
-* Wrt functions
-
-  * Maybe: pass literal values to a func (by creating temporary global/local/??? variables, which
-    are prefixed with function name or so).
-
-    * ie call will create these (using a running counter as part of the temp name in addition to
-      func name prefix)
-
-    * and ret will remove the corresponding temp variables.
-
-  * rather than running counter, may be it can also just be call depth level, need to think this
-    once more.
 

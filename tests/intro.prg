@@ -225,4 +225,5 @@
 	call CONDITIONS
 	call CHECK_FARGS
 	call LOCAL_VARS
+	callx PRINT_ME "\n**** Reached end of the program ****\n"
 
