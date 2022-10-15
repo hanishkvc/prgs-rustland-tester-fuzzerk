@@ -202,7 +202,7 @@
 !label StArT
 	call INIT
 	#letglobal tbuf $0x1234567
-	letlocal lstr "will fail"
+	#letlocal lstr "will fail"
 	call VARIABLES
 	call GLOBAL_VARS
 	call CONDITIONS
