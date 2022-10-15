@@ -107,6 +107,20 @@
 	call		CHECK_FARG_L1	lsrc2
 	ret
 
+!func CHECK_FARG_LITERALS_SIMPLE1
+	callx		PRINT_ME "FARGS: Test literals passing 1\n"
+	ret
+
+!func CHECK_FARG_LITERALS_SIMPLE2 msg
+	call		PRINT_ME msg
+	ret
+
+!func CHECK_farg_literals_multi arg1 arg2 yesArg3 arg4
+	bufmerged.s tmsg "FARGS:LiteralsMulti:\n\t" arg1 "\n\t" arg2 "\n\t" yesArg3 "\n\t" arg4 "\n"
+	call PRINT_ME tmsg
+	ret
+
+
 !func CHECK_FARGS
 	letstr	fargtest1 "FArgs: This is a global var passed to func using func args\n"
 	call	CHECK_FARG_L1 fargtest1
@@ -115,6 +129,9 @@
 	letint	testint1 100
 	call	CHECK_FARG_MULTI fargtest1 testint1
 	call	CHECK_FARG_REF_LOCAL_OK
+	call	CHECK_FARG_LITERALS_SIMPLE1
+	callx	CHECK_FARG_LITERALS_SIMPLE2 "FARGS: Test literals passing 2\n"
+	callx	CHECK_farg_literals_multi 10244201 "Test literals passing 3" testint1 "thank you"
 	ret
 
 
