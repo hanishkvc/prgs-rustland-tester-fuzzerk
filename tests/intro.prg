@@ -96,25 +96,25 @@
 
 !func CHECK_FARG_MULTI str1 int1
 	add		intres int1 20
-	bufmerged.s	tmsg "\n\nArg1:" str1 "\n" "Arg2:Adjusted int1 is:" intres "\n\n"
+	bufmerged.s	tmsg "\n\nFArg:Multi:Arg1:" str1 "\n" "FArg:Multi:Arg2:Adjusted int1 is:" intres "\n\n"
 	call		PRINT_ME tmsg
 	ret
 
-!func CHECK_FARG_REF_LOCAL_NOGO
-	letlocal	lsrc		"LOCAL_NOGO:1: FArg passed cant be a local var"
-	call		PRINT_ME	lsrc
-	letstr		gsrc		"LOCAL_NOGO:2: FArg passed can be a global var"
-	call		PRINT_ME	gsrc
+!func CHECK_FARG_REF_LOCAL_OK
+	letlocal	lsrc1		"FArg:LocalDirect: FArg passed can be a local var\n"
+	call		PRINT_ME	lsrc1
+	letstr		lsrc2		"FArg:LocalL1: FArg passed can be local, which inturn can be passed to another func\n"
+	call		CHECK_FARG_L1	lsrc2
 	ret
 
 !func CHECK_FARGS
-	letstr	fargtest1 "This is a global var passed to func using func args"
+	letstr	fargtest1 "FArgs: This is a global var passed to func using func args\n"
 	call	CHECK_FARG_L1 fargtest1
-	letstr	fargtest2 "This is another global var passed to func using func args"
+	letstr	fargtest2 "FArgs: This is another global var passed to func using func args\n"
 	call	CHECK_FARG_L1 fargtest2
 	letint	testint1 100
 	call	CHECK_FARG_MULTI fargtest1 testint1
-	call	CHECK_FARG_REF_LOCAL_NOGO
+	call	CHECK_FARG_REF_LOCAL_OK
 	ret
 
 
