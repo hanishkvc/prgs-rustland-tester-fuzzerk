@@ -176,15 +176,34 @@ control its operation in a flexible way. It does a basic quasi ahead of time
 compilation of the script file and inturn runs the generated program.
 
 One could either just define the fuzzers and the fuzz chains and let the vm
-run it directly. Or if one wants more control and flexibility, then one could
-create a program script file.
+run it directly using a default builtin fallback script. Or if one wants more
+control and flexibility, then one could create a program script file.
 
-This vm scripting language supports basic programming constructs like variables,
-arithmatic operation, condition checks, labels and conditional and unconditional
-gotos, io operations and so. Additionally few conviniance features are also
-supported like functions with arguments and recursion support, global and local
-variables, variant data type, automatic variable type inference, conditional
-function calls, io abstraction, ...
+The vm and the scripting language inturn
+
+* support basic programming constructs like variables, arithmatic operation,
+  condition checks, labels and conditional and unconditional gotos and calls,
+  io operations and so.
+
+* The scripting language follows a simple syntax like assembly mnemonics, while
+  at the same time providing access to modern conviniance features like
+
+  * global and local variables,
+
+  * variant data type,
+
+  * automatic variable type inference,
+
+  * functions with arguments and recursion support,
+
+  * conditional function calls,
+
+  * io abstraction,
+
+  * source code line number tracking wrt compiled code,
+    for easy debug and fixing
+
+  * ...
 
 
 Usage Flow possibilities
