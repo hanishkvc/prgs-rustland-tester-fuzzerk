@@ -784,12 +784,25 @@ Control/System related
 
   * the caller can currently only pass variables and not literal values wrt these args.
 
-  Any function has access to the global variables, as well as the function arguments specified directly
-  wrt it. It doesnt have access to function arguments specified wrt any of its parent callers.
+  Any function has access to
 
-  One can define local variables within a function. When ever a variable is used, 1st it is checked
-  wrt the current function's local variables list, only if not found, it will be checked for in global
-  variables list.
+  * the global variables,
+
+  * the local variables, which are defined within a funcion,
+
+  * as well as function arguments specified directly wrt it
+
+  Functions doesnt have access to function arguments or local variables specified wrt any of its parent
+  callers, directly. Unless the same is passed to the child function, by passing down the call chain,
+  has functions' arguments.
+
+  When ever a variable is used, 1st it is checked wrt
+
+  * the current function's arguments
+
+  * the current function's local variables list
+
+  * only if not found in above checks, it will be checked for in global variables list.
 
   One needs to end the func body with a ret instruction
 
@@ -1034,6 +1047,21 @@ Logic for Getting and Setting of variables moved into common helper logics.
 Maintain src line number with compiled ops, so that errors noticied while running the op, can
 be linked back to the source for easy debugging and fixing.
 
+Allow local variables in a function to be passed down a call chain, by passing it as func
+arguments.
+
+* func arguments and readwrite and locavariables etal
+
+  * the function arguments mechanism is implemented has a stack of fargsmaps, wrt each func
+    in the call chain. Each map entry contains a index (in addition to the real var name)
+    which indicates whether the farg represents a global variable or a local variable and
+    inturn in case of local variables, where in the function local variables stack it exists.
+
+  * even thou currently writing into a farg is not supported, the logic implemented allows
+    the same to be achieved easily by updating the Context::VarSet to handle the same by
+    getting the location of the real variable behind the function argument, and inturn
+    updating the corresponding variables-hash-map.
+
 
 TODO
 ||||||
@@ -1072,18 +1100,4 @@ TODO
 
   * rather than running counter, may be it can also just be call depth level, need to think this
     once more.
-
-* func arguments and readwrite and locavariables etal
-
-  * if just supporting readonly func arguments currently as well as in future. Then one can simplify
-    the logic wrt func arguments and just add func arguments as local variables in the function's localsstack.
-
-  * if we want to allow writable func arguments, as well as inturn allow local variables to be
-    passed as arguments to the function, and inturn have those local variables' value get udpated
-    wrt those function's context and not just the child func in which the value was changed.
-
-    * extend the current fargsstack to include not just the base/origianl variable name, but also
-      a index which will indicate whether that base var name belongs to global hashmap or one of
-      the function related hash maps in the localsstack.
-
 
