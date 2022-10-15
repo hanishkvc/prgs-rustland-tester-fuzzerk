@@ -12,6 +12,7 @@
 # Check out variables
 #
 !func VARIABLES
+	call		PRINT_ME "\n\n **** Variables **** \n\n"
 	letint 		MeInt 101
 	letstr 		MeStr "Me a String"
 	letbuf 		MeBuf "I can have any binary value"
@@ -24,6 +25,7 @@
 
 
 !func GLOBAL_VARS
+	call		PRINT_ME "\n\n **** Global Variables **** \n\n"
 	# Global vars using explicit lettype var setting
 	letint		gint1 201
 	letstr		gstr1 "Global Vars Set1"
@@ -75,6 +77,7 @@
 	ret
 
 !func CONDITIONS
+	call PRINT_ME "\n\n **** Conditions **** \n\n"
 	letint CheckInt 0
 	iflt 0 1 call CC_GOOD
 	ifgt 0 1 call CC_BAD
@@ -122,6 +125,7 @@
 
 
 !func CHECK_FARGS
+	call PRINT_ME "\n\n **** Function args **** \n\n"
 	letstr	fargtest1 "FArgs: This is a global var passed to func using func args\n"
 	call	CHECK_FARG_L1 fargtest1
 	letstr	fargtest2 "FArgs: This is another global var passed to func using func args\n"
@@ -189,6 +193,7 @@
 	ret
 
 !func LOCAL_VARS
+	call PRINT_ME "\n\n **** Local Vars **** \n\n"
 	letlocal lint 565
 	letlocal lstr "hello me local"
 	letlocal lbuf $0x30313233343536373839
