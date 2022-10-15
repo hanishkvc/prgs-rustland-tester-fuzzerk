@@ -108,7 +108,7 @@
 	ret
 
 !func CHECK_FARG_LITERALS_SIMPLE1
-	callx		PRINT_ME "FARGS: Test literals passing 1\n"
+	call		PRINT_ME "FARGS: Test literals passing 1\n"
 	ret
 
 !func CHECK_FARG_LITERALS_SIMPLE2 msg
@@ -130,8 +130,8 @@
 	call	CHECK_FARG_MULTI fargtest1 testint1
 	call	CHECK_FARG_REF_LOCAL_OK
 	call	CHECK_FARG_LITERALS_SIMPLE1
-	callx	CHECK_FARG_LITERALS_SIMPLE2 "FARGS: Test literals passing 2\n"
-	callx	CHECK_farg_literals_multi 10244201 "Test literals passing 3" testint1 "thank you"
+	call	CHECK_FARG_LITERALS_SIMPLE2 "FARGS: Test literals passing 2\n"
+	call	CHECK_farg_literals_multi 10244201 "Test literals passing 3" testint1 "thank you"
 	ret
 
 
@@ -225,5 +225,5 @@
 	call CONDITIONS
 	call CHECK_FARGS
 	call LOCAL_VARS
-	callx PRINT_ME "\n**** Reached end of the program ****\n"
+	call PRINT_ME "\n**** Reached end of the program ****\n"
 
