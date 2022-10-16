@@ -121,6 +121,7 @@
 !func CHECK_farg_literals_multi arg1 arg2 yesArg3 arg4
 	bufmerged.s tmsg "FARGS:LiteralsMulti:\n\t" arg1 "\n\t" arg2 "\n\t" yesArg3 "\n\t" arg4 "\n"
 	call PRINT_ME tmsg
+	call PRINT_ME testme
 	ret
 
 
@@ -225,7 +226,6 @@
 	call INIT
 	#letglobal tbuf $0x1234567
 	#letlocal lstr "will fail"
-	call PRINT_ME testme
 	call VARIABLES
 	call GLOBAL_VARS
 	call CONDITIONS
