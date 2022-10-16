@@ -39,7 +39,7 @@ pub trait FromVecStrings {
 
     ///
     /// Support a subset of escape chars like
-    /// \t, \r, \n
+    /// \t, \r, \n, \"
     ///
     fn str_deescape(ins: &str) -> Result<String, String> {
         let mut bescape = false;
@@ -59,6 +59,7 @@ pub trait FromVecStrings {
                         't' => outs.push('\x09'),
                         'n' => outs.push('\x0A'),
                         'r' => outs.push('\x0D'),
+                        '"' => outs.push(c),
                         _ => return Err(format!("ERRR:CfgFiles:StrDeEscape:Unsupported escape char {}", c)),
                     }
                     bescape = false;
