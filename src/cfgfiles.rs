@@ -77,13 +77,13 @@ pub trait FromVecStrings {
     /// * remove double quotes, if it was used to protect the string
     ///   * double quotes mainly help, when we want whitespaces at either end of the string
     ///   * if one wants the resultant string to contain double quotes at either end, put a 2nd double quote, where required.
-    /// * interpret the given string has a hex string, if it starts with 0x
+    /// * interpret the given string has a hex string, if it starts with $0x
     fn strval_process(ins: &str) -> Result<Vec<u8>, String> {
         log_d(&format!("DBUG:FromVS:StrValProcess:{}:{}", Self::get_name(), ins));
         let mut outs = ins.trim();
         if outs.len() >= 2 {
-            if outs.starts_with("0x") {
-                let vdata = datautils::vu8_from_hex(&outs[2..]);
+            if outs.starts_with("$0x") {
+                let vdata = datautils::vu8_from_hex(&outs[3..]);
                 return vdata;
             }
             let mut outschars = outs.chars();
@@ -105,7 +105,7 @@ pub trait FromVecStrings {
     ///
     /// Get the value (single) associated with the specified key. Empty value is Ok
     ///
-    /// * The key-value pair should be specified as key:value | key: value | key: " value " | key: 0xvalue...
+    /// * The key-value pair should be specified as key:value | key: value | key: " value " | key: $0xvalue...
     /// * The key-value pair should be indented with whitespaces chars to match the specified spacesprefix.
     fn get_value_emptyok(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<u8>, String> {
         let cursp = Self::get_spacesprefix(vs);
@@ -133,7 +133,7 @@ pub trait FromVecStrings {
     ///
     /// Get the value (single) associated with the specified key. Empty value is not Ok with this.
     ///
-    /// * The key-value pair should be specified as key:value | key: value | key: " value " | key: 0xvalue...
+    /// * The key-value pair should be specified as key:value | key: value | key: " value " | key: $0xvalue...
     /// * The key-value pair should be indented with whitespaces chars to match the specified spacesprefix.
     fn get_value(vs: &mut VecDeque<String>, key: &str, spacesprefix: usize) -> Result<Vec<u8>, String> {
         let val = Self::get_value_emptyok(vs, key, spacesprefix);
