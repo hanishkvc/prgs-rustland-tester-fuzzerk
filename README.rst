@@ -200,10 +200,22 @@ The vm and the scripting language inturn
 
   * io abstraction,
 
-  * source code line number tracking wrt compiled code,
-    for easy debug and fixing
-
   * ...
+
+* To help with easy debugging and fixing of any issues in the code
+
+  * source code line number is tracked and printed wrt compile and run
+    phases, if any error is detected.
+
+  * on error during execution, a back trace is shown of the call stack
+    in reverse order, with following info
+
+    * CallStackDepth, IPtr,
+
+    * CallOp(FuncName and args), SrcLineNum,
+
+    * Mapping of Func Args to passed vars and or literal values
+
 
 
 Usage Flow possibilities
@@ -1089,6 +1101,11 @@ Add VarSpace Enum to identify location of variable wrt FargsMap, VarGet, etal.
 Disable debug logs by default.
 
 Add Alu logical operations.
+
+Trap panic wrt code execution within the VM, and inturn show a backtrace of the callstack
+at that time, so that it is easier for debugging and fixing the issue wrt the prg script
+file.
+
 
 
 TODO
