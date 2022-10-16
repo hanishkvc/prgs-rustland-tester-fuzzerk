@@ -33,7 +33,7 @@ in controlled yet random way.
 
 This consits of a library of modules that can be used by other programs, as well
 as a scriptable helper utility program (fuzzerk) to test other programs (without
-having to modify these programs to integrate with the provided library).
+having to modify those programs to integrate with the provided library).
 
 
 Library & Helper modules
@@ -1106,6 +1106,20 @@ Trap panic wrt code execution within the VM, and inturn show a backtrace of the 
 at that time, so that it is easier for debugging and fixing the issue wrt the prg script
 file.
 
+Allow almost similar literal value representation wrt FC Config files and Prg script files.
+
+* both use $0x as the starting prefix wrt hex strings.
+
+* both support similar escape sequences
+
+* However wrt cfg files and string values,
+
+  * it is not necessary to have double quotes around string values
+
+  * if there is double quotes only at one end of the string value, it wont be removed.
+
+  * one can use double quotes anywhere within the string except for either end of string,
+    without needing escaping.
 
 
 TODO
@@ -1125,8 +1139,6 @@ TODO
 * Maybe: Merge TcpClient and TcpServer into a single entity in the IOBridge enum, and may be
   even merge Tls with Tcp entity. Obviously the new_iobtype helpers wrt each specific type, needs
   to be different, but beyond that it could be single, if things are kept simple.
-
-* Allow similar literal value representation wrt FC Config files and Prg files.
 
 * Maybe: Add support for string/buf data type wrt iflt|gt|le|ge
 
