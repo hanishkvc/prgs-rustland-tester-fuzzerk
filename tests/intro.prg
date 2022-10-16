@@ -225,6 +225,7 @@
 	call INIT
 	#letglobal tbuf $0x1234567
 	#letlocal lstr "will fail"
+	call PRINT_ME testme
 	call VARIABLES
 	call GLOBAL_VARS
 	call CONDITIONS
