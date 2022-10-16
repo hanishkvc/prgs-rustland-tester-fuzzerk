@@ -30,7 +30,10 @@ use fuzzerk::vm;
 /// Specify additional arguments if any for the io modules
 /// * --ioarg <key>=<value>
 ///
-fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>, String) {
+/// Enable logging/printing of debug messages, if required using
+/// * --blogdebug <true|yes>
+///
+fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>, String, bool) {
     let mut clargs = argsclsk::ArgsCmdLineSimpleManager::new();
 
     let mut cfgfc = String::new();
@@ -77,9 +80,20 @@ fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>, 
     };
     clargs.add_handler("--ioarg", &mut ioarg_handler);
 
+    let mut blogdebug = false;
+    let mut blogdebug_handler = |iarg: usize, args: &Vec<String>| -> usize {
+        let slogdebug = &args[iarg+1];
+        let vyes = vec!["yes", "true"];
+        if vyes.contains(&slogdebug.as_str()) {
+            blogdebug = true;
+        }
+        1
+    };
+    clargs.add_handler("--blogdebug", &mut blogdebug_handler);
+
     clargs.process_args();
 
-    return (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile);
+    return (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile, blogdebug);
 }
 
 
@@ -88,7 +102,8 @@ fn main() {
     log_init();
     log_o("MinimalFuzzerKUtil");
 
-    let (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile) = handle_cmdline();
+    let (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile, blogdebug) = handle_cmdline();
+    log_config(true, true, true, blogdebug, true);
 
     let mut vm = vm::VM::new();
     if cfgfc.len() == 0 {

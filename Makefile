@@ -15,6 +15,9 @@ test_general:
 test_general_loop:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300 --loopcnt 10
 
+test_prg_intro:
+	target/debug/fuzzerk --prgfile tests/intro.prg 2> /dev/null
+
 test_http_console:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --loopcnt 4
 

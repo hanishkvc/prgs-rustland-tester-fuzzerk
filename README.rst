@@ -918,6 +918,11 @@ There are few additional options, in case one is not using a prgfile
 * --fc <fcid>
   * defaults to empty string, if not explicitly specified.
 
+Additional options
+
+* --blogdebug <yes|true>
+  * enable printing of debug messages. Defaults to disabled.
+
 
 TODO Plus
 ############
@@ -1079,6 +1084,7 @@ these temp variables in control by creating local variables, if called from with
 Only temp variables related to literals for calls outside of any functions, will remainin
 in the global variables space.
 
+Disable debug logs by default.
 
 TODO
 ||||||
