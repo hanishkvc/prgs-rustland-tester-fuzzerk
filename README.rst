@@ -1084,7 +1084,12 @@ these temp variables in control by creating local variables, if called from with
 Only temp variables related to literals for calls outside of any functions, will remainin
 in the global variables space.
 
+Add VarSpace Enum to identify location of variable wrt FargsMap, VarGet, etal.
+
 Disable debug logs by default.
+
+Add Alu logical operations.
+
 
 TODO
 ||||||
