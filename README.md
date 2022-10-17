@@ -255,8 +255,7 @@ available in this package/crate.
 
 #### FuzzerChains File
 
-Overview
------------
+##### Overview
 
 This configures and instantiates one or more predefined fuzzers and the
 fuzz chains created using them. End user can create these files and then
@@ -268,8 +267,7 @@ Alert: Dont intermix tab and spaces, even thou visually both may appear
 to be equivalent, the logic will not accept such intermixing, bcas it
 cant be sure how many spaces a tab represents in a given context/instance.
 
-The Template
----------------
+##### The Template
 
 NOTE1:RawRST: The | (and one space after that for non empty lines) is for
 rst to identify the below lines has a block of data to be retained as such
@@ -315,8 +313,7 @@ in reality it is only a single slash \ as part of the escape sequence.
 NOTE: The sample template above, also shows how string (textual or binary or
 a mixture of both) can be specified in different ways, based on what one needs.
 
-Types of data
----------------
+##### Types of data
 
 As part of the key-value(s) pairs specified in fuzz chains config file, currently
 the value(s) specified could be
@@ -388,8 +385,7 @@ The list can be specified in one of the following ways
 NOTE: The empty lines between values of the list and two adjacent slashes wrt
 escape sequences are things done to satisfy rst format requirements.
 
-Predefined Fuzzers
--------------------
+##### Predefined Fuzzers
 
 The following type of predefined fuzzers is provided by default
 
@@ -467,8 +463,7 @@ The following type of predefined fuzzers is provided by default
           for changing the byte value wrt that position.
 
 
-Custom Fuzzers
-----------------
+##### Custom Fuzzers
 
 If required the library can be extended to add custom fuzzers (they need to support
 the fuzz trait).
@@ -491,13 +486,11 @@ If a custom fuzzer has to be created from the textual FuzzChains config file, th
 
 #### Prg file
 
-Overview
-----------
+##### Overview
 
 This allows the end user to control the actions to be performed by fuzzerk, in a simple and flexible way.
 
-General
----------
+##### General
 
 Data and or Variable
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -578,8 +571,7 @@ If required one can put extra spaces around operands to align them across lines 
 If required one can put # at the beginning of a line to make it a comment line.
 
 
-Ops/Instructions supported
----------------------------
+##### Ops/Instructions supported
 
 The commands/operations that can be specified as part of the prg file include
 
@@ -875,8 +867,7 @@ Control/System related
   * return from func
 
 
-A sample file
----------------
+##### A sample file
 
 |
 |       letstr <strvarid> <string value>
