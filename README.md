@@ -37,8 +37,7 @@ having to modify these programs to integrate with the provided library).
 
 ### Library & Helper modules
 
-Fuzzers and Chains
-===================
+#### Fuzzers and Chains
 
 At the core, the library defines
 
@@ -79,8 +78,7 @@ Two kinds of FuzzChainers are provided currently
   required within a single or even across multiple such chains.
 
 
-CfgFiles
-==========
+#### CfgFiles
 
 A generic config file handling module.
 
@@ -103,16 +101,14 @@ to parse and the handler to call for handling the config groups found
 in the file.
 
 
-Rtm
-=====
+#### Rtm
 
 The runtime manager, is a helper module to allow the creation of predefined
 fuzzers, and its chaining into fuzzchains, based on the config info in the
 config groups (from config file) passed to it.
 
 
-IOBridge
-==========
+#### IOBridge
 
 This is a helper module for the util program to help work with either Console
 or Tcp client or Tcp server or Tls server or File, in a generic way.
@@ -140,8 +136,7 @@ or Tcp client or Tcp server or Tls server or File, in a generic way.
 * filewriter:path/to/file
 
 
-VM
-====
+#### VM
 
 This is a helper module for the util program's operations to be controlled
 by the end user using custom prg/script files.
@@ -258,8 +253,7 @@ randomly change it in a controlled manner. Or use a combination of both.
 The below are the control files used by the minimal fuzzerk program
 available in this package/crate.
 
-FuzzerChains File
-===================
+#### FuzzerChains File
 
 Overview
 -----------
@@ -495,8 +489,7 @@ If a custom fuzzer has to be created from the textual FuzzChains config file, th
 
 
 
-Prg file
-==========
+#### Prg file
 
 Overview
 ----------
@@ -932,8 +925,7 @@ Additional options
 
 ### DONE
 
-Previously
-============
+#### Previously
 
 * end of prgfile
 
@@ -985,8 +977,7 @@ Previously
 
 
 
-20221009++
-===========
+#### 20221009++
 
 * Add ALU commands add, sub, mult, div, mod
 
@@ -1035,8 +1026,7 @@ Previously
 
 * iobwrite now works with DataM for its src operand.
 
-20221013++
-===========
+#### 20221013++
 
 Functions
 
