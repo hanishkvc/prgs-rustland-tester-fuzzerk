@@ -652,6 +652,15 @@ and not in the global hashmap.
 
 ###### Alu Operations
 
+Both arithmatic and logic operations are supports.
+
+####### Arithmatic operations
+
+Arithmatic operations interpret their data as integer values. If one uses
+a string or binary buffer related var or value, as source data, instead of
+int var or value, it will be converted into a int value, using rules
+specified previously, so it should contain int value in it in the reqd way.
+
 * inc <int_var_id>
 
 * dec <int_var_id>
@@ -666,9 +675,19 @@ and not in the global hashmap.
 
 * mod <dest_int_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
 
-If one uses a string or binary buffer, instead of int var or value, as the source data,
-it will be converted into a int value, using rules specified previously, so it should
-contain int value in the required way.
+####### Logical operations
+
+Logical operations interpret their data as binary buffer values and do
+unsigned logical operation on them.
+
+* and <dest_buf_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
+
+* or <dest_buf_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
+
+* not <dest_buf_var_id> <src1_any_var_or_value>
+
+* xor <dest_buf_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
+
 
 ###### IOBridge related
 
