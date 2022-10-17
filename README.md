@@ -578,7 +578,7 @@ The commands/operations that can be specified as part of the prg file include
 Variables can be either global or local. Additionally one can specify a default value type wrt the variable,
 which could be int(i) or str(s) or buf(b, a binary buffer).
 
-## Global variables
+####### Global variables
 
 * letglobal.s|letstr <string_var_id> <str_var_or_value>
 
@@ -615,7 +615,7 @@ which could be int(i) or str(s) or buf(b, a binary buffer).
   useful especially, when writing to console or so, where user will be interested in a human readable textual
   form of the underlying data.
 
-## Local variables
+####### Local variables
 
 One can use letlocal to create a local variable
 
@@ -624,7 +624,7 @@ One can use letlocal to create a local variable
 This works similar to how letglobal and its variants work, except that the variable is created in the localstack
 and not in the global hashmap.
 
-## special operations
+####### Special operations
 
 * buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
 
