@@ -68,9 +68,12 @@ Two kinds of FuzzChainers are provided currently
 
 * one which allows its members to modify themselves (rather their
   internal context). Currently one cant use the same instance of such
-  muttable fuzzers more than once. (Later may add a RefCount and if
-  reqd mutex to allow it to be chained more than once and also inturn
-  to be used from a multithreaded context).
+  muttable fuzzers more than once. Later may add
+  * [SingleThreaded] use RefCell and Rc to allow pushing Rust memory safety
+    checks wrt multiple references and their use to occur dynamically at
+    runtime, especially when muttable references are requried.
+  * [MultiThreading safe] Use Arc (AutomicRC) and mutex to allow it to be
+    chained more than once and inturn to be used from a multithreaded context.
 
 * one which expects its members to work, without updating/modifying any
   of their internal context. Such fuzzer instances can be reused as
