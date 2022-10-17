@@ -1,6 +1,5 @@
-####################
-FuzzerK library+
-####################
+# FuzzerK library+
+
 Author: HanishKVC,
 Version: 20221007IST0039, Saraswathi + Ayudha (Knowledge,Work,Mechanisms,Tools,Processes,...) pooja release
 License: GPL
@@ -269,46 +268,43 @@ cant be sure how many spaces a tab represents in a given context/instance.
 
 ##### The Template
 
-NOTE1:RawRST: The | (and one space after that for non empty lines) is for
-rst to identify the below lines has a block of data to be retained as such
-by rst.
+NOTE1:RawMD: The 4 spaces at beging of below set of lines is for markdown
+to identify the below lines has a block of data to be retained as such
+by markdown.
 
-NOTE2:RawRST: The two slashes \\ below is to work with rst format,
-in reality it is only a single slash \ as part of the escape sequence.
-
-|
-| FuzzerType:TypeNameABC:InstanceNameABC1
-|   Arg1: IntValueX
-|   Arg2: StringValueM
-|   Arg3: String   ValueN
-|   Arg4: "   String Value with SpacesAt Ends "
-|   Arg5: 0xABCDEF0102030405060708090A303132323334
-|   ArgX: String\\tValueY\\n
-|   ArgA:
-|     Value1,
-|     Value2,
-|     ValueXYZ
-|
-|
-| FuzzerType:TypeNameXYZ:InstanceNameXYZ99
-|     Arg1:
-|         ValueA,
-|         Value   B,
-|         Value\\tWhatElse\\nC\\t,
-|         " Value\\tWhatElse\\nF   ",
-|         0x3031203234203536,
-|         ValueZ,
-|     Arg2:
-|         ValueX,
-|         ValueM,
-|         ValueN,
-|
-|
-| FuzzChain:FuzzChain:FC100
-|     InstanceNameABC1
-|     InstanceNameXYZ99
-|     InstanceNameXYZ99
-|
+   
+    FuzzerType:TypeNameABC:InstanceNameABC1
+      Arg1: IntValueX
+      Arg2: StringValueM
+      Arg3: String   ValueN
+      Arg4: "   String Value with SpacesAt Ends "
+      Arg5: 0xABCDEF0102030405060708090A303132323334
+      ArgX: String\tValueY\n
+      ArgA:
+        Value1,
+        Value2,
+        ValueXYZ
+   
+   
+    FuzzerType:TypeNameXYZ:InstanceNameXYZ99
+        Arg1:
+            ValueA,
+            Value   B,
+            Value\tWhatElse\nC\t,
+            " Value\tWhatElse\nF   ",
+            0x3031203234203536,
+            ValueZ,
+        Arg2:
+            ValueX,
+            ValueM,
+            ValueN,
+   
+   
+    FuzzChain:FuzzChain:FC100
+        InstanceNameABC1
+        InstanceNameXYZ99
+        InstanceNameXYZ99
+   
 
 NOTE: The sample template above, also shows how string (textual or binary or
 a mixture of both) can be specified in different ways, based on what one needs.
@@ -881,21 +877,19 @@ unsigned logical operation on them.
 
 ##### A sample file
 
-|
-|       letstr <strvarid> <string value>
-|       letint <intvarid> <intvalue>
-|       iobnew <iobid> <iobtype:addr> <ioargkeyX=valY> <ioargkeyA=valC>
-| !label labelid
-|       fcget <fcid> <bufid>
-|       iobwrite <iobid> <bufid>
-|       sleepmsec <milliseconds>
-|       iobread <iobid> <bufid>
-|       iobclose <iobid>
-|       inc <intvarid>
-|       iflt <intvarid> <chkvalue> goto labelid
-| !label labelid_named_unneeded
-|       dec <intvarid>
-|
+           letstr <strvarid> <string value>
+           letint <intvarid> <intvalue>
+           iobnew <iobid> <iobtype:addr> <ioargkeyX=valY> <ioargkeyA=valC>
+    !label labelid
+           fcget <fcid> <bufid>
+           iobwrite <iobid> <bufid>
+           sleepmsec <milliseconds>
+           iobread <iobid> <bufid>
+           iobclose <iobid>
+           inc <intvarid>
+           iflt <intvarid> <chkvalue> goto labelid
+    !label labelid_named_unneeded
+           dec <intvarid>
 
 
 
