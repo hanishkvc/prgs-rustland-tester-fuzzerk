@@ -492,8 +492,7 @@ This allows the end user to control the actions to be performed by fuzzerk, in a
 
 ##### General
 
-Data and or Variable
-~~~~~~~~~~~~~~~~~~~~~~
+###### Data and or Variable
 
 Where ever var_or_value is mentioned wrt instruction operands, the text-tokens/content specified in the
 corresponding location in the prgfile will be interpreted as below.
@@ -563,8 +562,7 @@ variable or value.
 
 
 
-Clean coding (Comments, White spaces)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###### Clean coding (Comments, White spaces)
 
 If required one can put extra spaces around operands to align them across lines or so, for easy reading.
 
@@ -575,8 +573,7 @@ If required one can put # at the beginning of a line to make it a comment line.
 
 The commands/operations that can be specified as part of the prg file include
 
-Data/Variables Related
-~~~~~~~~~~~~~~~~~~~~~~~
+###### Data/Variables Related
 
 Variables can be either global or local. Additionally one can specify a default value type wrt the variable,
 which could be int(i) or str(s) or buf(b, a binary buffer).
@@ -653,8 +650,7 @@ and not in the global hashmap.
 
     * rand_endval is inclusive
 
-Alu Operations
-~~~~~~~~~~~~~~~
+###### Alu Operations
 
 * inc <int_var_id>
 
@@ -674,8 +670,7 @@ If one uses a string or binary buffer, instead of int var or value, as the sourc
 it will be converted into a int value, using rules specified previously, so it should
 contain int value in the required way.
 
-IOBridge related
-~~~~~~~~~~~~~~~~~
+###### IOBridge related
 
 * iobnew <iob_id> <iobtype:typespecific_addr> <typespecific_ioarg=value> <typespecific_ioarg=value> ...
 
@@ -737,16 +732,14 @@ IOBridge related
 * iobclose <iob_id>
 
 
-Fuzzers related
-~~~~~~~~~~~~~~~~~
+###### Fuzzers related
 
 * fcget <fc_id> <buf_var_id>
 
   Generate a fuzzed buffer of data and store into buffer of specified id.
 
 
-Control/System related
-~~~~~~~~~~~~~~~~~~~~~~~
+###### Control/System related
 
 * sleepmsec <milliseconds_int_var_or_value>
 
