@@ -6,8 +6,7 @@ Version: 20221007IST0039, Saraswathi + Ayudha (Knowledge,Work,Mechanisms,Tools,P
 License: GPL
 
 
-Overview
-##########
+## Overview
 
 This can be used to test input parsing logic of programs to see, that they
 handle all possible input cases sufficiently robustly.
@@ -218,8 +217,7 @@ The vm and the scripting language inturn
 
 
 
-Usage Flow possibilities
-##########################
+## Usage Flow possibilities
 
 Whether to use Library or Program
 |||||||||||||||||||||||||||||||||||
@@ -257,8 +255,7 @@ is needed. Or one could specify the ideal data and then let the logic
 randomly change it in a controlled manner. Or use a combination of both.
 
 
-Runtime
-#########
+## Runtime
 
 Control files
 ||||||||||||||||
@@ -936,8 +933,7 @@ Additional options
   * enable printing of debug messages. Defaults to disabled.
 
 
-TODO Plus
-############
+## TODO Plus
 
 
 DONE
