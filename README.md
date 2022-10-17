@@ -35,8 +35,7 @@ as a scriptable helper utility program (fuzzerk) to test other programs (without
 having to modify these programs to integrate with the provided library).
 
 
-Library & Helper modules
-||||||||||||||||||||||||||
+### Library & Helper modules
 
 Fuzzers and Chains
 ===================
@@ -154,8 +153,7 @@ It inturn uses Rtm and Cfgfiles module to instantiate fuzzers and fuzz chains
 as defined by the end user.
 
 
-Minimal FuzzerK Util
-|||||||||||||||||||||
+### Minimal FuzzerK Util
 
 A program which uses the modules mentioned previously to help test other
 programs by generating fuzz input for them and pushing to them using either
@@ -219,8 +217,7 @@ The vm and the scripting language inturn
 
 ## Usage Flow possibilities
 
-Whether to use Library or Program
-|||||||||||||||||||||||||||||||||||
+### Whether to use Library or Program
 
 One could use the logics of this system, in few different possible ways
 
@@ -247,8 +244,7 @@ One could use the logics of this system, in few different possible ways
     test cases to be realised.
 
 
-Wrt fuzzing
-|||||||||||||
+### Wrt fuzzing
 
 One could either build a fuzz chain made up of parts of the data that
 is needed. Or one could specify the ideal data and then let the logic
@@ -257,8 +253,7 @@ randomly change it in a controlled manner. Or use a combination of both.
 
 ## Runtime
 
-Control files
-||||||||||||||||
+### Control files
 
 The below are the control files used by the minimal fuzzerk program
 available in this package/crate.
@@ -908,8 +903,7 @@ A sample file
 
 
 
-Cmdline
-|||||||||
+### Cmdline
 
 The key cmdline options are
 
@@ -936,8 +930,7 @@ Additional options
 ## TODO Plus
 
 
-DONE
-|||||||
+### DONE
 
 Previously
 ============
@@ -1104,8 +1097,7 @@ file.
 
 
 
-TODO
-||||||
+### TODO
 
 * In http tls single session multi request testing (with invalid data and with my experimental
   rust based webserver)
