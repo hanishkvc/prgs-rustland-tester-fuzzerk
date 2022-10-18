@@ -19,12 +19,12 @@ FuzzerType:RandomFixedFuzzerPrintables:RANDOM_PATH
 FuzzerType:RandomFixedFuzzer:MAYBE_Space
 	minlen: 1
 	maxlen: 3
-	charset: 0x02090A30313233342F
+	charset: $0x02090A30313233342F
 
 FuzzerType:RandomFixedFuzzer:OK_SPACE
 	minlen: 1
 	maxlen: 1
-	charset: 0x20
+	charset: $0x20
 
 FuzzChain:FuzzChain:FC100
 	OKOK_REQ_TYPE

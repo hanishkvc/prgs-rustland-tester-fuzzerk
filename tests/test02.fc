@@ -5,7 +5,7 @@ FuzzerType:LoopFixedStringsFuzzer:LFSF01
   list:
     Value1,
     Value2,
-    0x56616c756533,
+    $0x56616c756533,
     " Value4  ",
     Value5\t,
     ValueXYZ
@@ -48,7 +48,7 @@ FuzzerType:RandomFixedFuzzerPrintables:RFF01
 FuzzerType:RandomFixedFuzzer:RFF02
 	minlen: 3
 	maxlen: 8
-	charset: 0x02030405060708090A3031323334
+	charset: $0x02030405060708090A3031323334
 
 FuzzerType:Buf8sRandomizeFuzzer:B8RF01
 	buf8s: Hello world today
