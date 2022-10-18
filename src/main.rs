@@ -118,9 +118,9 @@ fn main() {
             log_w(&format!("WARN:FuzzerK:Args: If no --asmfile <ThePrgFile>, then --fc <FuzzChainId> is needed along with --cfgfc <Fuzz++Cfgfile>"));
             process::exit(1);
         }
-        vm.predefined_prg(&fc, loopcnt, &ioaddr, &ioargs);
+        vm.predefined_asmprg(&fc, loopcnt, &ioaddr, &ioargs);
     } else {
-        vm.load_prg(&asmfile);
+        vm.load_asmprg(&asmfile);
     }
 
     vm.run();
