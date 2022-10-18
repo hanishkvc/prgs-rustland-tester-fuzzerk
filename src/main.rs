@@ -43,12 +43,12 @@ fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>, 
     };
     clargs.add_handler("--cfgfc", &mut cfgfc_handler);
 
-    let mut prgfile = String::new();
-    let mut prgfile_handler = |iarg: usize, args: &Vec<String>|-> usize {
-        prgfile = args[iarg+1].clone();
+    let mut asmfile = String::new();
+    let mut asmfile_handler = |iarg: usize, args: &Vec<String>|-> usize {
+        asmfile = args[iarg+1].clone();
         1
     };
-    clargs.add_handler("--prgfile", &mut prgfile_handler);
+    clargs.add_handler("--asmfile", &mut asmfile_handler);
 
     let mut fc = String::new();
     let mut fc_handler = |iarg: usize, args: &Vec<String>|-> usize {
@@ -93,7 +93,7 @@ fn handle_cmdline() -> (String, String, usize, String, HashMap<String, String>, 
 
     clargs.process_args();
 
-    return (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile, blogdebug);
+    return (cfgfc, fc, loopcnt, ioaddr, ioargs, asmfile, blogdebug);
 }
 
 
@@ -102,7 +102,7 @@ fn main() {
     log_init();
     log_o("MinimalFuzzerKUtil");
 
-    let (cfgfc, fc, loopcnt, ioaddr, ioargs, prgfile, blogdebug) = handle_cmdline();
+    let (cfgfc, fc, loopcnt, ioaddr, ioargs, asmfile, blogdebug) = handle_cmdline();
     log_config(true, true, true, blogdebug, true);
 
     let mut vm = vm::VM::new();
@@ -110,17 +110,17 @@ fn main() {
         log_o(&format!("NOTE:FuzzerK:Args: --cfgfc <Fuzz++CfgFile> is a simple mechanism to create fuzzers and fuzzchains, usable in most cases"));
     }
     vm.load_fcrtm(&cfgfc);
-    if prgfile.len() == 0 {
+    if asmfile.len() == 0 {
         if loopcnt <= 1 {
             log_o(&format!("NOTE:FuzzerK:Args: --loopcnt <ANumber> allows one to control how many times to loop through fuzzchain generation and io handshake"));
         }
         if fc.len() == 0 {
-            log_w(&format!("WARN:FuzzerK:Args: If no --prgfile <ThePrgFile>, then --fc <FuzzChainId> is needed along with --cfgfc <Fuzz++Cfgfile>"));
+            log_w(&format!("WARN:FuzzerK:Args: If no --asmfile <ThePrgFile>, then --fc <FuzzChainId> is needed along with --cfgfc <Fuzz++Cfgfile>"));
             process::exit(1);
         }
         vm.predefined_prg(&fc, loopcnt, &ioaddr, &ioargs);
     } else {
-        vm.load_prg(&prgfile);
+        vm.load_prg(&asmfile);
     }
 
     vm.run();
