@@ -328,7 +328,7 @@ a mixture of both) can be specified in different ways, based on what one needs.
 
     # A http test fuzzchain config file
     
-    # Mostly Ok req type, except for when there is no space wrt that last GET
+    # Mostly Ok req type, except for that last NOTME
     FuzzerType:RandomFixedStringsFuzzer:OKOK_REQ_TYPE
       list:
         "GET ",
