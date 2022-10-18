@@ -42,7 +42,7 @@ At the core, the library defines
 
 * a Fuzz trait, which allows fuzzers to be created.
 
-* and FuzzChain containers to allow fuzzers to be chained together
+* and a FuzzChain container to allow fuzzers to be chained together
   to create the needed end pattern of data in a flexible manner.
 
 In turn it also provides a set of predefined fuzzers, which generate new
@@ -57,31 +57,23 @@ One could define two kinds of fuzzers based on what is needed.
 
 * fuzzers which modify / update themselves each time they are called
 
-  * they cant be used/chained more than once, currently.
+  * override need_mutable method of the fuzz trait, to indicate to
+    fuzzchains that they need to call the mutable get version.
 
 * fuzzers which dont change internal state, when they are called.
 
-  * these can be chained any number of times within same or different
-    chains.
+These fuzzers inturn can be chained any number of times within same or
+different FuzzChains.
 
-Two kinds of FuzzChainers are provided currently
+NOTE: Currently the logic is not multithread safe.
 
-* one which allows its members to modify themselves (rather their
-  internal context). Currently one cant use the same instance of such
-  muttable fuzzers more than once. Later may add
-  * [SingleThreaded] use RefCell and Rc to allow pushing Rust memory safety
-    checks wrt multiple references and their use to occur dynamically at
-    runtime, especially when muttable references are requried.
-  * [MultiThreading safe] Use Arc (AutomicRC) and mutex to allow it to be
-    chained more than once and inturn to be used from a multithreaded context.
+* [MayBeInFuture: MultiThreading safe] Use Arc (AutomicRC) and mutex to
+  allow it to be chained more than once and inturn to be used from a
+  multithreaded context.
 
-* one which expects its members to work, without updating/modifying any
-  of their internal context. Such fuzzer instances can be reused as
-  required within a single or even across multiple such chains.
-
-Either one could use these traits and predefined entities directly, in their
-programs, or through the Rtm and Cfgfiles mentioned below or through the
-FuzzerK program.
+One could use these traits and predefined entities directly, in their
+programs, or through the Rtm and Cfgfiles mentioned below or through
+the FuzzerK program.
 
 #### CfgFiles
 
@@ -1100,6 +1092,9 @@ Trap panic wrt code execution within the VM, and inturn show a backtrace of the 
 at that time, so that it is easier for debugging and fixing the issue wrt the prg script
 file.
 
+Simplify fuzzers and their chains by removing fuzzchainimmut and making fuzzchain (mutable)
+more flexible, interms of being able to add the same fuzzer multiple times as well as
+explicitly setting the step to use wrt a fuzzchain.get.
 
 
 ### TODO
@@ -1123,6 +1118,9 @@ file.
 
 * Maybe: Add support for string/buf data type wrt iflt|gt|le|ge
 
-* iobread in TCPServer.Prg seems to read more than once, when nc sends data to it once
-  Need to check whats occuring, initially by adding a iobwrite to console of what is read.
+* Sometimes iobread in TCPServer.Prg seems to read more than once, when nc sends data to it
+  once. Need to check whats occuring, initially by adding a iobwrite to console of what is read.
+  * this could be also to do with some signals triggering wrt the process or so.
+    Have forgotten, if I have implemented logic to continue reading, if read returns due to
+    a signal.
 
