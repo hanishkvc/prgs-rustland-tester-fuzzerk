@@ -16,7 +16,7 @@ test_general_loop:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300 --loopcnt 10
 
 test_prg_intro:
-	target/debug/fuzzerk --prgfile tests/intro.prg 2> /dev/null
+	target/debug/fuzzerk --asmfile tests/intro.prg 2> /dev/null
 
 test_http_console:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --loopcnt 4
@@ -27,20 +27,20 @@ test_http_tcp:
 test_http_tls_seperate_cmdline:
 	target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --ioaddr tlsclient:127.0.0.1:8088 --ioarg domain=127.0.0.1 --ioarg server_cert_check=no --loopcnt 10
 
-test_http_tls_seperate_prgfile:
-	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.seperate.prg
+test_http_tls_seperate_asmfile:
+	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --asmfile tests/http.seperate.prg
 
-test_http_tls_single_prgfile:
-	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --prgfile tests/http.singlesession.prg
+test_http_tls_single_asmfile:
+	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --asmfile tests/http.singlesession.prg
 
 test_buf8randomize:
-	target/debug/fuzzerk --prgfile tests/test.buf8randomize.prg
+	target/debug/fuzzerk --asmfile tests/test.buf8randomize.prg
 
 test_client_using_tcpserver_cmdline:
 	target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC100 --ioaddr tcpserver:127.0.0.1:8888 --loopcnt 1
 
-test_client_using_tcpserver_prgfile:
-	target/debug/fuzzerk --cfgfc tests/tcpserver.fc --prgfile tests/tcp.server.prg
+test_client_using_tcpserver_asmfile:
+	target/debug/fuzzerk --cfgfc tests/tcpserver.fc --asmfile tests/tcp.server.prg
 
 dump_ascii:
 	gcc -o misc/dump_ascii_printable misc/dump_ascii.c
