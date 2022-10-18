@@ -79,6 +79,9 @@ Two kinds of FuzzChainers are provided currently
   of their internal context. Such fuzzer instances can be reused as
   required within a single or even across multiple such chains.
 
+Either one could use these traits and predefined entities directly, in their
+programs, or through the Rtm and Cfgfiles mentioned below or through the
+FuzzerK program.
 
 #### CfgFiles
 
@@ -112,8 +115,11 @@ config groups (from config file) passed to it.
 
 #### IOBridge
 
-This is a helper module for the util program to help work with either Console
-or Tcp client or Tcp server or Tls server or File, in a generic way.
+This is a helper module for the fuzzerk util program to help work with either
+Console or Tcp client or Tcp server or Tls server or File, in a generic way.
+It could even be used as a module by any other program if required.
+
+It is implemented as a enum, which inturn supports the following variants.
 
 * console
 
@@ -140,11 +146,13 @@ or Tcp client or Tcp server or Tls server or File, in a generic way.
 
 #### VM
 
-This is a helper module for the util program's operations to be controlled
-by the end user using custom prg/script files.
+This is a helper module for the fuzzerk's operations to be controlled by the
+end user using custom asm script files.
 
-It provides a VM, with a set of useful instructions, for use by these program
-files.
+It provides a VM, with a set of useful instructions, which can be used by the
+asm files. The mnemonics used in the asm script files have the simplicity of
+assembly instructions, while at the same time supporting higher level language
+features like mentioned in the section below.
 
 It inturn uses Rtm and Cfgfiles module to instantiate fuzzers and fuzz chains
 as defined by the end user.
@@ -167,11 +175,11 @@ simple yet flexible and potentially useful way.
 
 It includes a basic application specific vm and scripting language to easily
 control its operation in a flexible way. It does a basic quasi ahead of time
-compilation of the script file and inturn runs the generated program.
+compilation of the asm script file and inturn runs the generated program.
 
 One could either just define the fuzzers and the fuzz chains and let the vm
 run it directly using a default builtin fallback script. Or if one wants more
-control and flexibility, then one could create a program script file.
+control and flexibility, then one could create a asm script file.
 
 The vm and the scripting language inturn
 
@@ -196,7 +204,7 @@ The vm and the scripting language inturn
 
   * ...
 
-* To help with easy debugging and fixing of any issues in the code
+* To help with easy debugging and fixing of any issues in the asm script code
 
   * source code line number is tracked and printed wrt compile and run
     phases, if any error is detected.
@@ -237,7 +245,7 @@ One could use the logics of this system, in few different possible ways
     cmdline args. This is good enough for many simple test cases.
 
   * create a config file (containing fuzzers and fuzzchains) and the
-    builtin VM related program/script file. This allows more complex
+    builtin VM related asm script file. This allows more complex
     test cases to be realised.
 
 
@@ -325,7 +333,7 @@ the value(s) specified could be
 
   * key: value | key: " value with spaces at ends   "
 
-  * key: 0xABCDEF010203523092 | key: value\\n with \\t newline in it
+  * key: $0xABCDEF010203523092 | key: value\\n with \\t newline in it
 
 * list of int or string data
 
@@ -346,7 +354,7 @@ The string data could be
       within the string data.
 
 * binary or a mixture of textual and binary data by having the string data
-  specified has a hex string which begins with 0x
+  specified has a hex string which begins with $0x
 
 The list can be specified in one of the following ways
 
@@ -483,7 +491,7 @@ If a custom fuzzer has to be created from the textual FuzzChains config file, th
 
 
 
-#### Prg file
+#### Asm script file
 
 ##### Overview
 
@@ -492,6 +500,10 @@ This allows the end user to control the actions to be performed by fuzzerk, in a
 ##### General
 
 ###### Data and or Variable
+
+The VM and inturn the script file, supports what is called a variant data type. Which allows one to specify
+data in one of the different supported formats (integer, string, binary buffer) and inturn it will try to
+transparently convert it to the required end usage format.
 
 Where ever var_or_value is mentioned wrt instruction operands, the text-tokens/content specified in the
 corresponding location in the prgfile will be interpreted as below.
@@ -530,8 +542,8 @@ treated as a different type, by applying relatively sane default conversion rule
 
 Where ever
 
-* int_var_or_value is mentioned wrt instructions, then it should represent a int variable or value.
-  However if it represents a different type, the following conversion will be applied
+* int_var_or_value is mentioned wrt instructions, then one should provide a int variable or value.
+  However if a different type data is provided, the following conversion will be applied
 
   * treat strings as textual literal representation of a integer.
 
@@ -570,7 +582,7 @@ If required one can put # at the beginning of a line to make it a comment line.
 
 ##### Ops/Instructions supported
 
-The commands/operations that can be specified as part of the prg file include
+The commands/operations that can be specified as part of the asm script file include
 
 ###### Data/Variables Related
 
@@ -599,9 +611,9 @@ which could be int(i) or str(s) or buf(b, a binary buffer).
 
   Create a named buffer of a given size
 
-* bufmerged[.b]|bufmerged.s destbufid src1_any_var_or_value src2_any_var_or_value ..... srcn_any_var_or_value
+* bufmerged[.b]|bufmerged.s dest_buf_var_id src1_any_var_or_value src2_any_var_or_value ..... srcn_any_var_or_value
 
-  This allows a new buffer to be created, which contains the contents of the specified source items.
+  This allows a new buffer to be created, which contains the contents of the specified source data items.
 
   The source item could be either a int or str or hexstring(buf literal value) or it could be a variable of
   any supported type.
@@ -625,14 +637,14 @@ and not in the global hashmap.
 
 ####### Special operations
 
-* buf8randomize bufid randcount buf_startoffset buf_endoffset rand_startval rand_endval
+* buf8randomize buf_var_id randcount buf_startoffset buf_endoffset rand_startval rand_endval
 
   * all the int arguments (ie other than bufid) belong to the int_var_or_value class
 
   * randomize randcount values from with in a part (start and end offset) of the buf
     with values from a given range (start and end value).
 
-  * other than bufid, other arguments are optional and if not given a suitable default value
+  * other than buf_var_id, other arguments are optional and if not given a suitable default value
     will be used
 
     * randcount - randomly generated to be less than buflen
@@ -651,7 +663,7 @@ and not in the global hashmap.
 
 ###### Alu Operations
 
-Both arithmatic and logic operations are supports.
+Both arithmatic and logic operations are supported.
 
 ####### Arithmatic operations
 
@@ -689,6 +701,8 @@ unsigned logical operation on them.
 
 
 ###### IOBridge related
+
+This allows the user to work with different types of io channels in a potentially transparent and easy manner.
 
 * iobnew <iob_id> <iobtype:typespecific_addr> <typespecific_ioarg=value> <typespecific_ioarg=value> ...
 
@@ -804,7 +818,8 @@ unsigned logical operation on them.
 
   When ever a variable is used, 1st it is checked wrt
 
-  * the current function's arguments
+  * the current function's arguments, and if so, then inturn
+    the corresponding local variable from a parent caller or a global variable.
 
   * the current function's local variables list
 
@@ -823,17 +838,17 @@ unsigned logical operation on them.
 
     * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i|ifle|ifle.i|ifge|ifge.i <value1_int_var_or_value> <value2_int_var_or_value> goto <label_id>
 
-    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i|ifle|ifle.i|ifge|ifge.i <value1_int_var_or_value> <value2_int_var_or_value> call <func_id> [passed1_any_var passed2_any_var ...]
+    * iflt|iflt.i|ifgt|ifgt.i|ifeq|ifeq.i|ifne|ifne.i|ifle|ifle.i|ifge|ifge.i <value1_int_var_or_value> <value2_int_var_or_value> call <func_id> [passed1_any_var_or_value passed2_any_var_or_value ...]
 
   * Check involving string and buffer
 
     * ifeq|ifeq.s|ifne|ifne.s <val1_str_var_or_value> <val2_str_var_or_value> goto <label_id>
 
-    * ifeq|ifeq.s|ifne|ifne.s <val1_str_var_or_value> <val2_str_var_or_value> call <func_id> [passed1_any_var passed2_any_var ...]
+    * ifeq|ifeq.s|ifne|ifne.s <val1_str_var_or_value> <val2_str_var_or_value> call <func_id> [passed1_any_var_or_value passed2_any_var_or_value ...]
 
     * ifeq|ifeq.b|ifne|ifne.b <val1_any_var_or_value> <val2_any_var_or_value> goto <label_id>
 
-    * ifeq|ifeq.b|ifne|ifne.b <val1_any_var_or_value> <val2_any_var_or_value> call <func_id> [passed1_any_var passed2_any_var ...]
+    * ifeq|ifeq.b|ifne|ifne.b <val1_any_var_or_value> <val2_any_var_or_value> call <func_id> [passed1_any_var_or_value passed2_any_var_or_value ...]
 
 
 * checkjump arg1_int_var_or_value arg2_int_var_or_value Label4LessThan Label4Equal Label4GreaterThan
@@ -875,7 +890,7 @@ unsigned logical operation on them.
 
 * ret
 
-  * return from func
+  * return from the current func
 
 
 ##### A sample file
@@ -901,9 +916,9 @@ unsigned logical operation on them.
 The key cmdline options are
 
 * --cfgfc <path/to/fuzzers_fuzzchains.cfgfile>
-* --prgfile <path/to/prgfile>
+* --prgfile <path/to/asm_script_file>
 
-There are few additional options, in case one is not using a prgfile
+There are few additional options, in case one is not using a prgfile (ie asm script file)
 
 * --ioaddr <iobtype:addr>
   * defaults to console, if not explicitly specified.
