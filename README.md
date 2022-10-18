@@ -211,6 +211,16 @@ The vm and the scripting language inturn
     * Mapping of Func Args to passed vars and or literal values
 
 
+### Dependencies
+
+* my helper libraries from github.com/hanishkvc
+
+  * loggerk, argsclsk
+
+* 3rd party rust libraries
+
+  * boring, rand
+
 
 ## Usage Flow possibilities
 
