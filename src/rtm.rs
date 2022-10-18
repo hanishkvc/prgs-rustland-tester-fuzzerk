@@ -7,10 +7,11 @@
 
 use std::collections::{HashMap, VecDeque};
 use std::rc::Rc;
+use std::cell::RefCell;
 
 use loggerk::log_d;
 
-use crate::{Fuzz, FuzzChainImmuts};
+use crate::{Fuzz, FuzzChain};
 use crate::cfgfiles::{FromVecStrings, HandleCfgGroup};
 use crate::{fixed, random};
 
@@ -19,8 +20,8 @@ const TYPEMARKER_FUZZER: &str = "FuzzerType";
 const TYPEMARKER_FUZZCHAIN: &str = "FuzzChain";
 
 pub struct RunTimeManager {
-    fuzzers: HashMap<String, Rc<dyn Fuzz>>,
-    fcimmuts: HashMap<String, Rc<FuzzChainImmuts>>,
+    fuzzers: HashMap<String, Rc<RefCell<dyn Fuzz>>>,
+    fchains: HashMap<String, FuzzChain>,
 }
 
 impl RunTimeManager {
@@ -28,17 +29,17 @@ impl RunTimeManager {
     pub fn new() -> RunTimeManager {
         RunTimeManager {
             fuzzers: HashMap::new(),
-            fcimmuts: HashMap::new(),
+            fchains: HashMap::new(),
         }
     }
 
-    pub fn fcimmuts(&self, name: &str) -> Option<Rc<FuzzChainImmuts>> {
-        let fcimmuts = self.fcimmuts.get(name);
-        if fcimmuts.is_none() {
+    pub fn fchain(&mut self, name: &str) -> Option<&mut FuzzChain> {
+        let fchains = self.fchains.get_mut(name);
+        if fchains.is_none() {
             return None;
         }
-        let fcimmuts = fcimmuts.unwrap();
-        return Some(fcimmuts.clone());
+        let fchains = fchains.unwrap();
+        return Some(fchains);
     }
 
 }
@@ -53,38 +54,38 @@ impl HandleCfgGroup for RunTimeManager {
             match la[1] {
                 "LoopFixedStringsFuzzer" => {
                     let fuzzer = fixed::LoopFixedStringsFuzzer::from_vs(cg);
-                    let fuzzer = Rc::new(fuzzer);
+                    let fuzzer = Rc::new(RefCell::new(fuzzer));
                     log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created LoopFixedStringsFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedStringsFuzzer" => {
                     let fuzzer = fixed::RandomFixedStringsFuzzer::from_vs(cg);
-                    let fuzzer = Rc::new(fuzzer);
+                    let fuzzer = Rc::new(RefCell::new(fuzzer));
                     log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedStringsFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomRandomFuzzer" => {
                     let fuzzer = random::RandomRandomFuzzer::from_vs(cg);
-                    let fuzzer = Rc::new(fuzzer);
+                    let fuzzer = Rc::new(RefCell::new(fuzzer));
                     log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomRandomFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "RandomFixedFuzzer" | "RandomFixedFuzzerPrintables" => {
                     let fuzzer = random::RandomFixedFuzzer::from_vs(cg);
-                    let fuzzer = Rc::new(fuzzer);
+                    let fuzzer = Rc::new(RefCell::new(fuzzer));
                     log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created RandomFixedFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 "Buf8sRandomizeFuzzer" => {
                     let fuzzer = random::Buf8sRandomizeFuzzer::from_vs(cg);
-                    let fuzzer = Rc::new(fuzzer);
+                    let fuzzer = Rc::new(RefCell::new(fuzzer));
                     log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created Buf8sRandomizeFuzzer [{}] ie [{:?}]", la[2], fuzzer));
                     self.fuzzers.insert(la[2].to_string(), fuzzer);
                 },
                 _ => panic!("ERRR:RunTimeManager:HandleCfgGroup:UnknownFuzzer:{:?}",la),
             }
         } else if la[0] == TYPEMARKER_FUZZCHAIN {
-            let mut fc = FuzzChainImmuts::new();
+            let mut fc = FuzzChain::new();
             let _l = cg.pop_front(); // Skip the Type identifier
             for l in cg {
                 let l = l.trim();
@@ -95,9 +96,8 @@ impl HandleCfgGroup for RunTimeManager {
                 let fuzzer = fuzzer.unwrap();
                 fc.append(fuzzer.clone());
             }
-            let fc = Rc::new(fc);
             log_d(&format!("DBUG:RunTimeManager:HandleCfgGroup:Created FuzzChain [{}]", la[2]));
-            self.fcimmuts.insert(la[2].to_string(), fc);
+            self.fchains.insert(la[2].to_string(), fc);
         }
     }
 
