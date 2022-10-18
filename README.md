@@ -1,14 +1,16 @@
-# FuzzerK library+
+# FuzzerK library + program
 
 Author: HanishKVC,
+
 Version: 20221007IST0039, Saraswathi + Ayudha (Knowledge,Work,Mechanisms,Tools,Processes,...) pooja release
+
 License: GPL
 
 
 ## Overview
 
-This can be used to test input parsing logic of programs to see, that they
-handle all possible input cases sufficiently robustly.
+This is a simple yet flexible library + program, to test input parsing logic of
+programs to see, that they handle all possible input cases sufficiently robustly.
 
 The program being tested could be expecting its input from console(/stdin)
 or from a file or over a tcp (client or server) or tls (server) connection.
@@ -291,7 +293,7 @@ by markdown.
       Arg2: StringValueM
       Arg3: String   ValueN
       Arg4: "   String Value with SpacesAt Ends "
-      Arg5: 0xABCDEF0102030405060708090A303132323334
+      Arg5: $0xABCDEF0102030405060708090A303132323334
       ArgX: String\tValueY\n
       ArgA:
         Value1,
@@ -305,7 +307,7 @@ by markdown.
             Value   B,
             Value\tWhatElse\nC\t,
             " Value\tWhatElse\nF   ",
-            0x3031203234203536,
+            $0x3031203234203536,
             ValueZ,
         Arg2:
             ValueX,
@@ -321,6 +323,74 @@ by markdown.
 
 NOTE: The sample template above, also shows how string (textual or binary or
 a mixture of both) can be specified in different ways, based on what one needs.
+
+##### Sample file
+
+    # A http test fuzzchain config file
+    
+    # Mostly Ok req type, except for when there is no space wrt that last GET
+    FuzzerType:RandomFixedStringsFuzzer:OKOK_REQ_TYPE
+      list:
+        "GET ",
+        "PUT ",
+        "NOTME",
+    
+    FuzzerType:RandomRandomFuzzer:RANDOM_DATA
+            minlen: 3
+            maxlen: 8
+    
+    FuzzerType:RandomFixedFuzzerPrintables:RANDOM_PATH
+            minlen: 3
+            maxlen: 64
+    
+    FuzzerType:RandomFixedFuzzer:MAYBE_Space
+            minlen: 1
+            maxlen: 3
+            charset: $0x02090A30313233342F
+    
+    FuzzerType:RandomFixedFuzzer:OK_SPACE
+            minlen: 1
+            maxlen: 1
+            charset: $0x20
+    
+    FuzzChain:FuzzChain:FC100
+            OKOK_REQ_TYPE
+            RANDOM_PATH
+            MAYBE_Space
+            RANDOM_DATA
+    
+    # Valid http req inbetween
+    
+    FuzzerType:RandomFixedStringsFuzzer:OKOK_HTTP_PATH
+            list:
+                    /index.html
+    
+    FuzzerType:RandomFixedStringsFuzzer:OKOK_HTTP_VER
+            list:
+                    http/v1
+    
+    FuzzChain:FuzzChain:FC_OkReqInBtw
+            OKOK_REQ_TYPE
+            OKOK_HTTP_PATH
+            OK_SPACE
+            OKOK_HTTP_VER
+    
+    # use Buf8sRandomize to generate lot invalid and few valid requests
+    
+    FuzzerType:Buf8sRandomizeFuzzer:REQS_LIST
+            buf8s:
+                    GET /index.html http/v1
+                    PUT /index.new.html http/v1
+            randcount: -1
+            startoffset: -1
+            endoffset: -1
+            startval: -1
+            endval: -1
+    
+    FuzzChain:FuzzChain:FC_B8sR
+            REQS_LIST
+    
+
 
 ##### Types of data
 
