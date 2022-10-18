@@ -49,10 +49,15 @@ dump_ascii:
 pdf:
 	rst2pdf README.rst README.pdf
 
+html:
+	cmark --to html README.md > README.html
+
 clean_misc:
 	rm misc/dump_ascii_printable || /bin/true
 	rm misc/dump_ascii || /bin/true
 
-clean_all: clean_misc cclean
-	rm README.pdf || /bin/true
+clean_doc:
+	rm README.pdf README.html || /bin/true
+
+clean_all: clean_misc cclean clean_doc
 
