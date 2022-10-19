@@ -829,6 +829,8 @@ This allows the user to work with different types of io channels in a potentiall
 
     * one can use bufnew to create buffer of a required size with no data in it.
 
+    * remember to set the length of the buffer to be read into, to be equal to the max amount of data that one wants to read, at one go.
+
   * while creating a new iobridge remember to set a read_timeout, so that read wont block indefinitely, if there is no data to read.
 
     * all io bridge types may not support read_timeout (currently only network types ie tcpclient, tcpserver and tlsclient support it).
