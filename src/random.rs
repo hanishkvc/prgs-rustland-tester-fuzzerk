@@ -133,7 +133,7 @@ impl crate::cfgfiles::FromVecStrings for RandomFixedFuzzer {
     ///   * minlen
     ///   * maxlen
     ///   * charset
-    /// * If the charset can contain any binary value, one needs to define this has a hexstring (with 0x prefix)
+    /// * If the charset can contain any binary value, one needs to define this has a hexstring (with $0x prefix)
     /// ### FuzzerType:RandomFixedFuzzerPrintables:InstanceName
     /// * this requires only the below keys
     ///   * minlen
