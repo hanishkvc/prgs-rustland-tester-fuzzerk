@@ -1191,6 +1191,13 @@ Simplify fuzzers and their chains by removing fuzzchainimmut and making fuzzchai
 more flexible, interms of being able to add the same fuzzer multiple times as well as
 explicitly setting the step to use wrt a fuzzchain.get.
 
+Sometimes iobread in TCPServer.Prg was reading more than once, when nc sends data to it once.
+* On checking if it was related to any signal coming in between, when reading, it doesnt seem
+  to be the case. Read is not failing with a Interrupted error.
+* On thinking further, and looking at the asm script file as well as the writen file, and also
+  few more test runs, realised the obvious it was triggering when I was writing/entering more
+  data than the buffer size.
+
 
 ### TODO
 
@@ -1210,10 +1217,4 @@ explicitly setting the step to use wrt a fuzzchain.get.
   to be different, but beyond that it could be single, if things are kept simple.
 
 * Maybe: Add support for string/buf data type wrt iflt|gt|le|ge
-
-* Sometimes iobread in TCPServer.Prg seems to read more than once, when nc sends data to it
-  once. Need to check whats occuring, initially by adding a iobwrite to console of what is read.
-  * this could be also to do with some signals triggering wrt the process or so.
-    Have forgotten, if I have implemented logic to continue reading, if read returns due to
-    a signal.
 
