@@ -39,7 +39,7 @@ pub trait FromVecStrings {
 
     ///
     /// Support a subset of escape chars like
-    /// \t, \r, \n, \"
+    /// \t, \r, \n, \", \\
     ///
     fn str_deescape(ins: &str) -> Result<String, String> {
         let mut bescape = false;
