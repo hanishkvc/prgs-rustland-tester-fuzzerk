@@ -78,6 +78,7 @@ pub trait FromVecStrings {
     /// * remove double quotes, if it was used to protect the string
     ///   * double quotes mainly help, when we want whitespaces at either end of the string
     ///   * if one wants the resultant string to contain double quotes at either end, put a 2nd double quote, where required.
+    ///   * if there is double quotes only at one end of the string, it wont be removed.
     /// * interpret the given string has a hex string, if it starts with $0x
     fn strval_process(ins: &str) -> Result<Vec<u8>, String> {
         log_d(&format!("DBUG:FromVS:StrValProcess:{}:{}", Self::get_name(), ins));
