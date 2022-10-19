@@ -1197,6 +1197,15 @@ Sometimes iobread in TCPServer.Prg was reading more than once, when nc sends dat
 * On thinking further, and looking at the asm script file as well as the writen file, and also
   few more test runs, realised the obvious it was triggering when I was writing/entering more
   data than the buffer size.
+* Rather has iobread logic uses the length of the buffer passed to it to decide, how much data
+  to read, so if one passes data more than the given buffers length, then the 2nd time read is
+  called, it will read the remaining data from the 1st send. Now If this remaining data is
+  smaller than the initial buffer length specified, then subsequent iobread, will try to read
+  only that much data at a time, bcas buf length after iobread is amount of data read.
+
+  So dont forget to set the buffer length using bufnew, each time, b4 calling iobread.
+
+
 
 
 ### TODO

@@ -4,10 +4,11 @@
 	letint loopcnt 0
 	iobnew srv1 tcpserver:127.0.0.1:8088
 	iobnew file1 filewriter:/tmp/tcpserver.log
-	bufnew ReadBuf 16 
 
 !label repeatagain
 
+	bufnew ReadBuf 16
+	emagic 0x010 ReadBuf
 	iobread srv1 ReadBuf
 	bufmerged.s sloopcnt loopcnt
 	bufmerged WriteBuf "Cnt:" sloopcnt ":Read[" ReadBuf "]\n"
