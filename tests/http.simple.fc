@@ -1,0 +1,51 @@
+#
+# A http test fuzzchain config file
+#
+
+FuzzerType:RandomFixedStringsFuzzer:REQ_TYPE
+  list:
+    "GET ",
+
+FuzzerType:RandomFixedStringsFuzzer:PATH_OK
+	list:
+		/index.html
+
+FuzzerType:RandomFixedFuzzer:SPACE_OK
+	minlen: 1
+	maxlen: 1
+	charset: $0x20
+
+FuzzerType:RandomFixedStringsFuzzer:VER_OK
+	list:
+		HTTP/1.1
+
+FuzzerType:RandomFixedStringsFuzzer:HDATA_WGET
+	list:
+		Host: 127.0.0.1:80\nUser-Agent: Wget/1.21.2\nAccept: */*\nAccept-Encoding: identity\nConnection: Keep-Alive\n
+		Host: 127.0.0.1:80\nUser-Agent: Xget/1.21.2\nAccept: */*\nAccept-Encoding: identity\nConnection: Keep-Alive\n
+
+FuzzerType:RandomFixedFuzzer:NEWLINE
+	minlen:1
+	maxlen:1
+	charset: $0x0A
+
+#
+# Generate a valid request
+#
+FuzzChain:FuzzChain:FC100
+	REQ_TYPE
+	PATH_OK
+	SPACE_OK
+	VER_OK
+	NEWLINE
+	NEWLINE
+
+FuzzChain:FuzzChain:FC_WITH_HDATA
+	REQ_TYPE
+	PATH_OK
+	SPACE_OK
+	VER_OK
+	NEWLINE
+	HDATA_WGET
+	NEWLINE
+
