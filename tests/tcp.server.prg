@@ -9,7 +9,8 @@
 !label repeatagain
 
 	iobread srv1 ReadBuf
-	bufmerged WriteBuf "Cnt:" loopcnt ":Read[" ReadBuf "]\n"
+	bufmerged.s sloopcnt loopcnt
+	bufmerged WriteBuf "Cnt:" sloopcnt ":Read[" ReadBuf "]\n"
 	iobwrite file1 WriteBuf
 
 	fcget FC100 fc100Buf
