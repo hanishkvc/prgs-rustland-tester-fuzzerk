@@ -1,4 +1,4 @@
-# A test fuzzchain config file
+# A simple structural fuzzchain config file testing
 
 FuzzerType:TypeNameABC:InstanceNameABC1
   Arg1: ValueX

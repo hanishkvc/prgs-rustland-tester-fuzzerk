@@ -1,65 +1,92 @@
+#
 # A http test fuzzchain config file
+#
 
-# Mostly Ok req type, except for when there is no space wrt that last GET
-FuzzerType:RandomFixedStringsFuzzer:OKOK_REQ_TYPE
+# Few Ok req types and few invalid ones
+FuzzerType:RandomFixedStringsFuzzer:REQ_TYPE_5050
   list:
     "GET ",
     "PUT ",
     GET,
+    "NoTmE",
 
-
-FuzzerType:RandomRandomFuzzer:RANDOM_DATA
+# Randome data
+FuzzerType:RandomRandomFuzzer:DATA_RANDOM
 	minlen: 3
 	maxlen: 8
 
-FuzzerType:RandomFixedFuzzerPrintables:RANDOM_PATH
+# Random path with printable chars
+FuzzerType:RandomFixedFuzzerPrintables:PATH_RANDOM
 	minlen: 3
 	maxlen: 64
 
-FuzzerType:RandomFixedFuzzer:MAYBE_Space
+# A valid path
+FuzzerType:RandomFixedStringsFuzzer:PATH_OK
+	list:
+		/index.html
+
+# Put out a space once in a while
+FuzzerType:RandomFixedFuzzer:SPACE_MAYBE
 	minlen: 1
 	maxlen: 3
-	charset: $0x02090A30313233342F
+	charset: $0x02090A303132333420
 
-FuzzerType:RandomFixedFuzzer:OK_SPACE
+# A space is a space is a space
+FuzzerType:RandomFixedFuzzer:SPACE_OK
 	minlen: 1
 	maxlen: 1
 	charset: $0x20
 
-FuzzChain:FuzzChain:FC100
-	OKOK_REQ_TYPE
-	RANDOM_PATH
-	MAYBE_Space
-	RANDOM_DATA
+FuzzChain:FuzzChain:FC000
+	SPACE_MAYBE
 
-# Valid http req inbetween
+#
+# Generate mainly invalid requests
+#
+FuzzChain:FuzzChain:FC_MainlyInvalid
+	REQ_TYPE_5050
+	PATH_RANDOM
+	SPACE_MAYBE
+	DATA_RANDOM
 
-FuzzerType:RandomFixedStringsFuzzer:OKOK_HTTP_PATH
-	list:
-		/index.html
 
-FuzzerType:RandomFixedStringsFuzzer:OKOK_HTTP_VER
+
+FuzzerType:RandomFixedStringsFuzzer:VER_OK
 	list:
 		http/v1
 
-FuzzChain:FuzzChain:FC_OkReqInBtw
-	OKOK_REQ_TYPE
-	OKOK_HTTP_PATH
-	OK_SPACE
-	OKOK_HTTP_VER
+FuzzerType:RandomFixedFuzzer:NEWLINE_5050
+	minlen:1
+	maxlen:1
+	charset: $0x0A20
+
+#
+# Generate mostly valid requests
+#
+FuzzChain:FuzzChain:FC_MostlyValid
+	REQ_TYPE_5050
+	PATH_OK
+	SPACE_OK
+	VER_OK
+	NEWLINE_5050
+
+
 
 # use Buf8sRandomize to generate lot invalid and few valid requests
-
 FuzzerType:Buf8sRandomizeFuzzer:REQS_LIST
 	buf8s:
-		GET /index.html http/v1
-		PUT /index.new.html http/v1
+		GET /index.html http/v1\n
+		PUT /index.new.html http/v1\nWhy not more lines\n
 	randcount: -1
 	startoffset: -1
 	endoffset: -1
 	startval: -1
 	endval: -1
 
-FuzzChain:FuzzChain:FC_B8sR
+#
+# Generate requests from a predefined list
+# Some times it will be valid, but most of the times it would be randomly messed
+#
+FuzzChain:FuzzChain:FC_MessValid
 	REQS_LIST
 
