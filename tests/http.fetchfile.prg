@@ -1,6 +1,8 @@
 #
-# Test HTTP access to google, Use a single session across loop iterations
-# Use http.simple.fc wrt --cfgfc
+# Fetch the specified url from the specified site
+# * specify site using iobnew here
+# * specify the url in http.simple.fc and inturn specify fc file using --cfgfc
+#   * if reqd one could specify the url directly here
 #
 
 	letint loopcnt 0
@@ -31,7 +33,8 @@
 
 	letstr sRbLen rbLen
 	letstr sloopcnt loopcnt
-	bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" sRbLen ":Data:" readbuf "\n"
+	#bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" sRbLen ":Data:" readbuf "\n"
+	bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" sRbLen "\n"
 	iobwrite term bmsg
 
 	inc loopcnt
