@@ -8,6 +8,8 @@
 	letint size1 4096
 	mult bsize size1 size1
 
+	letint time1 __TIME__STAMP__
+
 !label repeatagain
 
 	fcget FC100 fc100Buf
@@ -27,4 +29,10 @@
 	sleepmsec 1000
 	inc loopcnt
 	iflt loopcnt 10 goto repeatagain
+
+	letint time2 __TIME__STAMP__
+	sub tdiff time2 time1
+	letstr stdiff tdiff
+	bufmerged smsg "TDiff:" stdiff ":Cnt:" sloopcnt "\n"
+	iobwrite term smsg
 
