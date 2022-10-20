@@ -25,7 +25,9 @@
 	add	iDest 1024 1024
 	inc	loopCnt
 	iflt	loopCnt iEnd goto add_again
-	call	time_done "Alu Add"
+	letstr	sloopCnt loopCnt
+	bufmerged sMsg "Alu Add, " sloopCnt
+	call	time_done sMsg
 	ret
 
 !func bench_alu_mult iTill
@@ -42,7 +44,9 @@
 	mult	iDest 1024 1024
 	add	loopCnt loopCnt 8
 	iflt	loopCnt iTill goto mult_again
-	call	time_done "Alu Mult"
+	letstr	sloopCnt loopCnt
+	bufmerged sMsg "Alu Mult, " sloopCnt
+	call	time_done sMsg
 	ret
 
 
