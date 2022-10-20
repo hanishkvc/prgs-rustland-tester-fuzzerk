@@ -733,6 +733,11 @@ and not in the global hashmap.
 
     * rand_endval is inclusive
 
+* getsize var_or_value_ToSize WriteSizeTo_var
+
+  returns the size (in bytes) of the data specified as a var or literal value.
+
+
 ###### Alu Operations
 
 Both arithmatic and logic operations are supported.
