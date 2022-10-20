@@ -12,6 +12,9 @@ cclean:
 ctests:
 	cargo test -- --show-output
 
+test_bench_prg: cbuildr
+	target/release/fuzzerk --asmfile tests/bench.prg
+
 test_general:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300
 
