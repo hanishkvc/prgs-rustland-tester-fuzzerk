@@ -3,6 +3,9 @@
 cbuild:
 	cargo build
 
+cbuildr:
+	cargo build --release
+
 cclean:
 	cargo clean
 
