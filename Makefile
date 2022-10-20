@@ -15,6 +15,9 @@ ctests:
 test_bench_prg: cbuildr
 	target/release/fuzzerk --asmfile tests/bench.prg
 
+test_httpfetch_prg: cbuildr
+	target/release/fuzzerk --cfgfc tests/http.simple.fc --asmfile tests/http.fetchfile.prg
+
 test_general:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300
 
