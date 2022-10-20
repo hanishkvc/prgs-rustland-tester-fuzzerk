@@ -1,37 +1,44 @@
+#
 # Test HTTP access to google, Use a single session across loop iterations
+# Use http.simple.fc wrt --cfgfc
+#
 
 	letint loopcnt 0
 	#iobnew srv1 tcpclient:google.com:80
-	iobnew srv1 tlsclient:google.com:443 domain=google.com
+	iobnew srv1 tlsclient:google.com:443 domain=google.com read_timeout=1000
 	#iobnew srv1 tlsclient:127.0.0.1:8088 domain=127.0.0.1 server_cert_check=no
 	iobnew file1 filewriter:/tmp/http.simple.log create=yes
 	iobnew term console
 
 	mult bsize 4096 4096
-
 	letint time1 __TIME__STAMP__
 
-!label repeatagain
-
+	# send request
 	fcget FC100 fc100Buf
-	letstr sloopcnt loopcnt
-	bufmerged.b bmsg "Cnt:" sloopcnt ":Req:" fc100Buf "\n"
-	iobwrite term bmsg
 	iobwrite srv1 fc100Buf
 	iobflush srv1
+	bufmerged.b bmsg "Req:" fc100Buf "\n"
+	iobwrite term bmsg
+
+	# fetch data
+
+!label fetchremaining
 
 	bufnew readbuf bsize
 	iobread srv1 readbuf
-	#emagic 0x010 readbuf
+	getsize readbuf rbLen
 	iobwrite file1 readbuf
-	bufmerged.b bmsg "Cnt:" sloopcnt ":Res:" readbuf "\n"
+
+	letstr sRbLen rbLen
+	letstr sloopcnt loopcnt
+	bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" sRbLen ":Data:" readbuf "\n"
 	iobwrite term bmsg
 
-	#sleepmsec 10
-	sleepmsec 1000
 	inc loopcnt
-	iflt loopcnt 10 goto repeatagain
+	ifgt loopcnt 1024 goto breakout
+	ifgt rbLen 0 goto fetchremaining
 
+!label breakout
 	letint time2 __TIME__STAMP__
 	sub tdiff time2 time1
 	letstr stdiff tdiff
