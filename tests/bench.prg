@@ -46,10 +46,35 @@
 	call	time_done sMsg
 	ret
 
+!func bench_letstr iTill
+	call		time_start
+	letint		loopCnt 0
+!label letstr_again
+	letstr		sloopCnt loopCnt
+	bufmerged	btemp sloopCnt
+	inc		loopCnt
+	iflt		loopCnt iTill goto letstr_again
+	bufmerged	bMsg "LetStr, " !str(loopCnt)
+	call		time_done bMsg
+	ret
+
+!func bench_xcaststr iTill
+	call		time_start
+	letint		loopCnt 0
+!label xcaststr_again
+	bufmerged	btemp !str(loopCnt)
+	inc		loopCnt
+	iflt		loopCnt iTill goto xcaststr_again
+	bufmerged	bMsg "XCastStr, " !str(loopCnt)
+	call		time_done bMsg
+	ret
+
 
 !label START
 
 	iobnew	term console
 	call	bench_alu_add 1024000
 	call	bench_alu_mult 1024000
+	call	bench_letstr 4024000
+	call	bench_xcaststr 4024000
 

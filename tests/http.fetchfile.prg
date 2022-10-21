@@ -31,10 +31,9 @@
 	getsize readbuf rbLen
 	iobwrite file1 readbuf
 
-	letstr sRbLen rbLen
 	letstr sloopcnt loopcnt
-	#bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" sRbLen ":Data:" readbuf "\n"
-	bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" sRbLen "\n"
+	#bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" !str(rbLen) ":Data:" readbuf "\n"
+	bufmerged.b bmsg "Cnt:" sloopcnt ":Res:Size:" !str(rbLen) "\n"
 	iobwrite term bmsg
 
 	inc loopcnt
@@ -44,7 +43,6 @@
 !label breakout
 	letint time2 __TIME__STAMP__
 	sub tdiff time2 time1
-	letstr stdiff tdiff
-	bufmerged smsg "TDiff:" stdiff ":Cnt:" sloopcnt "\n"
+	bufmerged smsg "TDiff:" !str(tdiff) ":Cnt:" sloopcnt "\n"
 	iobwrite term smsg
 
