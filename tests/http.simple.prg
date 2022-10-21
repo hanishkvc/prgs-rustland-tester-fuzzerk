@@ -45,7 +45,6 @@
 !label ending
 	letint time2 __TIME__STAMP__
 	sub tdiff time2 time1
-	letstr stdiff tdiff
-	bufmerged smsg "TDiff:" stdiff ":Cnt:" sloopcnt "\n"
+	bufmerged smsg "TDiff:" !str(tdiff) ":Cnt:" sloopcnt "\n"
 	iobwrite term smsg
 
