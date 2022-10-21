@@ -573,9 +573,11 @@ This allows the end user to control the actions to be performed by fuzzerk, in a
 
 ###### Data and or Variable
 
-The VM and inturn the script file, supports what is called a variant data type. Which allows one to specify
+The VM and inturn the asm script file, supports what is called a variant data type. Which allows one to specify
 data in one of the different supported formats (integer, string, binary buffer) and inturn it will try to
 transparently convert it to the required end usage format.
+
+####### Identifying Var/Value/... from specified text/token
 
 Where ever var_or_value is mentioned wrt instruction operands, the text-tokens/content specified in the
 corresponding location in the prgfile will be interpreted as below.
@@ -607,7 +609,12 @@ If it starts with __ then it will be treated has a special data value.
 
   * This puts TheLength amount of random bytes into var, in a suitable way.
 
+If it starts with ! and ends with ), then it will be treated has a XCasting of the var or value
+which has been specified with in. ie !ABC(var_or_value)
+
 If none of above, then it will be treated as a var name. However it should start with a alphabhetic char.
+
+####### Handling/Use of Variant type
 
 The VM maintains the data internally as a flexible variant type. It allows one type of data to be transparently
 treated as a different type, by applying relatively sane default conversion rules.
@@ -643,6 +650,38 @@ Where ever
 Where ever any_var_or_value is mentioned wrt instructions, it could represent int or string or binary buffer
 variable or value.
 
+####### XCasting Var/Value
+
+Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var_or_Value), then !XYZ will be
+interpreted has xcasting.
+
+NOTE: Currently one cant chain xcasts ie !XYZ(!ABC(Var_or_Value)) is not supported.
+
+Currently the following xcasting are supported
+
+* !str, this is interpreted has
+
+  * int => is converted into equivalent string literal
+
+  * str => is retained has is
+
+  * buf => is interpreted has a UTF8 byte stream and is inturn converted into a string.
+    Any invalid byte sequences will get converted to utf replacement char.
+
+* !strtrim => the var or value is xcast equivalent to !str and inturn the resultant string is trimmed and
+  provided for further processing.
+
+* !strhex => the var or value is fetched has the underlying bytes buffer and inturn converted into a hex string.
+
+NOTE: This is more flexible than using bufmerged.s or bufmerged.b, bcas wrt bufmerged this allows the individual
+vars or values passed to it to be interpreted has their respective types or has a string or hex string.
+
+NOTE: This avoids the need to create a temporary str variable, when one wants to interpret a int as its literal
+value, before merging into a bin buf
+
+NOTE: Now a bin buffer can be left has is, or interpreted has a utf8 string or a hex string in a flexible manner.
+
+NOTE: Now any varaint value can be interpreted-has/converted-into a hex string.
 
 
 ###### Clean coding (Comments, White spaces)
@@ -697,6 +736,12 @@ which could be int(i) or str(s) or buf(b, a binary buffer).
   if bufmerged.s is used, then equivalent string representation of the specified src item will be used. This is
   useful especially, when writing to console or so, where user will be interested in a human readable textual
   form of the underlying data.
+
+  NOTE: bufmerged.s and bufmerged[.b] by default interpret all the data entities passed to it has string (.s)
+  or binary buffer (bufmerged[.b]) respectively. However if you want to individually control whether a entity
+  should be interpreted has a binary buffer or as a string, then using XCasting will provide the needed flexibility
+  If required it will also allow any data entity to be interpreted has a hex string of its underlying byte values.
+
 
 ####### Local variables
 
@@ -1226,6 +1271,9 @@ Add ldebug macro to eject debug prints of VM from runtime, so that they dont imp
 performance unnecessarily, in release builds. This improves vm run speeds by 6 times.
 
 Use common helpers wrt Jump and Call, whether direct or through if-conditional running.
+
+Add support for XCasting, so that one interpret the underlying data in the cloths of string
+or hex string or to trim a string or so.
 
 
 ### TODO

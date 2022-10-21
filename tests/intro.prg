@@ -21,19 +21,27 @@
 	iobwrite 	term AMsg
 	bufmerged.b	AMsg "The Vars are:BinBufMode:\n" "\tInt:" MeInt "\n\tStr:" MeStr "\n\tBuf:" MeBuf "\n"
 	iobwrite 	term AMsg
+	bufmerged.b	AMsg "The Vars are:StrXCasts :\n" "\tInt:" !str(MeInt) "\n\tStr:" MeStr "\n\tBuf:" !str(MeBuf) "\n"
+	iobwrite 	term AMsg
+	bufmerged.b	AMsg "The Vars are:HexXCasts :\n" "\tInt:" !strhex(MeInt) "\n\tStr:" !strhex(MeStr) "\n\tBuf:" !strhex(MeBuf) "\n"
+	iobwrite 	term AMsg
 	ret
 
 
 !func GLOBAL_VARS
 	call		PRINT_ME "\n\n **** Global Variables **** \n\n"
+
 	# Global vars using explicit lettype var setting
 	letint		gint1 201
 	letstr		gstr1 "Global Vars Set1"
 	letbuf		gbuf1 $0x393138323733363435
-	bufmerged.s	tmsg1 "GlobalsLetType:Str: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
+	bufmerged.s	tmsg1 "GlobalsLetType:Str     : Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
 	call PRINT_ME tmsg1
-	bufmerged.b	tmsg1 "GlobalsLetType:Buf: Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
+	bufmerged.b	tmsg1 "GlobalsLetType:Buf     : Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
 	call PRINT_ME tmsg1
+	bufmerged	tmsg1 "GlobalsLetType:StrXCast: Int[" !str(gint1) "] Str[" gstr1 "] Buf[" !str(gbuf1) "]\n"
+	call PRINT_ME tmsg1
+
 	# Global vars using explicit letglobal.type var setting
 	letglobal.i	gint2 202
 	letglobal.s	gstr2 "Global Vars Set2"
@@ -42,6 +50,7 @@
 	call PRINT_ME tmsg2
 	bufmerged.b	tmsg2 "GlobalsLetGlobal.Type:Buf: Int[" gint2 "] Str[" gstr2 "] Buf[" gbuf2 "]\n"
 	call PRINT_ME tmsg2
+
 	# Global vars using implicit letglobal var setting
 	letglobal	gint3 203
 	letglobal	gstr3 "Global Vars Set3"
