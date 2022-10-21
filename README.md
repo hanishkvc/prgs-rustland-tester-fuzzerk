@@ -599,11 +599,11 @@ If it starts with $0x then it will be treated has a binary buffer specified has 
 
 If it starts with __ then it will be treated has a special data value.
 
-* __TIME__STAMP__
+* \_\_TIME\_\_STAMP\_\_
 
   * This puts the current time stamp in terms of milliseconds from UnixEpoch, in a suitable way.
 
-* __RANDOM__BYTES__TheLength
+* \_\_RANDOM\_\_BYTES\_\_TheLength
 
   * This puts TheLength amount of random bytes into var, in a suitable way.
 
@@ -1213,6 +1213,19 @@ Sometimes iobread in TCPServer.Prg was reading more than once, when nc sends dat
   So dont forget to set the buffer length using bufnew, each time, b4 calling iobread.
 
 
+#### 20221020++
+
+A simple http fetch (tlsclient/tcpclient) prg as well as a simple benchmark prg.
+
+Move some of the op specific parsing to compile time.
+
+Add a 2nd compile phase to resolve jump labels, so that conditional gotos which can be used
+as part of loops etal has less work at runtime.
+
+Add ldebug macro to eject debug prints of VM from runtime, so that they dont impact the vm
+performance unnecessarily, in release builds. This improves vm run speeds by 6 times.
+
+Use common helpers wrt Jump and Call, whether direct or through if-conditional running.
 
 
 ### TODO
