@@ -12,8 +12,7 @@
 !func time_done sMsgFor
 	letint		time2 __TIME__STAMP__
 	sub		tDiff time2 time1
-	letstr		stDiff tDiff
-	bufmerged	sMsg "TDiff:" stDiff ":For:" sMsgFor "\n"
+	bufmerged	sMsg "TDiff:" !str(tDiff) ":For:" sMsgFor "\n"
 	iobwrite	term sMsg
 	ret
 
@@ -25,8 +24,7 @@
 	add	iDest 1024 1024
 	inc	loopCnt
 	iflt	loopCnt iEnd goto add_again
-	letstr	sloopCnt loopCnt
-	bufmerged sMsg "Alu Add, " sloopCnt
+	bufmerged sMsg "Alu Add, " !str(loopCnt)
 	call	time_done sMsg
 	ret
 
@@ -44,8 +42,7 @@
 	mult	iDest 1024 1024
 	add	loopCnt loopCnt 8
 	iflt	loopCnt iTill goto mult_again
-	letstr	sloopCnt loopCnt
-	bufmerged sMsg "Alu Mult, " sloopCnt
+	bufmerged sMsg "Alu Mult, " !str(loopCnt)
 	call	time_done sMsg
 	ret
 
