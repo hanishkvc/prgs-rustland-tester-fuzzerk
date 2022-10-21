@@ -137,6 +137,10 @@ It is implemented as a enum, which inturn supports the following variants.
 
 * filewriter:path/to/file
 
+These support additional io type specific arguments to be set, the supported
+ones can be got from either the source or by looking at the asm script file
+section further below.
+
 
 #### VM
 
@@ -656,6 +660,8 @@ Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var
 interpreted has xcasting.
 
 NOTE: one can chain xcasts ie !XYZ(!ABC(Var_or_Value)) if required.
+
+NOTE: XCasting can only be used wrt source operands, if used wrt a dest operand, it will exit with error.
 
 Currently the following xcasting are supported
 
