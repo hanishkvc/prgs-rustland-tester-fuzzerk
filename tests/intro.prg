@@ -219,6 +219,16 @@
 	ret
 
 
+!func XCASTS
+	letlocal.s lstr "\n\n\t 123 \n\t\n\t"
+	letlocal.i lint lstr
+	bufmerged  bmsg "XCASTS:0: lstr [" lstr "], str(lstr)[" !str(lstr) "], hex(lstr)[" !strhex(lstr) "] hex(trim(lstr))[" !strhex(!strtrim(lstr)) "]\n"
+	call       PRINT_ME bmsg
+	bufmerged  bmsg "XCASTS:1: lstr [" lstr "], lint[" !str(lint) "], lintHex[" !strhex(lint) "]\n"
+	call       PRINT_ME bmsg
+	ret
+
+
 #
 # Initialise
 #
@@ -239,5 +249,6 @@
 	call CONDITIONS
 	call CHECK_FARGS
 	call LOCAL_VARS
+	call XCASTS
 	call PRINT_ME "\n**** Reached end of the program ****\n"
 

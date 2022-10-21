@@ -655,7 +655,7 @@ variable or value.
 Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var_or_Value), then !XYZ will be
 interpreted has xcasting.
 
-NOTE: Currently one cant chain xcasts ie !XYZ(!ABC(Var_or_Value)) is not supported.
+NOTE: one can chain xcasts ie !XYZ(!ABC(Var_or_Value)) if required.
 
 Currently the following xcasting are supported
 
@@ -1273,7 +1273,7 @@ performance unnecessarily, in release builds. This improves vm run speeds by 6 t
 Use common helpers wrt Jump and Call, whether direct or through if-conditional running.
 
 Add support for XCasting, so that one interpret the underlying data in the cloths of string
-or hex string or to trim a string or so.
+or hex string or to trim a string or so. If reqd one can chain the xcasts. hex(trim(data))
 
 
 ### TODO
