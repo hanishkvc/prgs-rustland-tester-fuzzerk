@@ -1281,6 +1281,9 @@ Use common helpers wrt Jump and Call, whether direct or through if-conditional r
 Add support for XCasting, so that one interpret the underlying data in the cloths of string
 or hex string or to trim a string or so. If reqd one can chain the xcasts. hex(trim(data))
 
+Confirmed that string building related to msgs for error reporting, which is pushed down the
+call chain eats a lot of runing time. Tested using branch 20221022IST1052_BruteForce....
+
 
 ### TODO
 
