@@ -5,9 +5,15 @@
 
 	jump START
 
+
+#
+# time related
+#
+
 !func time_start
 	letint time1 __TIME__STAMP__
 	ret
+
 
 !func time_done sMsgFor
 	letint		time2 __TIME__STAMP__
@@ -16,17 +22,37 @@
 	iobwrite	term sMsg
 	ret
 
-!func bench_alu_add iTill
-	letlocal.i iEnd iTill
-	call	time_start
-	letint	loopCnt 0
-!label add_again
-	add	iDest 1024 1024
-	inc	loopCnt
-	iflt	loopCnt iEnd goto add_again
-	bufmerged sMsg "Alu Add, " !str(loopCnt)
-	call	time_done sMsg
+
+#
+# Alu related
+#
+
+!func bench_alu_addg iTill
+	letglobal.i	iEnd iTill
+	call		time_start
+	letint		loopCnt 0
+!label addg_again
+	add		iDest 1024 1024
+	inc		loopCnt
+	iflt		loopCnt iEnd goto addg_again
+	bufmerged	sMsg "Alu AddG, " !str(loopCnt)
+	call		time_done sMsg
 	ret
+
+
+!func bench_alu_addl iTill
+	letlocal.i	iEnd iTill
+	call		time_start
+	letlocal.i	loopCnt 0
+	letlocal.i	iDest 0
+!label addl_again
+	add		iDest 1024 1024
+	inc		loopCnt
+	iflt		loopCnt iEnd goto addl_again
+	bufmerged	sMsg "Alu AddL, " !str(loopCnt)
+	call		time_done sMsg
+	ret
+
 
 !func bench_alu_mult iTill
 	call	time_start
@@ -46,6 +72,10 @@
 	call	time_done sMsg
 	ret
 
+#
+# Variables
+#
+
 !func bench_letstr iTill
 	call		time_start
 	letint		loopCnt 0
@@ -57,6 +87,7 @@
 	bufmerged	bMsg "LetStr, " !str(loopCnt)
 	call		time_done bMsg
 	ret
+
 
 !func bench_xcaststr iTill
 	call		time_start
@@ -73,7 +104,8 @@
 !label START
 
 	iobnew	term console
-	call	bench_alu_add 1024000
+	call	bench_alu_addl 1024000
+	call	bench_alu_addg 1024000
 	call	bench_alu_mult 1024000
 	call	bench_letstr 4024000
 	call	bench_xcaststr 4024000
