@@ -35,6 +35,7 @@
 	inc		loopCnt
 	# Call your logic here
 	# ?????
+	call		bench_msleep
 	iflt		loopCnt	iEnd goto bench_me_again
 	bufmerged	bMsg "BenchMe, " !str(loopCnt)
 	call		time_done bMsg
@@ -143,6 +144,7 @@
 #
 
 !func bench_msleep
+	sleepmsec 10
 	ret
 
 
@@ -150,7 +152,7 @@
 !label START
 
 	iobnew	term console
-	call	bench_me 1024000
+	call	bench_me 1024
 	call	bench_alu_addl 1024000
 	call	bench_alu_addg 1024000
 	call	bench_alu_mult 1024000
