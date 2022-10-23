@@ -46,6 +46,25 @@
 # Alu related
 #
 
+!func bench_incdec iTill
+	letint		iEnd	iTill
+	call		time_start
+	letint		loopCnt	0
+!label	bench_incdec_inc
+	inc		loopCnt
+	iflt		loopCnt	iEnd goto bench_incdec_inc
+	bufmerged	bMsg "IncDecInc, " !str(loopCnt)
+	call		time_done bMsg
+	call		time_start
+	letint		loopCnt	iTill
+!label	bench_incdec_dec
+	dec		loopCnt
+	ifgt		loopCnt	0 goto bench_incdec_dec
+	bufmerged	bMsg "IncDecDec, " !str(loopCnt)
+	call		time_done bMsg
+	ret
+
+
 !func bench_alu_addg iTill
 	letglobal.i	iEnd iTill
 	call		time_start
@@ -153,6 +172,7 @@
 
 	iobnew	term console
 	call	bench_me 1024
+	call	bench_incdec 1024000
 	call	bench_alu_addl 1024000
 	call	bench_alu_addg 1024000
 	call	bench_alu_mult 1024000
