@@ -48,8 +48,6 @@
 !label addl_again
 	add		iDest 1024 1024
 	inc		loopCnt
-	inc		!str(xloopCnt)
-	#inc		xloopCnt
 	iflt		loopCnt iEnd goto addl_again
 	bufmerged	sMsg "Alu AddL, " !str(loopCnt)
 	call		time_done sMsg
