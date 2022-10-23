@@ -205,7 +205,7 @@ The vm and the scripting language inturn
 * To help with easy debugging and fixing of any issues in the asm script code
 
   * source code line number is tracked and printed wrt compile and run
-    phases, if any error is detected.
+    phases (in debug builds only wrt run phase), if any error is detected.
 
   * on error during execution, a back trace is shown of the call stack
     in reverse order, with following info
@@ -1283,6 +1283,18 @@ or hex string or to trim a string or so. If reqd one can chain the xcasts. hex(t
 
 Confirmed that string building related to msgs for error reporting, which is pushed down the
 call chain eats a lot of runing time. Tested using branch 20221022IST1052_BruteForce....
+
+Modified the flow for logics to push any found errors up, and for the higher level caller
+to inturn show the same to user where required. Inturn as expect will also incur overhead
+in the normal path, bcas it takes its argument as a processed string, so updated the logic
+wrt few of the instructions, to explicitly check for ok or err and then push up or panic
+with error message only if situation is identified has a error.
+
+  Also in the process of avoiding {:?} debug trait based extracting of info wrt err situations
+  wrt expect messaging, as debug trait incurs lot more overhead.
+
+  Also now runtime asm script file line number reporting on error, is enabled only in debug
+  builds and not release build.
 
 
 ### TODO
