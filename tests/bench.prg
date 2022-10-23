@@ -35,7 +35,7 @@
 	inc		loopCnt
 	# Call your logic here
 	# ?????
-	call		bench_msleep
+	call		bench_add_once 1024
 	iflt		loopCnt	iEnd goto bench_me_again
 	bufmerged	bMsg "BenchMe, " !str(loopCnt)
 	call		time_done bMsg
@@ -45,6 +45,11 @@
 #
 # Alu related
 #
+
+!func bench_add_once arg1
+	add	iDest	arg1	1024
+	ret
+
 
 !func bench_incdec iTill
 	letint		iEnd	iTill
@@ -171,12 +176,12 @@
 !label START
 
 	iobnew	term console
-	call	bench_me 1024
+	call	bench_me 1024000
 	call	bench_incdec 1024000
 	call	bench_alu_addl 1024000
 	call	bench_alu_addg 1024000
 	call	bench_alu_mult 1024000
-	call	bench_letstr 4024000
-	call	bench_xcaststr 4024000
+	call	bench_letstr 1024000
+	call	bench_xcaststr 1024000
 	call	bench_iob 1024000
 
