@@ -101,6 +101,25 @@
 	ret
 
 
+#
+# IOB
+#
+
+!func bench_iob iTill
+	letint		iEnd	iTill
+	iobnew		fnull	filewriter:/dev/null
+	call		time_start
+	letint		loopCnt	0
+	letbuf		bdata	$0x30313233343536373839
+!label	iob_again
+	inc		loopCnt
+	iobwrite	fnull	bdata
+	iflt		loopCnt	iEnd goto iob_again
+	bufmerged	bMsg "IOB, " !str(loopCnt)
+	call		time_done bMsg
+	ret
+
+
 !label START
 
 	iobnew	term console
@@ -109,4 +128,5 @@
 	call	bench_alu_mult 1024000
 	call	bench_letstr 4024000
 	call	bench_xcaststr 4024000
+	call	bench_iob 1024000
 
