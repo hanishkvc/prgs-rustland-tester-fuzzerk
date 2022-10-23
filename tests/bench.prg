@@ -24,6 +24,24 @@
 
 
 #
+# Bench Me helper
+#
+
+!func bench_me iTill
+	letint		iEnd	iTill
+	call		time_start
+	letint		loopCnt	0
+!label	bench_me_again
+	inc		loopCnt
+	# Call your logic here
+	# ?????
+	iflt		loopCnt	iEnd goto bench_me_again
+	bufmerged	bMsg "BenchMe, " !str(loopCnt)
+	call		time_done bMsg
+	ret
+
+
+#
 # Alu related
 #
 
@@ -120,9 +138,19 @@
 	ret
 
 
+#
+# msleep
+#
+
+!func bench_msleep
+	ret
+
+
+
 !label START
 
 	iobnew	term console
+	call	bench_me 1024000
 	call	bench_alu_addl 1024000
 	call	bench_alu_addg 1024000
 	call	bench_alu_mult 1024000
