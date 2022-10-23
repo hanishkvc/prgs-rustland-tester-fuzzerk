@@ -38,7 +38,7 @@
 
 	inc loopcnt
 	ifgt loopcnt 1024 goto breakout
-	ifgt rbLen 0 goto fetchremaining
+	ifgt rbLen 10 goto fetchremaining
 
 !label breakout
 	letint time2 __TIME__STAMP__
