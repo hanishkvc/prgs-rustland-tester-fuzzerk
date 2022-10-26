@@ -618,6 +618,11 @@ which has been specified with in. ie !ABC(var_or_value)
 
 If none of above, then it will be treated as a var name. However it should start with a alphabhetic char.
 
+One can additionally specify byte indexing wrt variables, by using the notation Varname[Index].
+This allows the byte value at the corresponding index/offset wrt the underlying value belonging
+to the variable, to be retrieved, as a integer, by default.
+
+
 ####### Handling/Use of Variant type
 
 The VM maintains the data internally as a flexible variant type. It allows one type of data to be transparently

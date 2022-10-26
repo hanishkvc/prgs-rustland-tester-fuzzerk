@@ -228,6 +228,19 @@
 	call       PRINT_ME bmsg
 	ret
 
+!func INDEX
+	letlocal.s	lstr "AbCdEf"
+	bufmerged	bmsg "INDEX:FromString:raw: 0[" lstr[0] "] 1[" lstr[1] "]\n"
+	call		PRINT_ME bmsg
+	bufmerged	bmsg "INDEX:FromString:str: 0[" !str(lstr[0]) "] 1[" !str(lstr[1]) "]\n"
+	call		PRINT_ME bmsg
+	letlocal.i	lint 0x303132
+	bufmerged	bmsg "INDEX:FromInt:raw: 0[" lint[0] "] 1[" lint[1] "]\n"
+	call		PRINT_ME bmsg
+	bufmerged	bmsg "INDEX:FromInt:str: 0[" !str(lint[0]) "] 1[" !str(lint[1]) "]\n"
+	call		PRINT_ME bmsg
+	ret
+
 
 #
 # Initialise
@@ -250,5 +263,6 @@
 	call CHECK_FARGS
 	call LOCAL_VARS
 	call XCASTS
+	call INDEX
 	call PRINT_ME "\n**** Reached end of the program ****\n"
-
+	end
