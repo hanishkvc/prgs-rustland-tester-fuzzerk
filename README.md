@@ -1023,6 +1023,11 @@ This allows the user to work with different types of io channels in a potentiall
   * return from the current func
 
 
+* nop dont do anything
+
+* end ends the program, else program will end, when one tries to execute beyond (the end of) the loaded program
+
+
 ##### A sample file
 
            letstr <strvarid> <string value>
