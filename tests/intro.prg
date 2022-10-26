@@ -219,6 +219,10 @@
 	ret
 
 
+#
+# Check xcasting and indexing
+#
+
 !func XCASTS
 	letlocal.s lstr "\n\n\t 123 \n\t\n\t"
 	letlocal.i lint lstr
@@ -238,6 +242,26 @@
 	bufmerged	bmsg "INDEX:FromInt:raw: 0[" lint[0] "] 1[" lint[1] "]\n"
 	call		PRINT_ME bmsg
 	bufmerged	bmsg "INDEX:FromInt:str: 0[" !str(lint[0]) "] 1[" !str(lint[1]) "]\n"
+	call		PRINT_ME bmsg
+	ret
+
+
+#
+# Alu ops
+#
+
+!func SHIFTS
+	letlocal.i	lint1 0x505050
+	letlocal.i	lint2 0x020202
+	slb		lsl lint1 lint2
+	srb		lsr lint1 lint2
+	bufmerged	bmsg "SHIFTS: lint1[" !strhex(lint1) "] lint2[" !strhex(lint2) "] slb[" !strhex(lsl) "] srb[" !strhex(lsr) "]\n"
+	call		PRINT_ME bmsg
+	letlocal.i	lint1 0x050505
+	letlocal.i	lint2 0x020202
+	slb		lsl lint1 lint2
+	srb		lsr lint1 lint2
+	bufmerged	bmsg "SHIFTS: lint1[" !strhex(lint1) "] lint2[" !strhex(lint2) "] slb[" !strhex(lsl) "] srb[" !strhex(lsr) "]\n"
 	call		PRINT_ME bmsg
 	ret
 
@@ -264,5 +288,6 @@
 	call LOCAL_VARS
 	call XCASTS
 	call INDEX
+	call SHIFTS
 	call PRINT_ME "\n**** Reached end of the program ****\n"
 	end

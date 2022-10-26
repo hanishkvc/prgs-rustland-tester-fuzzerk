@@ -832,6 +832,20 @@ unsigned logical operation on them.
 
 * xor <dest_buf_var_id> <src1_any_var_or_value> <src2_any_var_or_value>
 
+* slb <dest_buf_var_id> <src1_any_var_or_value> <src2_shiftby_any_var_or_value>
+
+  * shift left
+
+* srb <dest_buf_var_id> <src1_any_var_or_value> <src2_shiftby_any_var_or_value>
+
+  * shift right
+
+Wrt slb and srb, if you are working with a src1 of n bytes, the src2 should be n bytes long
+and provide the required shifting wrt each of the corresponding byte in the src1 buffer.
+Note that the way this shifting is implemented, based on the endiness of the target architecture,
+only one of these will produce valid shifted values, especially if one is working with byte values
+corresponding to integer values. So be aware of same.
+
 
 ###### IOBridge related
 
