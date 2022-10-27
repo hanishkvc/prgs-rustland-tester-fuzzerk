@@ -224,6 +224,7 @@
 #
 
 !func XCASTS
+	call PRINT_ME "\n\n **** XCasts **** \n\n"
 	letlocal.s lstr "\n\n\t 123 \n\t\n\t"
 	letlocal.i lint lstr
 	bufmerged  bmsg "XCASTS:0: lstr [" lstr "], str(lstr)[" !str(lstr) "], hex(lstr)[" !strhex(lstr) "] hex(trim(lstr))[" !strhex(!strtrim(lstr)) "]\n"
@@ -232,17 +233,40 @@
 	call       PRINT_ME bmsg
 	ret
 
-!func INDEX
+!func INDEX_1
+	call PRINT_ME "\n **** XCast Indexing 1 **** \n"
 	letlocal.s	lstr "AbCdEf"
-	bufmerged	bmsg "INDEX:FromString:raw: 0[" lstr[0] "] 1[" lstr[1] "]\n"
+	bufmerged	bmsg "INDEX1:FromString:" lstr ":raw: 0[" lstr[0] "] 1[" lstr[1] "]\n"
 	call		PRINT_ME bmsg
-	bufmerged	bmsg "INDEX:FromString:str: 0[" !str(lstr[0]) "] 1[" !str(lstr[1]) "]\n"
+	bufmerged	bmsg "INDEX1:FromString:" lstr ":str: 0[" !str(lstr[0]) "] 1[" !str(lstr[1]) "]\n"
 	call		PRINT_ME bmsg
 	letlocal.i	lint 0x303132
-	bufmerged	bmsg "INDEX:FromInt:raw: 0[" lint[0] "] 1[" lint[1] "]\n"
+	bufmerged	bmsg "INDEX1:FromInt:" !str(lint) ":raw: 0[" lint[0] "] 1[" lint[1] "]\n"
 	call		PRINT_ME bmsg
-	bufmerged	bmsg "INDEX:FromInt:str: 0[" !str(lint[0]) "] 1[" !str(lint[1]) "]\n"
+	bufmerged	bmsg "INDEX1:FromInt:" !str(lint) ":str: 0[" !str(lint[0]) "] 1[" !str(lint[1]) "]\n"
 	call		PRINT_ME bmsg
+	ret
+
+!func INDEX_2
+	call PRINT_ME "\n **** XCast Indexing 2 **** \n"
+	letlocal.s	lstr "AbCdEf"
+	bufmerged	bmsg "INDEX2:FromString:" lstr ":raw: 0[" lstr[0] "] !be0[" !be(lstr,0) "] !ae0[" !ae(lstr,0) "]\n"
+	call		PRINT_ME bmsg
+	bufmerged	bmsg "INDEX2:FromString:" lstr ":str: 0[" !str(lstr[0]) "] !be0[" !str(!be(lstr,0)) "] !ae0[" !str(!ae(lstr,0)) "]\n"
+	call		PRINT_ME bmsg
+	bufmerged	bmsg "INDEX2:FromString:" lstr ":raw: 1[" lstr[1] "] !be1[" !be(lstr,1) "] !ae1[" !ae(lstr,1) "]\n"
+	call		PRINT_ME bmsg
+	letlocal.i	lint 0x303132
+	bufmerged	bmsg "INDEX2:FromIntegr:" lint ":raw: 0[" lint[0] "] !be0[" !be(lint,0) "] !ae0[" !ae(lint,0) "]\n"
+	call		PRINT_ME bmsg
+	bufmerged	bmsg "INDEX2:FromIntegr:" lint ":raw: 1[" lint[1] "] !be1[" !be(lint,1) "] !ae1[" !ae(lint,1) "]\n"
+	call		PRINT_ME bmsg
+	ret
+
+!func INDEX
+	call PRINT_ME "\n\n **** XCast Indexing **** \n\n"
+	call INDEX_1
+	call INDEX_2
 	ret
 
 
@@ -251,6 +275,7 @@
 #
 
 !func SHIFTS
+	call PRINT_ME "\n\n **** ALU Shifts **** \n\n"
 	letlocal.i	lint1 0x505050
 	letlocal.i	lint2 0x020202
 	slb		lsl lint1 lint2
