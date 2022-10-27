@@ -1320,6 +1320,12 @@ with error message only if situation is identified has a error.
   Also now runtime asm script file line number reporting on error, is enabled only in debug
   builds and not release build.
 
+#### 20221027++
+
+Allow byte value indexing into available data.
+
+Start on allowing element value indexing into a given data.
+
 
 ### TODO
 
