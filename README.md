@@ -1391,3 +1391,8 @@ Allow element value indexing into a given data.
   (ie related to !( to )) related to xcasting and inturn if required string literal values with
   spaces in them. So for now xcasting cant have space within it.
 
+* Maybe: later avoid multiple paths to same end result and thus cleanup/reduce and simplify code.
+  Unless, it is specifically required, like currently the diff behaviour wrt bufs <-> strings.
+  Rather even here, given the new str and strhex xcasting, check if bufs need to be handled
+  differently implicitly based on how it is called, or let user decide using the xcast mechanism.
+
