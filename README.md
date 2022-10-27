@@ -2,7 +2,7 @@
 
 Author: HanishKVC,
 
-Version: 20221007IST0039, Saraswathi + Ayudha (Knowledge,Work,Mechanisms,Tools,Processes,...) pooja release
+Version: 20221027IST2100, Diwali (Deepavali) release
 
 License: GPL
 
@@ -34,6 +34,13 @@ in controlled yet random way.
 This consits of a library of modules that can be used by other programs, as well
 as a scriptable helper utility program (fuzzerk) to test other programs (without
 having to modify those programs to integrate with the provided library).
+
+
+NOTE: Remember to run the release build of the program, if speed is critical.
+However if you are interested in debugging, then run debug build and additionaly
+pass --blogdebug true argument to the program. The debug release could be 25-30
+times or more slower than the release build, for large programs, especially so
+for those that loop.
 
 
 ### Library & Helper modules
@@ -661,14 +668,32 @@ variable or value.
 
 ####### XCasting Var/Value
 
-Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var_or_Value), then !XYZ will be
+Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var_or_Value[,Var_or_value]), then !XYZ will be
 interpreted has xcasting.
 
-NOTE: one can chain xcasts ie !XYZ(!ABC(Var_or_Value)) if required.
+NOTE: one can chain some of the xcasts ie !XYZ(!ABC(Var_or_Value)) if required.
 
 NOTE: XCasting can only be used wrt source operands, if used wrt a dest operand, it will exit with error.
 
+NOTE: Currently there cant be any space within the full xcast token.
+
+* Ok: !ABC(abc,xyz)
+
+* NotOK:
+
+  * !ABC(abc, xyz)
+
+  * !ABC("a b c", xyz)
+
+  * !ABC("a b c",xyz)
+
+
+NOTE: Currently to be on safe side, use xcasting on variables and not values, ie if the value contains spaces.
+Bcas space is not supported within a xcast token.
+
 Currently the following xcasting are supported
+
+######## String related
 
 * !str, this is interpreted has
 
@@ -693,6 +718,21 @@ value, before merging into a bin buf
 NOTE: Now a bin buffer can be left has is, or interpreted has a utf8 string or a hex string in a flexible manner.
 
 NOTE: Now any varaint value can be interpreted-has/converted-into a hex string.
+
+######## Indexing related
+
+* !byteele(data_var, index_var_or_value)
+
+  this allows the byte at the specified index within the data to be retrieved
+
+  * one could use !be as a shortcut
+
+* !arrayele(data_var, index_var_or_value)
+
+  this allows the element at the specified index within the data to be retrieved. This allows multibyte encoded
+  utf8 strings to be handled and chars extracted from it, even if the char is a multibyte encoded value.
+
+  * one could use !ae as a shortcut
 
 
 ###### Clean coding (Comments, White spaces)
@@ -1324,7 +1364,7 @@ with error message only if situation is identified has a error.
 
 Allow byte value indexing into available data.
 
-Start on allowing element value indexing into a given data.
+Allow element value indexing into a given data.
 
 
 ### TODO
@@ -1345,4 +1385,9 @@ Start on allowing element value indexing into a given data.
   to be different, but beyond that it could be single, if things are kept simple.
 
 * Maybe: Add support for string/buf data type wrt iflt|gt|le|ge
+
+* Need to switch from custom flow involving different types of spliting to a generic next_token
+  based flow. Also the current next_token logic has not yet been udpated wrt new mechanism/syntax
+  (ie related to !( to )) related to xcasting and inturn if required string literal values with
+  spaces in them. So for now xcasting cant have space within it.
 

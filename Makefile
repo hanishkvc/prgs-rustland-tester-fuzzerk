@@ -12,10 +12,19 @@ cclean:
 ctests:
 	cargo test -- --show-output
 
-test_bench_prg: cbuildr
+run_prg_intro: cbuildr
+	target/release/fuzzerk --asmfile tests/intro.prg
+
+test_prg_intro: cbuild
+	target/debug/fuzzerk --asmfile tests/intro.prg --blogdebug true
+
+run_prg_bench:
 	target/release/fuzzerk --asmfile tests/bench.prg
 
-test_httpfetch_prg: cbuildr
+test_prg_bench:
+	target/debug/fuzzerk --asmfile tests/bench.prg
+
+run_prg_httpfetch:
 	target/release/fuzzerk --cfgfc tests/http.simple.fc --asmfile tests/http.fetchfile.prg
 
 test_general:
@@ -23,9 +32,6 @@ test_general:
 
 test_general_loop:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/test02.fc --fc FC300 --loopcnt 10
-
-test_prg_intro:
-	target/debug/fuzzerk --asmfile tests/intro.prg 2> /dev/null
 
 test_http_console:
 	RUST_BACKTRACE=1 target/debug/fuzzerk --cfgfc tests/http01.fc --fc FC100 --loopcnt 4
