@@ -228,7 +228,7 @@ The vm and the scripting language inturn
 
 * my helper libraries from github.com/hanishkvc
 
-  * loggerk, argsclsk
+  * loggerk, argsclsk, tokensk
 
 * 3rd party rust libraries
 
@@ -621,7 +621,7 @@ If it starts with __ then it will be treated has a special data value.
   * This puts TheLength amount of random bytes into var, in a suitable way.
 
 If it starts with ! and ends with ), then it will be treated has a XCasting of the var or value
-which has been specified with in. ie !ABC(var_or_value)
+which has been specified with in. ie !ABC(var_or_value[, var_or_value])
 
 If none of above, then it will be treated as a var name. However it should start with a alphabhetic char.
 
@@ -668,28 +668,19 @@ variable or value.
 
 ####### XCasting Var/Value
 
-Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var_or_Value[,Var_or_value]), then !XYZ will be
-interpreted has xcasting.
+Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var_or_Value[, Var_or_value]),
+then !XYZ will be interpreted has xcasting.
 
 NOTE: one can chain some of the xcasts ie !XYZ(!ABC(Var_or_Value)) if required.
 
 NOTE: XCasting can only be used wrt source operands, if used wrt a dest operand, it will exit with error.
 
-NOTE: Currently there cant be any space within the full xcast token.
+NOTE: One can use spaces wrt xcast tokens, to make it easy to read. So
 
-* Ok: !ABC(abc,xyz)
+* !ABC(abc,xyz) and !ABC(abc, xyz) both represent the same xcasting.
 
-* NotOK:
+* !ABC("a b c", xyz) ie !ABC( "a b c", xyz)
 
-  * !ABC(abc, xyz)
-
-  * !ABC("a b c", xyz)
-
-  * !ABC("a b c",xyz)
-
-
-NOTE: Currently to be on safe side, use xcasting on variables and not values, ie if the value contains spaces.
-Bcas space is not supported within a xcast token.
 
 Currently the following xcasting are supported
 
@@ -721,13 +712,13 @@ NOTE: Now any varaint value can be interpreted-has/converted-into a hex string.
 
 ######## Indexing related
 
-* !byteele(data_var, index_var_or_value)
+* !byteele(data_var_or_value, index_var_or_value)
 
   this allows the byte at the specified index within the data to be retrieved
 
   * one could use !be as a shortcut
 
-* !arrayele(data_var, index_var_or_value)
+* !arrayele(data_var_or_value, index_var_or_value)
 
   this allows the element at the specified index within the data to be retrieved. This allows multibyte encoded
   utf8 strings to be handled and chars extracted from it, even if the char is a multibyte encoded value.
@@ -1366,13 +1357,15 @@ Allow byte value indexing into available data.
 
 Allow element value indexing into a given data.
 
-Move tokenising logic into a new tokensk crate, and make it more flexible.
-
-Use the new tokensk crate, for handling operands of the instructions supported by the vm.
+Move tokenising logic into a new tokensk crate, and make it more flexible. Inturn Use this
+updated logic, for handling operands of the instructions supported by the vm, where required.
 
 * DataM::Compile, ALU operations, BufMerged handled/updated for now.
 
 * iobnew, if conditional ops, checkjump, Buf8Randomize
+
+* xcasting can have spaces in it, be it wrt spacing around operands or say string literals
+  (spaces or commas in them) as operands of a xcast.
 
 
 
@@ -1395,10 +1388,7 @@ Use the new tokensk crate, for handling operands of the instructions supported b
 
 * Maybe: Add support for string/buf data type wrt iflt|gt|le|ge
 
-* Need to switch from custom flow involving different types of spliting to a generic next_token
-  based flow. Also the current next_token logic has not yet been udpated wrt new mechanism/syntax
-  (ie related to !( to )) related to xcasting and inturn if required string literal values with
-  spaces in them. So for now xcasting cant have space within it.
+* Maybe: update cfgfile logic also to use the new TStr tokenisation.
 
 * Maybe: later avoid multiple paths to same end result and thus cleanup/reduce and simplify code.
   Unless, it is specifically required, like currently the diff behaviour wrt bufs <-> strings.
