@@ -1366,6 +1366,13 @@ Allow byte value indexing into available data.
 
 Allow element value indexing into a given data.
 
+Move tokenising logic into a new tokensk crate, and make it more flexible.
+
+Use the new tokensk crate, for handling operands of the instructions supported by the vm.
+
+* DataM::Compile and ALU operations handled/updated for now.
+
+
 
 ### TODO
 
