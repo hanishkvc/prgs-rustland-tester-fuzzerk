@@ -67,7 +67,7 @@
 #
 
 !func CC_GOOD
-	add CheckInt CheckInt 1
+	add CheckInt CheckInt !be(   0x020100         ,   1  )
 	ret
 
 !func CC_BAD
@@ -250,7 +250,7 @@
 !func INDEX_2
 	call PRINT_ME "\n **** XCast Indexing 2 **** \n"
 	letlocal.s	lstr "AbCdEf"
-	bufmerged	bmsg "INDEX2:FromString:" lstr ":raw: 0[" lstr[0] "] !be0[" !be(lstr,0) "] !ae0[" !ae(lstr,0) "]\n"
+	bufmerged	bmsg "INDEX2:FromString:" lstr ":raw: 0[" lstr[0] "] !be0["    !be(  lstr  ,   0    )   "] !ae0[" !ae(lstr,0) "]\n"
 	call		PRINT_ME bmsg
 	bufmerged	bmsg "INDEX2:FromString:" lstr ":str: 0[" !str(lstr[0]) "] !be0[" !str(!be(lstr,0)) "] !ae0[" !str(!ae(lstr,0)) "]\n"
 	call		PRINT_ME bmsg

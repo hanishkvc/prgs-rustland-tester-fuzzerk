@@ -1370,7 +1370,7 @@ Move tokenising logic into a new tokensk crate, and make it more flexible.
 
 Use the new tokensk crate, for handling operands of the instructions supported by the vm.
 
-* DataM::Compile and ALU operations handled/updated for now.
+* DataM::Compile, ALU operations, BufMerged handled/updated for now.
 
 
 
