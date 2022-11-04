@@ -1372,7 +1372,7 @@ Use the new tokensk crate, for handling operands of the instructions supported b
 
 * DataM::Compile, ALU operations, BufMerged handled/updated for now.
 
-* iobnew, if conditional ops, checkjump,
+* iobnew, if conditional ops, checkjump, Buf8Randomize
 
 
 
