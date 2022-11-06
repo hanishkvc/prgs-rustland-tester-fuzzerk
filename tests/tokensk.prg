@@ -29,8 +29,16 @@
 	ret
 
 
+!func TEST_ERRR
+	letlocal	lint	0x30313233
+	letlocal	lint	!be(   0x30313233  ,   2    )
+	letlocal	lint	! be (   0x30313233     ,    2   )
+	ret
+
+
 !label START
 	iobnew		term	console
 	call		TEST_ADD
+	call		TEST_ERRR
 	end
 
