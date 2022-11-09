@@ -620,8 +620,8 @@ If it starts with __ then it will be treated has a special data value.
 
   * This puts TheLength amount of random bytes into var, in a suitable way.
 
-If it starts with ! and ends with ), then it will be treated has a XCasting of the var or value
-which has been specified with in. ie !ABC(var_or_value[, var_or_value])
+If it starts with ! and ends with ), then it will be treated has a XOp. The XOp inturn could have
+operands (ie a var or value) which has been specified with in. ie !ABC(var_or_value[, var_or_value])
 
 If none of above, then it will be treated as a var name. However it should start with a alphabhetic char.
 
@@ -666,25 +666,25 @@ Where ever
 Where ever any_var_or_value is mentioned wrt instructions, it could represent int or string or binary buffer
 variable or value.
 
-####### XCasting Var/Value
+####### XOps based values
 
 Where ever a Var or Value is requried to be specified, if one specifies !XYZ(Var_or_Value[, Var_or_value]),
-then !XYZ will be interpreted has xcasting.
+then !XYZ will be interpreted has a xop.
 
-NOTE: one can chain some of the xcasts ie !XYZ(!ABC(Var_or_Value)) if required.
+NOTE: one can chain some of the xops ie !XYZ(!ABC(Var_or_Value)) if required.
 
-NOTE: XCasting can only be used wrt source operands, if used wrt a dest operand, it will exit with error.
+NOTE: XOps can only be used wrt source operands, if used wrt a dest operand, it will exit with error.
 
-NOTE: One can use spaces wrt xcast tokens, to make it easy to read. So
+NOTE: One can use spaces around xop's operands/data, to make it easy to read. So
 
 * !ABC(abc,xyz) and !ABC(abc, xyz) both represent the same xcasting.
 
 * !ABC("a b c", xyz) ie !ABC( "a b c", xyz)
 
 
-Currently the following xcasting are supported
+Currently the following XOps are supported
 
-######## String related
+######## String Casting related
 
 * !str, this is interpreted has
 
@@ -695,7 +695,7 @@ Currently the following xcasting are supported
   * buf => is interpreted has a UTF8 byte stream and is inturn converted into a string.
     Any invalid byte sequences will get converted to utf replacement char.
 
-* !strtrim => the var or value is xcast equivalent to !str and inturn the resultant string is trimmed and
+* !strtrim => the var or value is xoped equivalent to !str and inturn the resultant string is trimmed and
   provided for further processing.
 
 * !strhex => the var or value is fetched has the underlying bytes buffer and inturn converted into a hex string.
@@ -781,8 +781,9 @@ which could be int(i) or str(s) or buf(b, a binary buffer).
 
   NOTE: bufmerged.s and bufmerged[.b] by default interpret all the data entities passed to it has string (.s)
   or binary buffer (bufmerged[.b]) respectively. However if you want to individually control whether a entity
-  should be interpreted has a binary buffer or as a string, then using XCasting will provide the needed flexibility
-  If required it will also allow any data entity to be interpreted has a hex string of its underlying byte values.
+  should be interpreted has a binary buffer or as a string, then using XOp based casting will provide the needed
+  flexibility. If required it will also allow any data entity to be interpreted has a hex string of its underlying
+  byte values.
 
 
 ####### Local variables
@@ -1366,6 +1367,10 @@ updated logic, for handling operands of the instructions supported by the vm, wh
 
 * xcasting can have spaces in it, be it wrt spacing around operands or say string literals
   (spaces or commas in them) as operands of a xcast.
+
+Renamed XCast to XOp, bcas now it supports more than casting.
+
+Moved DataM, XOpData into their own sub-module source files.
 
 
 

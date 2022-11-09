@@ -39,7 +39,7 @@ impl DataM {
     /// * string literals should be in double quotes ""
     /// * buf8 literals should start with $0x
     /// * special literals should start with __
-    /// * a xcast should start with ! and end with )
+    /// * a xop+data should start with ! and end with )
     /// * anything else is treated as a Var name.
     ///   * it needs to start with a alpabhetic char
     ///   * it could either be a func arg or local variable or a global variable.
