@@ -97,11 +97,11 @@ impl DataM {
                     match xop.as_str() {
                         "!byteele" | "!be" | "!arrayele" | "!ae" => {
                             // ALERT: For now does not support
-                            // * indexing of indexing using xcasting syntax
+                            // * indexing of indexing using XOping syntax
                             let tindex;
-                            (tdata, tindex) = sdata.split_once(',').expect(&format!("ERRR:{}:DataM:Compile:XCast:{}:Extracting args:{}", smsg, xop, sdata));
+                            (tdata, tindex) = sdata.split_once(',').expect(&format!("ERRR:{}:DataM:Compile:XOp:{}:Extracting args:{}", smsg, xop, sdata));
                             sarg1 = tdata.as_str();
-                            let idm = DataM::compile(ctxt, &tindex, stype, &format!("{}:XCast-{}:{}",smsg, xop, tindex));
+                            let idm = DataM::compile(ctxt, &tindex, stype, &format!("{}:XOp-{}:{}",smsg, xop, tindex));
                             bdm2 = Some(Box::new(idm));
                         }
                         _ => {
@@ -109,7 +109,7 @@ impl DataM {
                             bdm2 = None;
                         }
                     }
-                    let dm = DataM::compile(ctxt, sarg1, stype, &format!("{}:XCast-{}:{}",smsg, xop, sarg1));
+                    let dm = DataM::compile(ctxt, sarg1, stype, &format!("{}:XOp-{}:{}",smsg, xop, sarg1));
                     let boxdm = Box::new(dm);
                     let xdata = match xop.as_str() {
                         "!str" => XOpData::Str(boxdm),
@@ -117,7 +117,7 @@ impl DataM {
                         "!strtrim" => XOpData::StrTrim(boxdm),
                         "!byteele" | "!be" => XOpData::ByteEle(boxdm, bdm2.unwrap()),
                         "!arrayele" | "!ae" => XOpData::ArrayEle(boxdm, bdm2.unwrap()),
-                        _ => panic!("ERRR:{}:DataM:{}:Unknown XCast type:{:?}", smsg, stype, xop),
+                        _ => panic!("ERRR:{}:DataM:{}:Unknown XOp type:{:?}", smsg, stype, xop),
                     };
                     return DataM::XOp(xdata);
                 }
@@ -243,7 +243,7 @@ impl DataM {
             Self::XOp(xdata) => {
                 let ival = xdata.get_isize(ctxt);
                 if ival.is_err() {
-                    return Err(format!("DataM:GetISize:XCast:{:?}:{}", xdata, ival.unwrap_err()));
+                    return Err(format!("DataM:GetISize:XOp:{:?}:{}", xdata, ival.unwrap_err()));
                 }
                 return Ok(ival.unwrap());
             }
@@ -290,7 +290,7 @@ impl DataM {
             Self::XOp(xdata) => {
                 let sdata = xdata.get_string(ctxt);
                 if sdata.is_err() {
-                    return Err(format!("DataM:GetString:XCast:{:?}:{}", self, sdata.unwrap_err()));
+                    return Err(format!("DataM:GetString:XOp:{:?}:{}", self, sdata.unwrap_err()));
                 }
                 return Ok(sdata.unwrap());
             }
@@ -320,7 +320,7 @@ impl DataM {
             Self::XOp(xdata) => {
                 let bval = xdata.get_bufvu8(ctxt);
                 if bval.is_err() {
-                    return Err(format!("DataM:GetBuf:XCast:{}", bval.unwrap_err()));
+                    return Err(format!("DataM:GetBuf:XOp:{}", bval.unwrap_err()));
                 }
                 return Ok(bval.unwrap());
             }
@@ -376,7 +376,7 @@ impl DataM {
             Self::XOp(xdata) => {
                 let vval = xdata.get_arrayelement(ctxt, index);
                 if vval.is_err() {
-                    return Err(format!("DataM:GetArrayEle:XCast:{:?}:{}", self, vval.unwrap_err()));
+                    return Err(format!("DataM:GetArrayEle:XOp:{:?}:{}", self, vval.unwrap_err()));
                 }
                 return vval;
             }
@@ -397,7 +397,7 @@ impl DataM {
             Self::XOp(xdata) => {
                 let vval = xdata.get_value(ctxt);
                 if vval.is_err() {
-                    return Err(format!("DataM:GetVal:XCast:{}", vval.unwrap_err()));
+                    return Err(format!("DataM:GetVal:XOp:{}", vval.unwrap_err()));
                 }
                 return Ok(vval.unwrap());
             }
@@ -418,7 +418,7 @@ impl DataM {
             Self::XOp(xdata) => {
                 let oval = xdata.get_value(ctxt);
                 if oval.is_err() {
-                    return Err(format!("DataM:GetTypeVal:XCast:{}", oval.unwrap_err()));
+                    return Err(format!("DataM:GetTypeVal:XOp:{}", oval.unwrap_err()));
                 }
                 let oval = oval.unwrap();
                 return Ok((oval.get_type(), oval));
@@ -445,7 +445,7 @@ impl DataM {
                 return gotr.unwrap();
             }
             Self::XOp(_xdata) => {
-                panic!("ERRR:{}:DataM:GetBufVu8Mut:XCast:{:?}:Not supported", smsg, self);
+                panic!("ERRR:{}:DataM:GetBufVu8Mut:XOp:{:?}:Not supported", smsg, self);
             }
         }
     }
@@ -462,7 +462,7 @@ impl DataM {
                 return Err(format!("DataM:SetISize:{}", ok.unwrap_err()));
             }
             Self::XOp(_xdata) => {
-                return Err(format!("DataM:SetISize:XCast:{:?}:Not supported", self));
+                return Err(format!("DataM:SetISize:XOp:{:?}:Not supported", self));
             }
         }
     }
@@ -480,7 +480,7 @@ impl DataM {
                 return Err(format!("DataM:SetString:{}", ok.unwrap_err()));
             }
             Self::XOp(_xdata) => {
-                return Err(format!("DataM:SetString:XCast:{:?}:Not supported", self));
+                return Err(format!("DataM:SetString:XOp:{:?}:Not supported", self));
             }
         }
     }
@@ -497,7 +497,7 @@ impl DataM {
                 return Err(format!("DataM:SetBuf:{}", ok.unwrap_err()));
             }
             Self::XOp(_xdata) => {
-                return Err(format!("DataM:SetBuf:XCast:{:?}:Not supported", self));
+                return Err(format!("DataM:SetBuf:XOp:{:?}:Not supported", self));
             }
         }
     }
@@ -513,7 +513,7 @@ impl DataM {
                 return Err(format!("DataM:SetValue:{}", ok.unwrap_err()));
             }
             Self::XOp(_xdata) => {
-                return Err(format!("DataM:SetValue:XCast:{:?}:Not supported", self));
+                return Err(format!("DataM:SetValue:XOp:{:?}:Not supported", self));
             }
         }
     }

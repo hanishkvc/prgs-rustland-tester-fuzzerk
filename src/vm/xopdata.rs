@@ -113,7 +113,7 @@ impl XOpData {
                 }
                 return Ok(ival.unwrap());
             }
-            _ => { // All other XCasts are str generating, so do casting as part of get_string
+            _ => { // All other XOps are str generating, so do the xop as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
                     return Err(format!("XOpData:GetISize:Casting:{:?}:{}", self, sdata.unwrap_err()));
@@ -155,7 +155,7 @@ impl XOpData {
                 return Ok(vval.unwrap().get_bufvu8());
             }
             _ => {
-                // All other XCasts are str generating, so do casting as part of get_string
+                // All other XOps are str generating, so do the xop as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
                     return Err(format!("XOpData:GetBuf:Casting:{:?}:{}", self, sdata.unwrap_err()));
@@ -190,7 +190,7 @@ impl XOpData {
                 return vval;
             }
             _ => {
-                // All other XCasts are str generating, so do casting as part of get_string
+                // All other XOps are str generating, so do the xop as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
                     return Err(format!("XOpData:GetValue:Casting:{:?}:{}", self, sdata.unwrap_err()));
@@ -221,7 +221,7 @@ impl XOpData {
                 return rval;
             }
             _ => {
-                // All other XCasts are str generating, so do casting as part of get_string
+                // All other XOps are str generating, so do the xop as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
                     return Err(format!("XOpData:GetArrayEle:Casting:{:?}:{}", self, sdata.unwrap_err()));
@@ -239,7 +239,7 @@ impl XOpData {
         match self {
             Self::ByteEle(_,_) => return VDataType::Integer,
             Self::ArrayEle(ddm, _idm) => return ddm.get_type(ctxt),
-            _ => return VDataType::String, // All other XCasts are str generating, so this
+            _ => return VDataType::String, // All other XOps are str generating, so this
         }
     }
 
