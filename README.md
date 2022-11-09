@@ -616,10 +616,6 @@ If it starts with __ then it will be treated has a special data value.
 
   * This puts the current time stamp in terms of milliseconds from UnixEpoch, in a suitable way.
 
-* \_\_RANDOM\_\_BYTES\_\_TheLength
-
-  * This puts TheLength amount of random bytes into var, in a suitable way.
-
 If it starts with ! and ends with ), then it will be treated has a XOp. The XOp inturn could have
 operands (ie a var or value) which has been specified with in. ie !ABC(var_or_value[, var_or_value])
 
@@ -724,6 +720,17 @@ NOTE: Now any varaint value can be interpreted-has/converted-into a hex string.
   utf8 strings to be handled and chars extracted from it, even if the char is a multibyte encoded value.
 
   * one could use !ae as a shortcut
+
+######## Misc XOps
+
+* !timestamp()
+
+  Returns the current date-time in a suitable way, based on whether it is being accessed as a
+  int or string or binary buffer.
+
+* !randombytes(bytelen_var_or_value)
+
+  Return random data of the specified bytelen in a suitable way, based on how it is accessed.
 
 
 ###### Clean coding (Comments, White spaces)

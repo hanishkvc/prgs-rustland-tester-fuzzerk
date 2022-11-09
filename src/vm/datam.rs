@@ -85,7 +85,7 @@ impl DataM {
                     if sdata.the_str().starts_with("__RANDOM__BYTES__") {
                         let (_random, bytelen) = sdata.the_str().split_once("__BYTES__").expect(&format!("ERRR:{}:DataM:Compile:RandomBytes:{}", smsg, sdata));
                         let bytelen = usize::from_str_radix(bytelen, 10).expect(&format!("ERRR:{}:DataM:Compile:RandomBytes:{}", smsg, sdata));
-                        return DataM::Value(Variant::XRandomBytes(bytelen));
+                        return DataM::XOp(XOpData::RandomBytes(Box::new(DataM::Value(Variant::IntValue(bytelen as isize)))));
                     }
                     panic!("ERRR:{}:DataM:Compile:{}:Unknown Special Tag {}???", smsg, stype, sdata);
                 }
@@ -104,6 +104,7 @@ impl DataM {
                             let idm = DataM::compile(ctxt, &tindex, stype, &format!("{}:XOp-{}:{}",smsg, xop, tindex));
                             bdm2 = Some(Box::new(idm));
                         }
+                        "!timestamp" => return DataM::XOp(XOpData::TimeStamp),
                         _ => {
                             sarg1 = sdata.the_str();
                             bdm2 = None;
@@ -117,6 +118,7 @@ impl DataM {
                         "!strtrim" => XOpData::StrTrim(boxdm),
                         "!byteele" | "!be" => XOpData::ByteEle(boxdm, bdm2.unwrap()),
                         "!arrayele" | "!ae" => XOpData::ArrayEle(boxdm, bdm2.unwrap()),
+                        "!randombytes" => XOpData::RandomBytes(boxdm),
                         _ => panic!("ERRR:{}:DataM:{}:Unknown XOp type:{:?}", smsg, stype, xop),
                     };
                     return DataM::XOp(xdata);

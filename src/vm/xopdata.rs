@@ -106,7 +106,7 @@ impl XOpData {
                 let uts = ts.as_millis();
                 return Ok(uts.to_string());
             },
-            Self::RandomBytes(bytelen) => {
+            Self::RandomBytes(_bytelen) => {
                 let vdata = self.get_bufvu8(ctxt);
                 if vdata.is_err() {
                     return Err(format!("XOpData:GetString:{:?}:{}", self, vdata.unwrap_err()));
@@ -153,17 +153,16 @@ impl XOpData {
                 let uts = ts.as_millis();
                 return Ok(uts as isize);
             }
-            Self::RandomBytes(bytelen) => {
+            Self::RandomBytes(_bytelen) => {
                 let vdata = self.get_bufvu8(ctxt);
                 if vdata.is_err() {
                     return Err(format!("XOpData:GetISize:{:?}:{}", self, vdata.unwrap_err()));
                 }
-                let vdata = vdata.unwrap();
-                let mut ibytes = (isize::BITS/8) as usize;
+                let mut vdata = vdata.unwrap();
+                let ibytes = (isize::BITS/8) as usize;
                 let bytelen = vdata.len();
                 if ibytes > bytelen {
                     let irem = ibytes - bytelen;
-                    ibytes = bytelen;
                     for _i in 0..irem {
                         vdata.push(0);
                     }
