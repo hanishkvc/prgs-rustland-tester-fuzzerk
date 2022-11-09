@@ -223,14 +223,39 @@
 # Check XOps (casting, indexing, ...)
 #
 
-!func XOPS
-	call PRINT_ME "\n\n **** XOps **** \n\n"
+!func XOP_TimeStamp
+	call PRINT_ME "\n\n **** XOp TimeStamp **** \n\n"
+	letlocal.i lint !timestamp()
+	letlocal.s lstr !timestamp()
+	letlocal.b lbuf !timestamp()
+	bufmerged  bmsg "XOPS:TimeStamp:Int[" !str(lint) "]:Str[" lstr "]:Buf[" !strhex(lbuf) "]\n"
+	call       PRINT_ME bmsg
+	ret
+
+!func XOP_RandomBytes
+	call PRINT_ME "\n\n **** XOp RandomBytes **** \n\n"
+	letlocal.i lint !randombytes(6)
+	letlocal.s lstr !randombytes(6)
+	letlocal.b lbuf !randombytes(6)
+	bufmerged  bmsg "XOPS:RandomBytes:Int[" !str(lint) "]:Str[" lstr "]:Buf[" !strhex(lbuf) "]\n"
+	call       PRINT_ME bmsg
+	ret
+
+!func XOP_Casting
+	call PRINT_ME "\n\n **** XOp Casting **** \n\n"
 	letlocal.s lstr "\n\n\t 123 \n\t\n\t"
 	letlocal.i lint lstr
 	bufmerged  bmsg "XOPS:0: lstr [" lstr "], str(lstr)[" !str(lstr) "], hex(lstr)[" !strhex(lstr) "] hex(trim(lstr))[" !strhex(!strtrim(lstr)) "]\n"
 	call       PRINT_ME bmsg
 	bufmerged  bmsg "XOPS:1: lstr [" lstr "], lint[" !str(lint) "], lintHex[" !strhex(lint) "]\n"
 	call       PRINT_ME bmsg
+	ret
+
+!func XOPS
+	call PRINT_ME "\n\n **** XOps **** \n\n"
+	call	XOP_Casting
+	call	XOP_TimeStamp
+	call	XOP_RandomBytes
 	ret
 
 !func INDEX_1
