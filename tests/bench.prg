@@ -132,14 +132,14 @@
 	ret
 
 
-!func bench_xcaststr iTill
+!func bench_xopstr iTill
 	call		time_start
 	letint		loopCnt 0
-!label xcaststr_again
+!label xopstr_again
 	bufmerged	btemp !str(loopCnt)
 	inc		loopCnt
-	iflt		loopCnt iTill goto xcaststr_again
-	bufmerged	bMsg "XCastStr, " !str(loopCnt)
+	iflt		loopCnt iTill goto xopstr_again
+	bufmerged	bMsg "XOpStr, " !str(loopCnt)
 	call		time_done bMsg
 	ret
 
@@ -182,6 +182,6 @@
 	call	bench_alu_addg 1024000
 	call	bench_alu_mult 1024000
 	call	bench_letstr 1024000
-	call	bench_xcaststr 1024000
+	call	bench_xopstr 1024000
 	call	bench_iob 1024000
 

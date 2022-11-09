@@ -21,9 +21,9 @@
 	iobwrite 	term AMsg
 	bufmerged.b	AMsg "The Vars are:BinBufMode:\n" "\tInt:" MeInt "\n\tStr:" MeStr "\n\tBuf:" MeBuf "\n"
 	iobwrite 	term AMsg
-	bufmerged.b	AMsg "The Vars are:StrXCasts :\n" "\tInt:" !str(MeInt) "\n\tStr:" MeStr "\n\tBuf:" !str(MeBuf) "\n"
+	bufmerged.b	AMsg "The Vars are:StrXOps :\n" "\tInt:" !str(MeInt) "\n\tStr:" MeStr "\n\tBuf:" !str(MeBuf) "\n"
 	iobwrite 	term AMsg
-	bufmerged.b	AMsg "The Vars are:HexXCasts :\n" "\tInt:" !strhex(MeInt) "\n\tStr:" !strhex(MeStr) "\n\tBuf:" !strhex(MeBuf) "\n"
+	bufmerged.b	AMsg "The Vars are:HexXOps :\n" "\tInt:" !strhex(MeInt) "\n\tStr:" !strhex(MeStr) "\n\tBuf:" !strhex(MeBuf) "\n"
 	iobwrite 	term AMsg
 	ret
 
@@ -39,7 +39,7 @@
 	call PRINT_ME tmsg1
 	bufmerged.b	tmsg1 "GlobalsLetType:Buf     : Int[" gint1 "] Str[" gstr1 "] Buf[" gbuf1 "]\n"
 	call PRINT_ME tmsg1
-	bufmerged	tmsg1 "GlobalsLetType:StrXCast: Int[" !str(gint1) "] Str[" gstr1 "] Buf[" !str(gbuf1) "]\n"
+	bufmerged	tmsg1 "GlobalsLetType:StrXOp: Int[" !str(gint1) "] Str[" gstr1 "] Buf[" !str(gbuf1) "]\n"
 	call PRINT_ME tmsg1
 
 	# Global vars using explicit letglobal.type var setting
@@ -220,21 +220,21 @@
 
 
 #
-# Check xcasting and indexing
+# Check XOps (casting, indexing, ...)
 #
 
-!func XCASTS
-	call PRINT_ME "\n\n **** XCasts **** \n\n"
+!func XOPS
+	call PRINT_ME "\n\n **** XOps **** \n\n"
 	letlocal.s lstr "\n\n\t 123 \n\t\n\t"
 	letlocal.i lint lstr
-	bufmerged  bmsg "XCASTS:0: lstr [" lstr "], str(lstr)[" !str(lstr) "], hex(lstr)[" !strhex(lstr) "] hex(trim(lstr))[" !strhex(!strtrim(lstr)) "]\n"
+	bufmerged  bmsg "XOPS:0: lstr [" lstr "], str(lstr)[" !str(lstr) "], hex(lstr)[" !strhex(lstr) "] hex(trim(lstr))[" !strhex(!strtrim(lstr)) "]\n"
 	call       PRINT_ME bmsg
-	bufmerged  bmsg "XCASTS:1: lstr [" lstr "], lint[" !str(lint) "], lintHex[" !strhex(lint) "]\n"
+	bufmerged  bmsg "XOPS:1: lstr [" lstr "], lint[" !str(lint) "], lintHex[" !strhex(lint) "]\n"
 	call       PRINT_ME bmsg
 	ret
 
 !func INDEX_1
-	call PRINT_ME "\n **** XCast Indexing 1 **** \n"
+	call PRINT_ME "\n **** XOp Indexing 1 **** \n"
 	letlocal.s	lstr "AbCdEf"
 	bufmerged	bmsg "INDEX1:FromString:" lstr ":raw: 0[" lstr[0] "] 1[" lstr[1] "]\n"
 	call		PRINT_ME bmsg
@@ -248,7 +248,7 @@
 	ret
 
 !func INDEX_2
-	call PRINT_ME "\n **** XCast Indexing 2 **** \n"
+	call PRINT_ME "\n **** XOp Indexing 2 **** \n"
 	letlocal.s	lstr "AbCdEf"
 	bufmerged	bmsg "INDEX2:FromString:" lstr ":raw: 0[" lstr[0] "] !be0["    !be(  lstr  ,   0    )   "] !ae0[" !ae(lstr,0) "]\n"
 	call		PRINT_ME bmsg
@@ -264,7 +264,7 @@
 	ret
 
 !func INDEX
-	call PRINT_ME "\n\n **** XCast Indexing **** \n\n"
+	call PRINT_ME "\n\n **** XOp Indexing **** \n\n"
 	call INDEX_1
 	call INDEX_2
 	ret
@@ -311,7 +311,7 @@
 	call CONDITIONS
 	call CHECK_FARGS
 	call LOCAL_VARS
-	call XCASTS
+	call XOPS
 	call INDEX
 	call SHIFTS
 	call PRINT_ME "\n**** Reached end of the program ****\n"

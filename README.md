@@ -677,7 +677,7 @@ NOTE: XOps can only be used wrt source operands, if used wrt a dest operand, it 
 
 NOTE: One can use spaces around xop's operands/data, to make it easy to read. So
 
-* !ABC(abc,xyz) and !ABC(abc, xyz) both represent the same xcasting.
+* !ABC(abc,xyz) and !ABC(abc, xyz) both represent the same xop.
 
 * !ABC("a b c", xyz) ie !ABC( "a b c", xyz)
 
