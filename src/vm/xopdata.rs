@@ -32,7 +32,7 @@ impl XOpData {
             Self::Str(dm) => {
                 let tv = dm.get_type_value(ctxt);
                 if tv.is_err() {
-                    return Err(format!("XCastData:Str:GetString:{:?}:{}", self, tv.unwrap_err()));
+                    return Err(format!("XOpData:Str:GetString:{:?}:{}", self, tv.unwrap_err()));
                 }
                 let (vtype, vvalue) = tv.unwrap();
                 match vtype {
@@ -43,7 +43,7 @@ impl XOpData {
             Self::StrTrim(dm) => {
                 let tv = dm.get_type_value(ctxt);
                 if tv.is_err() {
-                    return Err(format!("XCastData:StrTrim:GetString:{:?}:{}", self, tv.unwrap_err()));
+                    return Err(format!("XOpData:StrTrim:GetString:{:?}:{}", self, tv.unwrap_err()));
                 }
                 let (vtype, vvalue) = tv.unwrap();
                 let sdata = match vtype {
@@ -55,18 +55,18 @@ impl XOpData {
             Self::StrHex(dm) => {
                 let bdata = dm.get_bufvu8(ctxt);
                 if bdata.is_err() {
-                    return Err(format!("XCastData:StrHex:GetString:{:?}:{}", self, bdata.unwrap_err()));
+                    return Err(format!("XOpData:StrHex:GetString:{:?}:{}", self, bdata.unwrap_err()));
                 }
                 return Ok(datautils::hex_from_vu8(&bdata.unwrap()));
             }
             Self::ByteEle(dm, index) => {
                 let i = index.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:ByteEle:GetString:{:?}:GetIndex:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:ByteEle:GetString:{:?}:GetIndex:{}", self, i.unwrap_err()));
                 }
                 let bval = dm.get_byteelement(ctxt, i.unwrap());
                 if bval.is_err() {
-                    return Err(format!("XCastData:ByteEle:GetString:{:?}:IndexedData:{}", self, bval.unwrap_err()));
+                    return Err(format!("XOpData:ByteEle:GetString:{:?}:IndexedData:{}", self, bval.unwrap_err()));
                 }
                 let cval = char::from_u32( bval.unwrap() as u32).unwrap();
                 return Ok(cval.to_string());
@@ -74,11 +74,11 @@ impl XOpData {
             Self::ArrayEle(ddm, idm) => {
                 let i = idm.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:ArrayEle:GetString:{:?}:GetIndex:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:ArrayEle:GetString:{:?}:GetIndex:{}", self, i.unwrap_err()));
                 }
                 let vval = ddm.get_arrayelement(ctxt, i.unwrap());
                 if vval.is_err() {
-                    return Err(format!("XCastData:ArrayEle:GetString:{:?}:IndexedData:{}", self, vval.unwrap_err()));
+                    return Err(format!("XOpData:ArrayEle:GetString:{:?}:IndexedData:{}", self, vval.unwrap_err()));
                 }
                 return Ok(vval.unwrap().get_string());
             }
@@ -90,38 +90,38 @@ impl XOpData {
             Self::ByteEle(dm, index) => {
                 let i = index.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:GetISize:{:?}:GetIndex:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:GetISize:{:?}:GetIndex:{}", self, i.unwrap_err()));
                 }
                 let bval = dm.get_byteelement(ctxt, i.unwrap());
                 if bval.is_err() {
-                    return Err(format!("XCastData:GetISize:{:?}:IndexedData:{}", self, bval.unwrap_err()));
+                    return Err(format!("XOpData:GetISize:{:?}:IndexedData:{}", self, bval.unwrap_err()));
                 }
                 return Ok(bval.unwrap() as isize);
             }
             Self::ArrayEle(ddm, idm) => {
                 let i = idm.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:GetISize:{:?}:GetIndex:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:GetISize:{:?}:GetIndex:{}", self, i.unwrap_err()));
                 }
                 let vval = ddm.get_arrayelement(ctxt, i.unwrap());
                 if vval.is_err() {
-                    return Err(format!("XCastData:GetISize:{:?}:IndexedData:{}", self, vval.unwrap_err()));
+                    return Err(format!("XOpData:GetISize:{:?}:IndexedData:{}", self, vval.unwrap_err()));
                 }
                 let ival = vval.unwrap().get_isize();
                 if ival.is_err() {
-                    return Err(format!("XCastData:GetISize:{:?}:Value:{}", self, ival.unwrap_err()));
+                    return Err(format!("XOpData:GetISize:{:?}:Value:{}", self, ival.unwrap_err()));
                 }
                 return Ok(ival.unwrap());
             }
             _ => { // All other XCasts are str generating, so do casting as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
-                    return Err(format!("XCastData:GetISize:Casting:{:?}:{}", self, sdata.unwrap_err()));
+                    return Err(format!("XOpData:GetISize:Casting:{:?}:{}", self, sdata.unwrap_err()));
                 }
                 let sdata = sdata.unwrap();
                 let ival = Variant::StrValue(sdata).get_isize();
                 if ival.is_err() {
-                    return Err(format!("XCastData:GetISize:Converting:{:?}:{}", self, ival.unwrap_err()));
+                    return Err(format!("XOpData:GetISize:Converting:{:?}:{}", self, ival.unwrap_err()));
                 }
                 return Ok(ival.unwrap());
             }
@@ -133,11 +133,11 @@ impl XOpData {
             Self::ByteEle(dm, index) => {
                 let i = index.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:GetBuf:{:?}:Index:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:GetBuf:{:?}:Index:{}", self, i.unwrap_err()));
                 }
                 let bval = dm.get_byteelement(ctxt, i.unwrap());
                 if bval.is_err() {
-                    return Err(format!("XCastData:GetBuf:{:?}:{}", self, bval.unwrap_err()));
+                    return Err(format!("XOpData:GetBuf:{:?}:{}", self, bval.unwrap_err()));
                 }
                 let mut bvec = Vec::new();
                 bvec.push(bval.unwrap());
@@ -146,11 +146,11 @@ impl XOpData {
             Self::ArrayEle(ddm, idm) => {
                 let i = idm.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:GetBuf:{:?}:GetIndex:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:GetBuf:{:?}:GetIndex:{}", self, i.unwrap_err()));
                 }
                 let vval = ddm.get_arrayelement(ctxt, i.unwrap());
                 if vval.is_err() {
-                    return Err(format!("XCastData:GetBuf:{:?}:IndexedData:{}", self, vval.unwrap_err()));
+                    return Err(format!("XOpData:GetBuf:{:?}:IndexedData:{}", self, vval.unwrap_err()));
                 }
                 return Ok(vval.unwrap().get_bufvu8());
             }
@@ -158,7 +158,7 @@ impl XOpData {
                 // All other XCasts are str generating, so do casting as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
-                    return Err(format!("XCastData:GetBuf:Casting:{:?}:{}", self, sdata.unwrap_err()));
+                    return Err(format!("XOpData:GetBuf:Casting:{:?}:{}", self, sdata.unwrap_err()));
                 }
                 return Ok(Variant::StrValue(sdata.unwrap()).get_bufvu8());
             }
@@ -170,22 +170,22 @@ impl XOpData {
             Self::ByteEle(dm, index) => {
                 let i = index.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:GetValue:{:?}:Index:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:GetValue:{:?}:Index:{}", self, i.unwrap_err()));
                 }
                 let bval = dm.get_byteelement(ctxt, i.unwrap());
                 if bval.is_err() {
-                    return Err(format!("XCastData:GetValue:{:?}:{}", self, bval.unwrap_err()));
+                    return Err(format!("XOpData:GetValue:{:?}:{}", self, bval.unwrap_err()));
                 }
                 return Ok(Variant::IntValue(bval.unwrap() as isize));
             }
             Self::ArrayEle(ddm, idm) => {
                 let i = idm.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:GetValue:{:?}:GetIndex:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:GetValue:{:?}:GetIndex:{}", self, i.unwrap_err()));
                 }
                 let vval = ddm.get_arrayelement(ctxt, i.unwrap());
                 if vval.is_err() {
-                    return Err(format!("XCastData:GetValue:{:?}:IndexedData:{}", self, vval.unwrap_err()));
+                    return Err(format!("XOpData:GetValue:{:?}:IndexedData:{}", self, vval.unwrap_err()));
                 }
                 return vval;
             }
@@ -193,7 +193,7 @@ impl XOpData {
                 // All other XCasts are str generating, so do casting as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
-                    return Err(format!("XCastData:GetValue:Casting:{:?}:{}", self, sdata.unwrap_err()));
+                    return Err(format!("XOpData:GetValue:Casting:{:?}:{}", self, sdata.unwrap_err()));
                 }
                 return Ok(Variant::StrValue(sdata.unwrap()));
             }
@@ -203,20 +203,20 @@ impl XOpData {
     pub fn get_arrayelement(&self, ctxt: &mut Context, index: usize) -> Result<Variant, String> {
         match self {
             Self::ByteEle(_ddm, _idm) => {
-                return Err(format!("XCastData:GetArrayEle:{:?}:Not allowed on a ByteEle", self));
+                return Err(format!("XOpData:GetArrayEle:{:?}:Not allowed on a ByteEle", self));
             }
             Self::ArrayEle(ddm, idm) => {
                 let i = idm.get_usize(ctxt);
                 if i.is_err() {
-                    return Err(format!("XCastData:GetArrayEle:{:?}:GetIndex:{}", self, i.unwrap_err()));
+                    return Err(format!("XOpData:GetArrayEle:{:?}:GetIndex:{}", self, i.unwrap_err()));
                 }
                 let vval = ddm.get_arrayelement(ctxt, i.unwrap());
                 if vval.is_err() {
-                    return Err(format!("XCastData:GetArrayEle:{:?}:IndexedData:{}", self, vval.unwrap_err()));
+                    return Err(format!("XOpData:GetArrayEle:{:?}:IndexedData:{}", self, vval.unwrap_err()));
                 }
                 let rval = vval.unwrap().get_arrayelement(index);
                 if rval.is_err() {
-                    return Err(format!("XCastData:GetArrayEle:{:?}:Value:{}", self, rval.unwrap_err()));
+                    return Err(format!("XOpData:GetArrayEle:{:?}:Value:{}", self, rval.unwrap_err()));
                 }
                 return rval;
             }
@@ -224,11 +224,11 @@ impl XOpData {
                 // All other XCasts are str generating, so do casting as part of get_string
                 let sdata = self.get_string(ctxt);
                 if sdata.is_err() {
-                    return Err(format!("XCastData:GetArrayEle:Casting:{:?}:{}", self, sdata.unwrap_err()));
+                    return Err(format!("XOpData:GetArrayEle:Casting:{:?}:{}", self, sdata.unwrap_err()));
                 }
                 let rval = Variant::StrValue(sdata.unwrap()).get_arrayelement(index);
                 if rval.is_err() {
-                    return Err(format!("XCastData:GetArrayEle:Indexing:{:?}:{}", self, rval.unwrap_err()));
+                    return Err(format!("XOpData:GetArrayEle:Indexing:{:?}:{}", self, rval.unwrap_err()));
                 }
                 return rval;
             }
