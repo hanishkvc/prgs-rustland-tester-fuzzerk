@@ -4,8 +4,8 @@
 //!
 
 use datautilsk::variant::{Variant, VDataType};
+use datautilsk::{integer, hex};
 
-use crate::datautils;
 use super::DataKind;
 use super::xopdata::XOpData;
 use super::Context;
@@ -53,7 +53,7 @@ impl DataM {
         let echar = sdata.char_last().unwrap();
 
         if schar.is_numeric() || schar == '+' || schar == '-' {
-            let idata = datautils::intvalue(sdata.the_str()).expect(&format!("ERRR:{}:DataM:Compile:IntLiteral[{}]:Conversion", smsg, sdata));
+            let idata = integer::intvalue(sdata.the_str()).expect(&format!("ERRR:{}:DataM:Compile:IntLiteral[{}]:Conversion", smsg, sdata));
             return DataM::Value(Variant::IntValue(idata));
         }
 
@@ -75,7 +75,7 @@ impl DataM {
 
             if sdata.len() > 2 {
                 if sdata.the_str().starts_with("$0x") {
-                    let bdata = datautils::vu8_from_hex(&sdata.the_str()[3..]).expect(&format!("ERRR:{}:DataM:Compile:BufHexString:Conversion:{}", smsg, sdata));
+                    let bdata = hex::vu8_from_hex(&sdata.the_str()[3..]).expect(&format!("ERRR:{}:DataM:Compile:BufHexString:Conversion:{}", smsg, sdata));
                     return DataM::Value(Variant::BufValue(bdata));
                 }
                 if sdata.the_str().starts_with("__") {

@@ -7,9 +7,8 @@ use std::time;
 
 use rand::Rng;
 
-use datautilsk::variant::{Variant, VDataType};
+use datautilsk::{variant::{Variant, VDataType}, hex};
 
-use crate::datautils;
 use super::{DataM, Context};
 
 
@@ -78,7 +77,7 @@ impl XOpData {
                 if bdata.is_err() {
                     return Err(format!("XOpData:StrHex:GetString:{:?}:{}", self, bdata.unwrap_err()));
                 }
-                return Ok(datautils::hex_from_vu8(&bdata.unwrap()));
+                return Ok(hex::hex_from_vu8(&bdata.unwrap()));
             }
             Self::ByteEle(dm, index) => {
                 let i = index.get_usize(ctxt);

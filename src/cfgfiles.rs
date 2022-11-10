@@ -7,12 +7,13 @@
 use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufReader, BufRead};
-use loggerk::{log_d, log_w, log_o};
 
-use crate::datautils;
+use datautilsk::hex;
+use loggerk::{log_d, log_w, log_o};
 
 
 const LIST_MAXVALUES: usize = 1024;
+
 
 pub trait FromVecStrings {
 
@@ -85,7 +86,7 @@ pub trait FromVecStrings {
         let mut outs = ins.trim();
         if outs.len() >= 2 {
             if outs.starts_with("$0x") {
-                let vdata = datautils::vu8_from_hex(&outs[3..]);
+                let vdata = hex::vu8_from_hex(&outs[3..]);
                 return vdata;
             }
             let mut outschars = outs.chars();
