@@ -3,10 +3,10 @@
 //! HanishKVC, 2022
 //!
 
-use crate::datautils;
+use datautilsk::variant::{Variant, VDataType};
 
+use crate::datautils;
 use super::DataKind;
-use super::datas::{Variant, VDataType};
 use super::xopdata::XOpData;
 use super::Context;
 

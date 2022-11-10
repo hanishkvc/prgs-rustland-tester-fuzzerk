@@ -14,17 +14,17 @@ use std::panic;
 use rand::Rng;
 
 use loggerk::{log_w, log_e, log_d, ldebug};
+use datautilsk::variant::Variant;
+use tokensk::{self, TStrX};
+
 use crate::iob::IOBridge;
 use crate::rtm::RunTimeManager;
 use crate::cfgfiles;
 
-mod datas;
-use datas::Variant;
 mod xopdata;
 mod datam;
 use datam::DataM;
 
-use tokensk::{self, TStrX};
 
 
 macro_rules! dformat {

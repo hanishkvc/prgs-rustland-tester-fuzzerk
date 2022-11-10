@@ -7,8 +7,10 @@ use std::time;
 
 use rand::Rng;
 
+use datautilsk::variant::{Variant, VDataType};
+
 use crate::datautils;
-use super::{DataM, Context, datas::{VDataType, Variant}};
+use super::{DataM, Context};
 
 
 #[derive(Debug, Clone)]
