@@ -4,7 +4,7 @@ Author: HanishKVC,
 
 Version: 20221027IST2100, Diwali (Deepavali) release
 
-License: GPL
+License: LGPL-3.0+
 
 
 ## Overview
