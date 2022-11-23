@@ -8,8 +8,12 @@ license = "LGPL-3.0-or-later"
 
 [dependencies]
 rand = "0.8.5"
-loggerk = { version="0.1.0", path="../loggerk" }
-argsclsk = { version="0.1.0", path="../argsclsk" }
-tokensk = { version="0.1.0", path="../tokensk" }
-datautilsk = { version="0.1.0", path="../datautilsk" }
+#loggerk = { version="0.1.0", path="../loggerk" }
+loggerk = { git="https://github.com/hanishkvc/prgs-rustland-libs-loggerk" }
+#argsclsk = { version="0.1.0", path="../argsclsk" }
+argsclsk = { git="https://github.com/hanishkvc/prgs-rustland-libs-argsclsk" }
+#tokensk = { version="0.1.0", path="../tokensk" }
+tokensk = { git="https://github.com/hanishkvc/prgs-rustland-libs-tokensk" }
+#datautilsk = { version="0.1.0", path="../datautilsk" }
+datautilsk = { git="https://github.com/hanishkvc/prgs-rustland-libs-datautilsk" }
 boring = "2.0.0"
